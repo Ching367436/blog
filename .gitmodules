@@ -1,0 +1,3 @@
+[submodule "themes/redefine"]
+	path = themes/redefine
+	url = https://github.com/Ching367436/hexo-theme-redefine.git
