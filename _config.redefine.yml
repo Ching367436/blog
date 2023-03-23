@@ -1,0 +1,360 @@
+# ---------------------------------------------------------------------------------------
+#  Your basic info
+# ---------------------------------------------------------------------------------------
+base_info:
+  title: Ching367436's blog # Site title
+  author: Ching367436 # Author name
+  url: https://Ching367436.github.io/ # Site url
+  # Logo image (You can use local image, image external link or don’t fill)
+  logo_img: # logo image on the left of the navigation bar
+
+# ---------------------------------------------------------------------------------------
+# Theme style settings
+# ---------------------------------------------------------------------------------------
+style:
+  # Theme primary color
+  primary_color: "#005080"
+
+  # Avatar (You can use local image or image external link)
+  avatar: /images/Ching367463.jpg # avatar of the author
+
+  # Favicon (You can use local image or image external link)
+  favicon: # /images/redefine-favicon.svg # favicon of the site
+  og_image: # og:image of the site
+    enable: false
+    image_url: # image url
+
+  # Article image align position
+  article_img_align: center # value: left | center
+
+  # Right side width
+  right_side_width: 210px #sidebar width, for toc
+
+  # Content area max width
+  content_max_width: 1000px #content max width, for article
+
+  #navigation bar background color (from left to right)
+  nav_color: 
+    left: "#f78736" #left side 
+    right: "#367df7"  #right side
+    transparency: 35 #percent (10-99)
+
+  # Mouse hover
+  hover:
+    shadow: true # shadow effect when the mouse hover
+    scale: false # scale effect when the mouse hover
+
+  # First screen
+  first_screen:
+    enable: true
+    background_image:
+      light: /images/wallhaven-wqery6-light.webp # background image of the first screen, use relative path or external link (if your website is in subdirectory, use external link)
+      dark: /images/wallhaven-wqery6-dark.webp # background image of the first screen, use relative path or external link (if your website is in subdirectory, use external link)
+    title_color:
+      light: "#fff" # first screen title color (light mode)
+      dark: "#d1d1b6" # first screen title color (dark mode)
+    font_sizes:
+      title: 2.8rem # first screen title font size
+      subtitle: 1.5rem # first screen subtitle font size
+    line_height: 1.2 # first screen title line height
+    title: Ching367436's blog # the title in the middle of the first screen. HTML supported (e.g. svg html code of your logo)
+    subtitle: 
+      enable: false
+      list: []
+    custom_font: # custom font for the first screen
+      enable: false
+      font_family: # the font family name of the url below
+      font_url:  # The url to the font stylesheet file (css file)
+
+  # Scroll style settings
+  scroll:
+    progress_bar: # reading progress bar
+      enable: true 
+    percent: # reading progress percent
+      enable: false
+
+# ---------------------------------------------------------------------------------------
+# Custom Settings
+# ---------------------------------------------------------------------------------------
+custom:
+  font: # custom font for the whole site
+    chinese: # custom font for Chinese
+      enable: false
+      font_family:  # the font family name of the url below
+      font_url:  # The url to the font stylesheet file (css)
+    english: # custom font for English
+      enable: false
+      font_family:  # the font family name of the url below
+      font_url:  # The url to the font stylesheet file (css)
+  formats: # custom font styles for the whole site
+    font_size: 16px # font size
+    line_height: 1.5 # line height
+
+
+
+# ---------------------------------------------------------------------------------------
+# Social contact link
+# ---------------------------------------------------------------------------------------
+social_contact: # social contact icons in the first screen, you can add more by using fontawesome icon names
+  enable: false 
+  links:
+    github: https://github.com/Ching367436 # your GitHub URL
+    instagram: https://www.instagram.com/ching367436/ # your Instagram URL
+    zhihu:  # your ZhiHu URL
+    twitter:  https://twitter.com/Ching367436 # your twitter URL
+    email:  # your email
+    # ...... # you can add more
+
+# ---------------------------------------------------------------------------------------
+# Navigation menu
+# ---------------------------------------------------------------------------------------
+menu: #you can customize, i18n files are in the theme's languages folder. fa-regular recommended
+  Home: 
+    path: / 
+    icon: fa-regular fa-house # can be empty
+  Archives: 
+    path: /archives 
+    icon: fa-regular fa-archive # can be empty
+  # Status: 
+  #   path: https://status.evanluo.top/
+  #   icon: fa-regular fa-chart-bar
+  About: 
+    icon: fa-regular fa-user
+    submenus:
+      # Me: /about
+      Github: https://github.com/Ching367436
+  #     Blog: https://ohevan.com
+  #     Friends: /friends
+  # Links: 
+  #   icon: fa-regular fa-link
+  #   submenus:
+  #     Link1: /link1
+  #     Link2: /link2
+  #     Link3: /link3
+
+  # ...... # you can add more
+
+
+
+# ---------------------------------------------------------------------------------------
+# Home page article block display settings
+# ---------------------------------------------------------------------------------------
+home_article:
+  date_format: auto # date format in home page article block, value: auto | relative | YYYY-MM-DD | YYYY.MM.DD HH:mm:ss | DD/MM/YYYY | and etc. Support moment js format, see: https://momentjscom.readthedocs.io/en/latest/moment/04-displaying/01-format/
+  category:
+    enable: true # show category in home page article block
+    limit: 3 # max number of categories shown in home page article block
+  tag:
+    enable: true # show tags in home page article block
+    limit: 3 # max number of tags shown in home page article block
+
+# ---------------------------------------------------------------------------------------
+# Post page Settings
+# ---------------------------------------------------------------------------------------
+post:
+  # Post word count
+  # Dependencies: hexo-wordcount (npm install hexo-wordcount)
+  # See: https://github.com/willin/hexo-wordcount
+  word_count:
+    enable: true
+    wordcount: true # word count, one article
+    min2read: true # time to read, one article
+
+  # Author label
+  author_label:
+    enable: false
+    auto: false # if true, show Lv1, Lv2, Lv3... , If false, show custom label
+    # label array item can be one or more
+    custom_label_list: ["math"]
+
+# ---------------------------------------------------------------------------------------
+# Code copy
+# ---------------------------------------------------------------------------------------
+code_block:
+  copy: true # enable code copy button
+  style: mac # mac | simple
+  custom_font: # custom font family, default: Ubuntu Mono
+    enable: false
+    font_family: # font family name
+    font_url: # The url to the font stylesheet file (css file)
+
+# ---------------------------------------------------------------------------------------
+# Table of Contents in the Sidebar
+# ---------------------------------------------------------------------------------------
+toc:
+  enable: true
+
+  # Automatically add list number to toc.
+  number: false
+
+  # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
+  expand_all: true
+
+  # If true, open TOC every time when you enter the article page
+  init_open: true
+
+# ---------------------------------------------------------------------------------------
+# Post copyright info
+# ---------------------------------------------------------------------------------------
+copyright_info:
+  enable: true
+
+# ---------------------------------------------------------------------------------------
+# Website count
+# ---------------------------------------------------------------------------------------
+website_count:
+  # busuanzi
+  # See: http://ibruce.info/2015/04/04/busuanzi/
+  busuanzi_count:
+    enable: false
+    site_uv: true
+    site_pv: true
+    page_pv: true
+
+# ---------------------------------------------------------------------------------------
+# Local Search
+# Dependencies: hexo-generator-searchdb
+# See: https://github.com/theme-next/hexo-generator-searchdb
+# ---------------------------------------------------------------------------------------
+local_search:
+  enable: false
+  preload: true # Preload the search data when the page loads
+
+# ---------------------------------------------------------------------------------------
+# Comment plugin
+# ---------------------------------------------------------------------------------------
+comment:
+  enable: false
+  use: gitalk # values: waline | gitalk | twikoo
+
+  # Waline
+  # See: https://waline.js.org/guide/get-started.html
+  waline:
+    serverUrl:  # Waline server url(vercel) example: https://example.example.com
+    lang: zh-CN # Waline language, default: zh-CN. See: https://waline.js.org/guide/client/i18n.html
+  
+  # Gitalk
+  # See: https://github.com/gitalk/gitalk
+  gitalk:
+    github_id: # GitHub repo owner
+    repository: # Repository name to store issues
+    client_id: # GitHub Application Client ID
+    client_secret: # GitHub Application Client Secret
+
+  # Twikoo
+  # See: https://github.com/imaegoo/twikoo
+  twikoo:
+    visitor: true
+    version: 1.6.10 # Twikoo version, do not modify if you dont know what it is
+    env_id: # Vercel or Tencent Cloud Function environment ID
+    region: # environment region. If select Guangzhou, fill in "ap-guangzhou". (optional)
+
+# ---------------------------------------------------------------------------------------
+# Friend Links page
+# ---------------------------------------------------------------------------------------
+friend_links:
+  columns: 2 # number of columns. 2 or 3
+
+# ---------------------------------------------------------------------------------------
+# Tags Page
+# ---------------------------------------------------------------------------------------
+tags:
+  style: blur # blur | cloud
+
+# ---------------------------------------------------------------------------------------
+# RSS
+# Dependencies: hexo-generator-feed
+# See: https://github.com/hexojs/hexo-generator-feed
+# ---------------------------------------------------------------------------------------
+rss:
+  enable: true
+
+# ---------------------------------------------------------------------------------------
+# Lazyload image
+# ---------------------------------------------------------------------------------------
+lazyload:
+  enable: true
+
+# ---------------------------------------------------------------------------------------
+# CDN
+# ---------------------------------------------------------------------------------------
+cdn:
+  enable: false
+  use: jsdelivr # values: jsdelivr | unpkg | aliyun 
+  # aliyun cdn is funded by myself, so if you want to make it work longer, please donate to me.
+  # For donation, please see https://github.com/EvanNotFound/hexo-theme-redefine/blob/dev/DONATION.md
+  # Thank you for your support.
+
+# ---------------------------------------------------------------------------------------
+# PJAX
+# ---------------------------------------------------------------------------------------
+pjax:
+  enable: true
+
+# ---------------------------------------------------------------------------------------
+# Article recommendation (transplanted from Volantis)
+# ---------------------------------------------------------------------------------------
+recommended_article: # 文章推荐，需要 npm install nodejieba
+  enable: false
+  title: 推荐阅读
+  icon: fa-solid fa-bookmark
+  max_count: 3
+  placeholder_img: /images/wallhaven-wqery6-light.webp
+  # 不展示文章推荐：
+  # front-matter 使用 skip_recommended_article: true 关闭
+  # 不在以下文件夹文章中展示文章推荐 根目录是source/
+  skip_dirs:
+    - wiki/
+
+# ---------------------------------------------------------------------------------------
+# Fontawesome Pro v6.2.1
+# ---------------------------------------------------------------------------------------
+fontawesome: # select fontawesome versions you want to use, in order to reduce the loading time, select as few as possible
+  thin: false # use fontawesome thin version or not
+  light: false # use fontawesome light version or not
+  duotone: false # use fontawesome duotone version or not
+  sharp_solid: false # use fontawesome sharp-solid version or not
+
+# ---------------------------------------------------------------------------------------
+# Footer settings
+# ---------------------------------------------------------------------------------------
+footer:
+  runtime: true # show website running time or not
+  icon: '<i class="fa-solid fa-heart" style="--fa-animation-duration: 0.5s; color: #f54545"></i>' # footer icon, write fontawesome html code here
+  start_time: 2023/3/20 9:33:14 # the starting time of your website, format: yyyy/mm/dd hh:mm:ss
+  customize:  # customize footer message, can be html code
+  icp: # ICP record number of your website, Can be null
+    enable: false
+    number: # ICP record number
+    url: # ICP record url
+
+# ---------------------------------------------------------------------------------------
+# Custom html code
+# ---------------------------------------------------------------------------------------
+inject:
+  enable: true
+  head: # inject code into <head> tag
+    - <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'unsafe-inline' 'self'; " />
+    - 
+  footer: # inject code into <footer> tag
+    - 
+    - 
+
+# ---------------------------------------------------------------------------------------
+# Theme plugins
+# ---------------------------------------------------------------------------------------
+plugins:
+  aplayer: # APlayer (fixed version)
+    enable: false
+    audio:
+      - name: # audio name
+        artist: # audio artist
+        url: # audio url
+        cover: # audio cover url
+      - name: 
+        artist: 
+        url: 
+        cover: 
+  mermaid: # Mermaid JS
+    enable: false # enable mermaid or not
+    version: "9.3.0" # default v9.3.0
