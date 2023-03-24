@@ -19,7 +19,7 @@ style:
   avatar: /images/Ching367463.jpg # avatar of the author
 
   # Favicon (You can use local image or image external link)
-  favicon: # /images/redefine-favicon.svg # favicon of the site
+  favicon: favicon.ico # /images/redefine-favicon.svg # favicon of the site
   og_image: # og:image of the site
     enable: false
     image_url: # image url
