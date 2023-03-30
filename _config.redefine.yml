@@ -284,7 +284,7 @@ footer:
   # Show website running time
   runtime: true # show website running time or not
   # Icon in footer, write fontawesome icon code here
-  icon: '<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>'
+  icon: '<i class="fa-solid fa-heart" style="color: #f54545"></i>'
   # The start time of the website, format: YYYY/MM/DD HH:mm:ss
   start: 2023/3/20 9:33:14
   # Footer message
