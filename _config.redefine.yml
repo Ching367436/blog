@@ -135,9 +135,10 @@ home_banner:
     enable: true
     # Social links
     links:
-      github: https://github.com/Ching367436 # your GitHub URL
-      instagram: https://www.instagram.com/Ching367436/ # your Instagram URL
-      twitter: https://twitter.com/Ching367436 # your twitter URL
+      github: https://github.com/Ching367436
+      facebook: https://www.facebook.com/profile.php?id=100005163481274
+      instagram: https://www.instagram.com/Ching367436/
+      # twitter: https://twitter.com/Ching367436
       telegram: https://t.me/Ching367436
       email:  # your email
       # ...... # you can add more
