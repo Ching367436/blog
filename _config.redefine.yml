@@ -284,21 +284,13 @@ comment:
       repo_id: R_kgDOJNMXOw # Github repository id
       category: Announcements # Github discussion category
       category_id: DIC_kwDOJNMXO84CVdDe # Github discussion category id
-      # Available values: pathname | url | title | og:title
-      mapping: og:title
-      # Available values: 0 | 1 
+      mapping: title
+      strict: 0
       reactions_enabled: 1
-      # Available values: 0 | 1 
       emit_metadata: 0
-      # Available values: light | dark | dark_high_contrast | transparent_dark | preferred_color_scheme
-      theme: preferred_color_scheme
-      # Available values: en | zh-C
+      theme: preferred_color_scheme # light | dark | dark_high_contrast | transparent_dark | preferred_color_scheme
       lang: en
-      # Available value: anonymous 
-      crossorigin: anonymous
-      # Place the comment box above the comments
       input_position: bottom
-      # Load the comments lazily
       loading: lazy
 # COMMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
