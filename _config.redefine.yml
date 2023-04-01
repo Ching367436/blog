@@ -258,9 +258,9 @@ articles:
 # COMMENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
 comment:
   # Whether to enable comment
-  enable: false
+  enable: true
   # Comment system
-  system: gitalk # waline, gitalk, twikoo
+  system: giscus # waline, gitalk, twikoo, giscus
   # System configuration
   config:
     # Waline comment system. See https://waline.js.org/
@@ -278,6 +278,28 @@ comment:
       version: 1.6.10 # Twikoo version, do not modify if you dont know what it is
       server_url: # Twikoo server URL. e.g. https://example.example.com
       region: # Twikoo region. can be empty
+    # Giscus comment system. See https://giscus.app/
+    giscus:
+      repo: Ching367436/ching367436.github.io # Github repository name
+      repo_id: R_kgDOJNMXOw # Github repository id
+      category: Announcements # Github discussion category
+      category_id: DIC_kwDOJNMXO84CVdDe # Github discussion category id
+      # Available values: pathname | url | title | og:title
+      mapping: og:title
+      # Available values: 0 | 1 
+      reactions_enabled: 1
+      # Available values: 0 | 1 
+      emit_metadata: 0
+      # Available values: light | dark | dark_high_contrast | transparent_dark | preferred_color_scheme
+      theme: preferred_color_scheme
+      # Available values: en | zh-C
+      lang: en
+      # Available value: anonymous 
+      crossorigin: anonymous
+      # Place the comment box above the comments
+      input_position: bottom
+      # Load the comments lazily
+      loading: lazy
 # COMMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -306,7 +328,7 @@ inject:
   # Inject custom head html code
   head: 
     # CSP
-    - <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com ; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com ; style-src 'unsafe-inline' 'self'; " />
+    - <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ ; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com https://giscus.app/ ; style-src 'unsafe-inline' 'self' https://giscus.app/ ; " />
     # Clarity
     - <script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gh62bmw6cl"); </script>
     # GA
