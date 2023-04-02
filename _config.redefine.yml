@@ -282,8 +282,8 @@ comment:
     giscus:
       repo: Ching367436/ching367436.github.io # Github repository name
       repo_id: R_kgDOJNMXOw # Github repository id
-      category: Announcements # Github discussion category
-      category_id: DIC_kwDOJNMXO84CVdDe # Github discussion category id
+      category: Giscus # Github discussion category
+      category_id: DIC_kwDOJNMXO84CVeVB # Github discussion category id
       mapping: title
       strict: 0
       reactions_enabled: 1
