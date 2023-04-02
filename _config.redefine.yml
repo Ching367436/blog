@@ -148,7 +148,7 @@ home_banner:
 # NAVIGATION BAR >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
 navbar:
   # Auto hide navbar
-  auto_hide: false
+  auto_hide: ture
   # Navbar background color
   color:
     left: "#f78736" #left side 
@@ -325,6 +325,8 @@ inject:
     - <script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gh62bmw6cl"); </script>
     # GA
     - <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-PRRP5V9HFQ"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'G-PRRP5V9HFQ'); </script>
+    # Hide tool-dark-light-toggle since it not yet ready for giscus to toggle dark-light mode
+    - "<style> .right-bottom-tools.tool-dark-light-toggle { display: none; } </style>"
   # Inject custom footer html code
   footer:
     -
