@@ -12,8 +12,8 @@ date: 2023-03-23 14:29:41
     a.no-links {
 
     }
-    .article-item::marker {
-        display: none;
+    li.article-item::marker {
+        content: '';
     }
 </style>
 <div class="timeline-container">
