@@ -168,7 +168,7 @@ navbar:
     About: 
     #   icon: fa-regular fa-user
       submenus:
-    #     Me: /about
+        Me: /about
         Github: https://github.com/Ching367436
         Blog: https://ching367436.github.io
         Friends: /friends
