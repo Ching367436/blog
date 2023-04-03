@@ -173,7 +173,7 @@ navbar:
       submenus:
         Me: /about
         Github: https://github.com/Ching367436
-        Blog: https://ching367436.github.io
+        # Blog: https://ching367436.github.io
         Friends: /friends
     # Links: 
     #   icon: fa-regular fa-link
