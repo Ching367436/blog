@@ -166,7 +166,7 @@ navbar:
     #   path: https://status.evanluo.top/
     #   icon: fa-regular fa-chart-bar
     About: 
-    #   icon: fa-regular fa-user
+      icon: fa-regular fa-user
       submenus:
         Me: /about
         Github: https://github.com/Ching367436
