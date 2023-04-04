@@ -321,7 +321,7 @@ footer:
   # Icon in footer, write fontawesome icon code here
   icon: '<i class="fa-solid fa-heart" style="color: #f54545"></i>'
   # The start time of the website, format: YYYY/MM/DD HH:mm:ss
-  start: 2023/3/20 9:33:14
+  start: 2023/3/20 21:33:14
   # Footer message
   customize:
   # ICP record number. See https://beian.miit.gov.cn/
