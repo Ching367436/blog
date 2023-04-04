@@ -1,6 +1,7 @@
 ---
 title: About
 date: 2023-03-23 14:29:41
+excerpt: 我是來自陽明交大應數系大一的王博靚，目前主要的領域有資安及數學，以下是我的個人經歷
 ---
 
 
@@ -9,7 +10,7 @@ date: 2023-03-23 14:29:41
     .timeline-container {
         margin-left: 1rem;
     }
-    a.no-links {
+    a.no-link {
 
     }
     li.article-item::marker {
