@@ -165,6 +165,9 @@ navbar:
     Tags:
       path: /tags/
       icon: fa-solid fa-tags
+    Categories:
+        icon: fa-solid fa-folder
+        path: /categories/
     # Status: 
     #   path: https://status.evanluo.top/
     #   icon: fa-regular fa-chart-bar
