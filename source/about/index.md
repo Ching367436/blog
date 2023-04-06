@@ -60,7 +60,7 @@ excerpt: 我是來自陽明交大應數系大一的王博靚，目前主要的�
             <a href="images/110_金盾獎.jpeg"><span class="article-title">資安技能金盾獎 鋒芒畢露獎</span></a>
         </li>
         <li class="article-item" date-is="08-01">
-            <a href="images/AIS3_2021_project.jpeg"><span class="article-title">AIS3 最佳專題</span></a>
+            <a href="../ais3-2021-最佳專題/"><span class="article-title">AIS3 2021 最佳專題</span></a>
         </li>
         <li class="article-item" date-is="05-15">
             <a href="https://coursera.org/share/73b20cd6398e7c9c49497434bffbdbe4"><span class="article-title">Stanford University -- Cryptography I</span></a>
