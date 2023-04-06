@@ -46,7 +46,7 @@ excerpt: 我是來自陽明交大應數系大一的王博靚，目前主要的�
             <a href="https://csc.nics.nat.gov.tw/news_in.aspx?sno=138"><span class="article-title">資安技能金盾獎 單人進入決賽</span></a>
         </li>
         <li class="article-item" date-is="07-31">
-            <a href="images/AIS3_2022_project.jpeg"><span class="article-title">AIS3 最佳專題</span></a>
+            <a href="images/AIS3_2022_project.jpeg"><span class="article-title">AIS3 2022 最佳專題</span></a>
         </li>
       </ul>
     </section>
