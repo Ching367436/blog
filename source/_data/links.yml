@@ -1,23 +1,23 @@
 - name: Entroy's Blog
   link: https://entroychang.github.io/
   description: 跟我一起拿下 AIS3 2022 最佳專題的 DEVCORE 實習生
-  avatar: images/entroy.jpeg
+  avatar: /friends/images/entroy.jpeg
 - name: nevikw39 ∥ 如詩的韻律
   link: https://nevikw39.cf/
   description: 一中電研的學長！是主修資工的清大生 o'_'o
-  avatar: images/nevikw39.png
+  avatar: /friends/images/nevikw39.png
 - name: 李明謙 Edison Lee (edisonlee55)
   link: https://www.edisonlee55.com/
   description: 跟我一起拿下 AIS3 2021 最佳專題的交大 VTuber 社社長 
-  avatar: images/edisonlee55.png
+  avatar: /friends/images/edisonlee55.png
 - name: CSC's Home
   link: https://chensc0392.github.io/
   description: 一起擔任過一中電研的幹部，現在在清大物理
 - name: ハオのブログ
   link: https://howard11912.github.io/
   description: 一起擔任過一中電研的幹部，現在在清大電機
-  avatar: images/howard11912.png
+  avatar: /friends/images/howard11912.png
 - name: EvanNotFound’s Blog
   link: https://ohevan.com
   description: 提供 hexo-theme-redefine 的好心人士
-  avatar: images/ohevan.png
+  avatar: /friends/images/ohevan.png
