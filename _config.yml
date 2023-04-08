@@ -119,7 +119,7 @@ image_minifier:
   enable: true
   interlaced: false
   multipass: false
-  optimizationLevel: 3
+  optimizationLevel: 2
   pngquant: true
   progressive: false
 
