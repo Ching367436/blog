@@ -1,8 +1,8 @@
-# Ching367436's blog
+# [Ching367436's blog](https://ching367436.github.io/)
 
-[Home](https://ching367436.github.io/)
+[<kbd> <br> **Home** <br> </kbd>](https://ching367436.github.io/)
+[<kbd> <br> **About** <br> </kbd>](https://ching367436.github.io/about)
 
-[About](https://ching367436.github.io/about)
 
 ## Posts
 
