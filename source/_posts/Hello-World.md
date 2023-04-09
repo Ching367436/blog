@@ -6,6 +6,7 @@ categories:
 tags: 
   - hello world
 excerpt: Hello World!
+mathjax: true
 ---
 
 Hello World!
