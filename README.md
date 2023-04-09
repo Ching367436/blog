@@ -2,9 +2,10 @@
 
 [<kbd> <br> **Home** <br> </kbd>](https://ching367436.github.io/)
 [<kbd> <br> **About** <br> </kbd>](https://ching367436.github.io/about)
+[<kbd> <br> **Posts** <br> </kbd>](https://ching367436.github.io/archives)
 
 
-## Posts
+## [Posts](https://ching367436.github.io/archives/)
 
 ### 2023
 
