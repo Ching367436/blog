@@ -160,7 +160,7 @@ navbar:
   # Navbar links
   links:
     Home: 
-      path: / 
+      path: none 
       icon: fa-regular fa-house # can be empty
     Archives: 
       path: /archives 
