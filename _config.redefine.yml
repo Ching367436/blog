@@ -316,7 +316,6 @@ comment:
       strict: 0
       reactions_enabled: 1
       emit_metadata: 0
-      theme: preferred_color_scheme # light | dark | dark_high_contrast | transparent_dark | preferred_color_scheme
       lang: en
       input_position: bottom
       loading: lazy
