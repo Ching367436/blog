@@ -49,8 +49,8 @@ global:
       url:  # Font URL to CSS file
     # English fonts
     english: 
-      enable: false # Whether to enable custom chinese font
-      family:  # Font family
+      enable: true # Whether to enable custom chinese font
+      family: Lexend # Font family
       url:  # Font URL to CSS file
   # Content max width
   content_max_width: 1000px
