@@ -45,13 +45,13 @@ global:
     # Chinese fonts
     chinese: 
       enable: true # Whether to enable custom chinese font
-      family: 'Noto Sans SC' # Font family
-      url:  # Font URL to CSS file
+      family: 'Noto Sans TC' # Font family
+      url: https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap # Font URL to CSS file
     # English fonts
     english: 
       enable: true # Whether to enable custom chinese font
       family: Lexend # Font family
-      url:  # Font URL to CSS file
+      url: https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap # Font URL to CSS file
   # Content max width
   content_max_width: 1000px
   # Sidebar width
@@ -349,9 +349,9 @@ inject:
     # CSP
     - |
       <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ ; 
+        default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com ; 
         script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ ; 
-        style-src 'unsafe-inline' 'self' https://giscus.app/ https://cdn.jsdelivr.net/ ; 
+        style-src 'unsafe-inline' 'self' https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com; 
         img-src 'self' data: https://*.clarity.ms https://c.bing.com https://cdn.jsdelivr.net/ ;
       " />
     # Clarity
