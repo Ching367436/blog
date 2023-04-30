@@ -45,7 +45,7 @@ global:
     # Chinese fonts
     chinese: 
       enable: true # Whether to enable custom chinese font
-      family: Lexend # Font family
+      family: 'Noto Sans SC' # Font family
       url:  # Font URL to CSS file
     # English fonts
     english: 
