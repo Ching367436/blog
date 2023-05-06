@@ -26,7 +26,7 @@ excerpt: 我是來自陽明交大應數系大一的王博靚，目前主要的�
       </div>
       <ul class="article-list">
         <li class="article-item" date-is="03-01">
-            <a href="images/1111_陽明交大應數書卷獎.png"><span class="article-title">陽明交大 應數系 111 上 書卷獎</span></a>
+            <a href="https://web.archive.org/web/20230501090705/https%3A%2F%2Fwww.math.nycu.edu.tw%2Fstudent%2F08_3_3_form.php"><span class="article-title">陽明交大 應數系 111 上 書卷獎</span></a>
         </li>
         <li class="article-item" date-is="02-12">
             <a href="images/AIS3_EOF_2023.jpg"><span class="article-title">AIS3 EOF 決賽第 13 名</span></a>
