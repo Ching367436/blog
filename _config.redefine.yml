@@ -324,7 +324,7 @@ comment:
       emit_metadata: 0
       lang: en
       input_position: bottom
-      loading: lazy
+      loading: not-lazy
 # COMMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
