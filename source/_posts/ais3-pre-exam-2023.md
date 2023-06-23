@@ -29,7 +29,7 @@ photos:
 
 ##### 題目
 
-首先題目會先隨機生成 `key1` `key2`，其中他們每個 byte 的前 4 個 bits 都直接被固定成 `1` 了。
+首先題目會隨機生成 `key1` `key2`，其中每個 byte 的前 4 個 bits 都被固定成 `1`。
 
 ```javascript
 // Generate key and IV
@@ -69,7 +69,7 @@ console.log(`let iv = '${iv.toString('hex')}'`)
 
 利用這個特性，我們先列舉出所有可能的 `middle=encrypt(hint_pt, key1, iv)`（透過列舉 `key1` 來達成），需花費 $2^{32}$ 的時間。
 
-接著來列舉 `decrypt(hint, key2, iv)`，由於（1），所以當 `key2` 是正確的時候，一定可以在 middle 裡面找到  `decrypt(hint, key2, iv)`，所以那個 middle 所對應到的 `key1` `key2` 就很可能是正確的，這步驟最多需列舉 $2^{32}$ 個 `key2`，每次找尋 `middle` 如果使用的是 Javascript 的 map 或 Python 的 dict 所花的時間在一般情況下會是 $\mathcal{O}(1)$，所以這個步驟需花費 $2^{32}$ 的時間。
+接著來列舉 `decrypt(hint, key2, iv)`，由於（1），所以當 `key2` 是正確的時候，一定可以在 middle 裡面找到  `decrypt(hint, key2, iv)`，所以那個 middle 所對應到的 `key1` `key2` 就很可能是正確的，這步驟最多需列舉 $2^{32}$ 個 `key2`，每次找尋 `middle` 若使用的是 Javascript 的 map 或 Python 的 dict 所花的時間在一般情況下會是 $\mathcal{O}(1)$，所以此步驟需花費 $2^{32}$ 的時間。
 
 所以所需花的時間從原本的 $2^{32}\times 2^{32}=2^{64}$ 變成了  $2^{32}+2^{32}=2^{33}$，變的看起來可行了。
 
@@ -79,9 +79,9 @@ console.log(`let iv = '${iv.toString('hex')}'`)
 
 DES 在拿到 64 bits 的 key 的時候，會把一些東西丟掉變成 56 bits 的 key，所以實際上需要列舉的 `key1` `key2` 其實可以更少。
 
-DES 的 64 bits 的 key 中，第 8, 16, 24, 32, 40, 48, 56, 64 個 bit 是會被丟掉的，不會影響到加解密，所以需要列舉的 `key1` `key2` 其實各只需有 $2^{24}$ 種。
+DES 的 64 bits 的 key 中，第 8, 16, 24, 32, 40, 48, 56, 64 個 bit 是會被丟掉的，不會影響到加解密，所以需列舉的 `key1` `key2` 其實各只有 $2^{24}$ 種。
 
-提供我的 Javascript 及 Python 解，都可以在 200 秒內於我的電腦上跑出結果，Javascript 比較快。
+提供我的 Javascript 及 Python 解，都可在 200 秒內於我的電腦上跑出結果，Javascript 比較快。
 
 [Javascript 解](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/crypto/2des/exp/exp.js)
 
@@ -95,7 +95,7 @@ DES 的 64 bits 的 key 中，第 8, 16, 24, 32, 40, 48, 56, 64 個 bit 是會�
 
 [題目 source code](https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/login-panel)
 
-- 解題人數 
+- 解題人數
   - MyFirstCTF: 24 / 111 (score >= 100)
   - Pre-exam: 139 / 256 (score >= 100)
 
@@ -105,7 +105,7 @@ DES 的 64 bits 的 key 中，第 8, 16, 24, 32, 40, 48, 56, 64 個 bit 是會�
 
 這題比賽時有提供 [source code](https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/login-panel) 所以大家可以不用通靈題目有什麼洞，直接來看看[登入部分的 code](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/login-panel/web/app.js#L56-L72)。
 
-看到下方的第 3 行，使用者提供的 `username` 跟 `password` 直接被放進了 SQL 的語句裡面，所以有明顯的 SQL injection 漏洞。
+看到下方的第 3 行，使用者提供的 `username` 跟 `password` 直接被放進 SQL 的語句內，所以有明顯的 SQL injection 漏洞。
 
 需要注意的一點是第 6 行還會檢查使用者提供的 `username` 要跟 SQL query 出來的 `row.username` 相等才能成功登入。知道這些就可以來想辦法登入了。
 
@@ -143,7 +143,7 @@ SELECT * FROM Users WHERE username = 'admin' AND password = '' or ''=''
 
 <iframe frameBorder="0" style='overflow: visible; width: 100%; height: 37rem; ' scrolling="no" srcdoc='<!DOCTYPE html> <html lang="en">  <head>     <meta charset="UTF-8">     <meta http-equiv="X-UA-Compatible" content="IE=edge">     <meta name="viewport" content="width=device-width, initial-scale=1.0">     <meta name="robots" content="noindex,nofollow">     <title>2FA</title>     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>     <script type="text/javascript">         (function (c, l, a, r, i, t, y) {             c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };             t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);         })(window, document, "clarity", "script", "gsfl4ftdey");     </script> </head>  <body>     <div class="container border rounded mt-5" style="width: 25rem; max-width: 100%">         <form class="p-4" id="login">             <h2 class="mb-3">2FA</h2>             <div class="alert alert-info" role="alert">2FA code was sent to your email. Please enter it below.</div>             <div class="alert alert-primary" role="alert">If you are a guest, your 2FA code will always be <code>99999999999999</code>.</div>              <div class="form-outline mt-3">                 <label for="code" class="form-label">2FA Code</label>                 <input type="number" id="code" name="code" class="form-control" value="99999999999999">             </div>                                       <input type="submit" value="Submit" class="btn btn-primary mt-3 g-recaptcha">         </form>     </div> </body>  </html>'></iframe>
 
-看到下方 `/dashboard` 的部分，他根本沒去驗 2FA 認證有沒有通過，只有看 `req.session.username`，而 `req.session.username` 在成功登入的時候就已經被設成 `admin` 了，所以登入到 2FA 頁面後直接訪問 `/dashboard` 就可以看到 flag 了。
+看到下方 `/dashboard` 的部分，他根本沒去驗 2FA 認證有沒有通過，只有看 `req.session.username`，而 `req.session.username` 在成功登入的時候就已被設成 `admin` 了，所以登入到 2FA 頁面後直接訪問 `/dashboard` 就可以看到 flag 了。
 
 ```javascript
 app.get('/dashboard', (req, res) => {
@@ -171,7 +171,7 @@ sqlmap http://url/login --data "username=admin*&password=p" --level 5 --risk 3 -
 got a 302 redirect to 'http://xxx/'. Do you want to follow? [Y/n]
 ```
 
-把資料庫 dump 出來後就直接拿那些去正常登入就好了。
+把資料庫 dump 出來後就直接拿去正常登入就好了。
 
 ```sh
 Parameter: #1* ((custom) POST)
@@ -194,24 +194,22 @@ Table: Users
 +----+----------------+---------------------------------+----------+
 ```
 
-這題最初是想做成只能用 boolean-based blind 挖資料庫，讓大家繞 reCAPTCHA 才能解的，不過我沒去擋 `row.username` 所以可以用簡單的方法解出。
+這題最初是想做成只能用 boolean-based blind 挖資料庫，讓大家繞 reCAPTCHA 才能解的，不過我沒去擋 `row.password` 所以可以用簡單的方法解出。
 
 #### E-portfolio baby
 
 [題目 source code](https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/e-portfolio-baby)
-
-
 
 題目 註冊 / 登入 後會來到 `Edit Portfolio` 的頁面，像下面這樣。
 
 <iframe frameBorder="0" style='overflow: visible; width: 100%; height: 35rem; ' srcdoc='<html lang="en"><head> <title>Edit Portfolio</title> <script async="" src="https://www.clarity.ms/s/0.7.8/clarity.js"></script><script async="" src="https://www.clarity.ms/tag/gsfl4ftdey"></script> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script> <!-- Google tag (gtag.js) --> <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2EDF3XCYWP"></script> <script nonce=""> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag("js", new Date()); gtag("config", "G-2EDF3XCYWP"); </script> <script type="text/javascript" nonce=""> (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "gsfl4ftdey"); </script> <style> body { background-color: #ffed4a; } </style></head> <body> <div class="container-sm mt-5"> <h1 class="mb-3">Edit Portfolio</h1> <div class="row mb-5"> <div class="col-sm-3"> <h3 class="mb-3 mt-3">Photo</h3> <img src="/images/Ching367436.jpg" class="img-fluid" id="avatar" style="width: 15rem;"> <div class="mt-3 mb-3"> <label class="form-label" for="avatarFile">Upload avatar</label> <input type="file" class="form-control" id="avatarFile"> </div> </div> <div class="col-sm-9"> <h3 class="mt-3">About <span id="username">Ching367436</span></h3> <textarea name="" id="about" class="form-control" rows="10"><h5>Hello!</h5>
 I am a <span style="color: red;">new</span> user.</textarea> </div> </div> <div class="container"> <button type="submit" class="btn btn-primary mb-2" id="save">Save</button> <button type="submit" class="btn btn-primary mb-2" id="logout">Logout</button> <button type="submit" class="btn btn-primary mb-2" id="share">Share</button> <button type="submit" class="btn btn-primary mb-2" id="report">Share your portfolio with admin</button> <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="onReport" data-size="invisible"></div></div></body></html>'></iframe>
 
-按下 Share 後可以看到輸入的 portfolio 的 HTML 被 render 出來了。而這個頁面正是按下 Share your portfolio with admin 後會 admin 會拜訪的頁面，要透過這個頁面裡的 XSS 偷走 admin 的密碼。
+按下 Share 後可以看到輸入的 portfolio 的 HTML 被 render 出來了。而這個頁面正是按下 Share your portfolio with admin 後，admin 會拜訪的頁面，要透過這個頁面的 XSS 偷走 admin 的密碼。
 
 <iframe frameBorder="0" style='overflow: visible; width: 100%; height: 35rem; ' srcdoc='<html lang="en"><head> <title>Share</title> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> <script async="" src="https://www.clarity.ms/tag/gsfl4ftdey"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script> <!-- Google tag (gtag.js) --> <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2EDF3XCYWP"></script> <script nonce=""> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag("js", new Date()); gtag("config", "G-2EDF3XCYWP"); </script> <script type="text/javascript" nonce=""> (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "gsfl4ftdey"); </script> <style> body { background-color: #ffed4a; } </style></head> <body> <div class="container mt-5"> <h1 class="mb-3">Edit Portfolio</h1> <div class="row mb-5"> <div class="col-sm-3"> <h3 class="mb-3 mt-3">Photo</h3> <img src="/images/Ching367436.jpg" class="img-fluid" id="avatar" style="width: 15rem;"> </div> <div class="col-sm-9"> <h3 class="mb-3 mt-3">About <span id="username">Ching367436</span></h3> <div id="about"><h5>Hello!</h5> I am a <span style="color: red;">new</span> user.</div> </div> </div> </div></body></html>'></iframe>
 
-看到 [source code](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio-baby/web/src/views/share.eta#L30) 裡，也就是下面的第 7 行使用了 `innerHTML`，而 `data.data.about` 也是我們可完全控制的，所以表示我們能 XSS。
+[source code](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio-baby/web/src/views/share.eta#L30) 裡，也就是下面的第 7 行用了 `innerHTML`，而 `data.data.about` 也是我們可完全控制的，所以表示我們能 XSS。
 
 ```HTML
 <script nonce="<%= it.nonce %>">
@@ -273,7 +271,7 @@ app.get("/api/portfolio", (req, res) => {
 
 這題跟 E-Portfolio baby 的差別只有多了 [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) 跟 [DOMPurify](https://github.com/cure53/DOMPurify) 的防護而已。
 
-前一題的[所有 `innerHTML` 的地方](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/share.eta#L29-L30) 都被加上了 `DOMPurify.sanitize`，所以這個地方就很難 XSS 了，不過我們還有可以上傳圖片的地方，可以試試 SVG XSS。
+前一題的[所有 `innerHTML` 的地方](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/share.eta#L29-L30) 都被加上了 `DOMPurify.sanitize`，所以這些地方就很難 XSS 了，不過我們還有可以上傳圖片的地方，可以試試 SVG XSS。
 
 ```html
 <script nonce="<%= it.nonce %>">
@@ -291,13 +289,13 @@ app.get("/api/portfolio", (req, res) => {
 </script>
 ```
 
-使用者上傳圖片之後會被 host 到 `/avatars/<MD5 hash>.<ext>`，然後我們又可以上傳 SVG 圖片，所以確實可以 SVG XSS。
+使用者上傳圖片之後會被 host 到 `/avatars/<MD5 hash>.<ext>`，所以確實可以 SVG XSS。
 
 要 XSS 之前我們還需要 bypass [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)。把[網站設置的 CSP](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/app.js#L43-L63) 拿到 [CSP Evaluator](https://csp-evaluator.withgoogle.com/) 看看有哪些地方可以用來 XSS，發現 `'script-src'` 有 `https://*.google.com` 可以利用。
 
 ![](./csp-evaluator.png)
 
-可以使用下面這個 endpoint，把 XSS payload 放到 `?callback` 裡就能用了，那個網址的回應如下二所示，可看到我們的 `fetch('/api/portfolio');` 被放進回應裡面了。
+可以使用下面這個 endpoint，把 XSS payload 放到 `?callback` 裡就能用了，那個網址的回應如下二所示，可看到我們的 `fetch('/api/portfolio');` 被放進回應裡，而且是個可正常執行的 Javascript。
 
 ```url
 https://accounts.google.com/o/oauth2/revoke?callback=fetch(%27/api/portfolio%27);
@@ -349,9 +347,9 @@ fetch('/api/portfolio');({
 </svg>
 ```
 
-2. 把剛上傳好的 `/avatars/<MD5 hash>.svg` 網址記下來，如果直接拜訪 `/avatars/<MD5 hash>.svg` 可以看到 XSS 確實被觸發。
+2. 把剛上傳好的 `/avatars/<MD5 hash>.svg` 網址記下來，如果直接拜訪 `/avatars/<MD5 hash>.svg` 可以確認 XSS 確實被觸發。
 
-   所以要把 `/avatars/<MD5 hash>.svg` 送給 admin，需要蓋過[原本 Share your portfolio with admin 的網址](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/portfolio.eta#L86C9-L103)，其實只需把 `onReport` 改成送我們的 `/avatars/<MD5 hash>.svg` 的網址像下面這樣。（之所以是蓋 `onReport` 的原因是因為 reCAPTCHA 的[配置](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/portfolio.eta#L35-L36)關係）。
+   所以要把 `/avatars/<MD5 hash>.svg` 送給 admin，需要蓋過[原本 Share your portfolio with admin 的網址](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/portfolio.eta#L86C9-L103)，其實只需把 `onReport` 蓋成送我們的 `/avatars/<MD5 hash>.svg` 的網址，像下面這樣。（之所以是蓋 `onReport` 的原因是因為 reCAPTCHA 的[配置](https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/portfolio.eta#L35-L36)關係）。
 
    ```javascript
    function onReport(token) {
