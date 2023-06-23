@@ -273,7 +273,7 @@ articles:
   # Whether to enable copyright notice
   copyright: true
   # Whether to enable lazyload for images
-  lazyload: true
+  lazyload: false
   # Article recommendation. Requires nodejieba (npm install nodejieba). Transplanted from hexo-theme-volantis.
   recommendation:
     # Whether to enable article recommendation
