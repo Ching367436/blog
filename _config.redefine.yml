@@ -62,7 +62,7 @@ global:
     scale: false # scale effect
   # Scroll progress
   scroll_progress:
-    bar: false # progress bar
+    bar: true # progress bar
     percentage: false # percentage
   # Website counter (powered by https://busuanzi.ibruce.info/)
   busuanzi_counter:
