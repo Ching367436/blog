@@ -124,6 +124,12 @@ image_minifier:
   optimizationLevel: 5
   pngquant: true
   progressive: false
+html_minifier:
+  enable: false
+  ignore_error: false
+  silent: false
+  exclude:
+
 
 # MathJax
 mathjax:
