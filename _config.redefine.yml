@@ -175,25 +175,14 @@ navbar:
       path: /tags/
       icon: fa-solid fa-tags
     Categories:
-        icon: fa-solid fa-folder
-        path: /categories/
+      icon: fa-solid fa-folder
+      path: /categories/
     # Status: 
     #   path: https://status.evanluo.top/
     #   icon: fa-regular fa-chart-bar
     About: 
       icon: fa-regular fa-user
-      submenus:
-        Me: /about
-        Github: https://github.com/Ching367436
-        # Blog: https://ching367436.github.io
-        Friends: /friends
-    # Links: 
-    #   icon: fa-regular fa-link
-    #   submenus:
-    #     Link1: /link1
-    #     Link2: /link2
-    #     Link3: /link3
-    # ...... # you can add more
+      path: /about
   # Navbar search (local search). Requires hexo-generator-searchdb (npm i hexo-generator-searchdb). See https://github.com/theme-next/hexo-generator-searchdb
   search:
     # Whether to enable

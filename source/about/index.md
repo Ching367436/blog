@@ -89,3 +89,25 @@ excerpt: 我是來自陽明交大應數系大一的王博靚，目前主要的�
     </section>
   </div>
 </div>
+
+## Links
+
+<div class="timeline-container">
+  <div class="archive-list-container">
+    <section class="archive-item">
+      <!-- <div class="archive-item-header">
+        <span class="archive-year"></span> 
+        <span class="archive-year-post-count"></span>
+      </div> -->
+      <ul class="article-list">
+        <li class="article-item" date-is="friends">
+            <a href="/friends"><span class="article-title">朋友們的網站</span></a>
+        </li>
+        <li class="article-item" date-is="reversi">
+            <a href="https://ching367436.github.io/reversi"><span class="article-title">黑白棋 AI</span></a>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+</div>
