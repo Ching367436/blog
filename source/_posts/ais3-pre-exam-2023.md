@@ -200,6 +200,11 @@ Table: Users
 
 [題目 source code](https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/e-portfolio-baby)
 
+- 解題人數
+  - MyFirstCTF: 0 / 111 (score >= 100)
+  - Pre-exam: 35 / 256 (score >= 100)
+
+
 題目 註冊 / 登入 後會來到 `Edit Portfolio` 的頁面，像下面這樣。
 
 <iframe frameBorder="0" style='overflow: visible; width: 100%; height: 35rem; ' srcdoc='<html lang="en"><head> <title>Edit Portfolio</title> <script async="" src="https://www.clarity.ms/s/0.7.8/clarity.js"></script><script async="" src="https://www.clarity.ms/tag/gsfl4ftdey"></script> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script> <!-- Google tag (gtag.js) --> <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2EDF3XCYWP"></script> <script nonce=""> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag("js", new Date()); gtag("config", "G-2EDF3XCYWP"); </script> <script type="text/javascript" nonce=""> (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "gsfl4ftdey"); </script> <style> body { background-color: #ffed4a; } </style></head> <body> <div class="container-sm mt-5"> <h1 class="mb-3">Edit Portfolio</h1> <div class="row mb-5"> <div class="col-sm-3"> <h3 class="mb-3 mt-3">Photo</h3> <img src="/images/Ching367436.jpg" class="img-fluid" id="avatar" style="width: 15rem;"> <div class="mt-3 mb-3"> <label class="form-label" for="avatarFile">Upload avatar</label> <input type="file" class="form-control" id="avatarFile"> </div> </div> <div class="col-sm-9"> <h3 class="mt-3">About <span id="username">Ching367436</span></h3> <textarea name="" id="about" class="form-control" rows="10"><h5>Hello!</h5>
@@ -266,6 +271,10 @@ app.get("/api/portfolio", (req, res) => {
 另外這題 admin 的使用者名稱不叫作 admin，所以會看到有人會把 admin 註冊起來然後放假的 flag，很多人中計。
 
 #### E-portfolio
+[題目 source code](https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/e-portfolio)
+
+- 解題人數
+  - Pre-exam: 2 / 256 (score >= 100)
 
 其實原本沒有 E-Portfolio baby 這題，是 MyFirstCTF 題不夠才把 E-portfolio 簡化成新的一題。
 
