@@ -1,0 +1,1 @@
+export default function initLazyLoad(){var t=document.querySelectorAll("img");const e=new IntersectionObserver((t,e)=>{t.forEach(t=>{t.isIntersecting&&((t=t.target).src=t.getAttribute("data-src"),t.removeAttribute("lazyload"),e.unobserve(t))})},{rootMargin:"0px",threshold:.1});t.forEach(t=>{t.hasAttribute("lazyload")&&e.observe(t)})}

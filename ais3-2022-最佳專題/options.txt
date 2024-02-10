@@ -1,0 +1,37 @@
+##### Options
+
+```javascript
+{
+  settings: {
+    'x-powered-by': true,
+    etag: 'weak',
+    'etag fn': [Function: generateETag],
+    env: 'development',
+    'query parser': 'extended',
+    'query parser fn': [Function: parseExtendedQueryString],
+    'subdomain offset': 2,
+    'trust proxy': false,
+    'trust proxy fn': [Function: trustNone],
+    view: [Function: View],
+    views: './views',
+    'jsonp callback name': 'callback',
+    'view engine': 'ntl'
+  },
+  title: 'Hey',
+  message: 'Hello there!',
+  _locals: [Object: null prototype] {},
+  cache: false
+}	
+```
+
+
+
+
+
+
+
+
+
+
+
+<!-- https://expressjs.com/en/resources/template-engines.html -->
