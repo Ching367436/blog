@@ -6,7 +6,7 @@
   <link href="https://blog.ching367436.me/atom.xml" rel="self"/>
   
   <link href="https://blog.ching367436.me/"/>
-  <updated>2024-02-05T13:27:31.000Z</updated>
+  <updated>2024-02-12T02:29:55.000Z</updated>
   <id>https://blog.ching367436.me/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>EDU CTF 2022 Write-up</title>
+    <link href="https://blog.ching367436.me/edu-ctf-2022-write-up/"/>
+    <id>https://blog.ching367436.me/edu-ctf-2022-write-up/</id>
+    <published>2024-02-12T02:29:55.000Z</published>
+    <updated>2024-02-12T02:29:55.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>我 2022 大一的時候來修交大資科工碩開的程式安全, 是唯一大學部 A+ 的人. 這門課在臺大課名叫 計算機安全, 台科大叫 資訊安全實務, 課程網站叫 edu-ctf.</p><h2 id="Write-up"><a href="#Write-up" class="headerlink" title="Write-up"></a>Write-up</h2><p>Web I: <a class="link" href="https://hackmd.io/@Ching367436/Sks-wCIwo">https://hackmd.io/@Ching367436/Sks-wCIwo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Web II: <a class="link" href="https://hackmd.io/@Ching367436/Byr2Nzxds">https://hackmd.io/@Ching367436/Byr2Nzxds <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Web III: <a class="link" href="https://hackmd.io/@Ching367436/r1w_xLFdo">https://hackmd.io/@Ching367436/r1w_xLFdo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>Crypto I+II: <a class="link" href="https://hackmd.io/@Ching367436/HJezkWi-s">https://hackmd.io/@Ching367436/HJezkWi-s <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Crypto III: <a class="link" href="https://hackmd.io/@Ching367436/rkdIg6mVo">https://hackmd.io/@Ching367436/rkdIg6mVo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>Reverse I: <a class="link" href="https://hackmd.io/@Ching367436/ByMnL1lNj">https://hackmd.io/@Ching367436/ByMnL1lNj <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Reverse II: <a class="link" href="https://hackmd.io/@Ching367436/rJOYq0JNs">https://hackmd.io/@Ching367436/rJOYq0JNs <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Reverse III: <a class="link" href="https://hackmd.io/@Ching367436/BkzXrlMHi">https://hackmd.io/@Ching367436/BkzXrlMHi <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>Pwn I: <a class="link" href="https://hackmd.io/@Ching367436/SJFNuWDri">https://hackmd.io/@Ching367436/SJFNuWDri <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Pwn II: <a class="link" href="https://hackmd.io/@Ching367436/rJzc1UiIi">https://hackmd.io/@Ching367436/rJzc1UiIi <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Pwn III: <a class="link" href="https://hackmd.io/@Ching367436/rJgEPl5wj">https://hackmd.io/@Ching367436/rJgEPl5wj <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>]]></content>
+    
+    
+    <summary type="html">EDU CTF / 程式安全 / 計算機安全 / 資訊安全實務 2022 的 write-up.</summary>
+    
+    
+    
+    <category term="edu-ctf" scheme="https://blog.ching367436.me/categories/edu-ctf/"/>
+    
+    
+    <category term="edu-ctf" scheme="https://blog.ching367436.me/tags/edu-ctf/"/>
+    
+    <category term="程式安全" scheme="https://blog.ching367436.me/tags/%E7%A8%8B%E5%BC%8F%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="計算機安全" scheme="https://blog.ching367436.me/tags/%E8%A8%88%E7%AE%97%E6%A9%9F%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="資訊安全實務" scheme="https://blog.ching367436.me/tags/%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8%E5%AF%A6%E5%8B%99/"/>
+    
+  </entry>
   
   <entry>
     <title>AIS3 EOF 2024 Final</title>
