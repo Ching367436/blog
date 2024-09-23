@@ -8,6 +8,8 @@
 
 ### [2024](https://blog.ching367436.me/archives/2024/)
 
+`2024-09-23` [BlazCTF 2024](https://blog.ching367436.me/blazctf-2024/)
+
 `2024-03-04` [osu!gaming CTF 2024 Write-up](https://blog.ching367436.me/osu-gaming-ctf-2024-write-up/)
 
 `2024-02-12` [Edu ctf 2022 Write-up](https://blog.ching367436.me/edu-ctf-2022-write-up/)
