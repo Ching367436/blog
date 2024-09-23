@@ -10,7 +10,7 @@ photos:
 excerpt: I participated in [osu!gaming CTF](https://ctf.osugaming.lol/)  with [TakeKitsune](https://ctftime.org/team/280959), and here is my write-up of the part I solved.
 ---
 
-I participated in [osu!gaming CTF](https://ctf.osugaming.lol/)  with [TakeKitsune](https://ctftime.org/team/280959), and here is my write-up of the part I solved.
+I participated in [osu!gaming CTF](https://ctf.osugaming.lol/) with [TakeKitsune](https://ctftime.org/team/280959), and here is my write-up of the part I solved.
 
 ## OSU
 
