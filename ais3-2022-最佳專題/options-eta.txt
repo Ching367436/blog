@@ -1,0 +1,76 @@
+{
+  settings: {
+    "x-powered-by": true,
+    etag: "weak",
+    "etag fn": function generateETag (body, encoding) {
+      var buf = !Buffer.isBuffer(body)
+        ? Buffer.from(body, encoding)
+        : body
+      
+      return etag(buf, options)
+    },
+    env: "development",
+    "query parser": "extended",
+    "query parser fn": function parseExtendedQueryString(str) {
+      return qs.parse(str, {
+        allowPrototypes: true
+      });
+    },
+    "subdomain offset": 2,
+    "trust proxy": false,
+    "trust proxy fn": function trustNone () {
+      return false
+    },
+    view: function View(name, options) {
+      var opts = options || {};
+      
+      this.defaultEngine = opts.defaultEngine;
+      this.ext = extname(name);
+      this.name = name;
+      this.root = opts.root;
+      
+      if (!this.ext && !this.defaultEngine) {
+        throw new Error('No default engine was specified and no extension was provided.');
+      }
+      
+      var fileName = name;
+      
+      if (!this.ext) {
+        // get extension from default engine name
+        this.ext = this.defaultEngine[0] !== '.'
+          ? '.' + this.defaultEngine
+          : this.defaultEngine;
+      
+        fileName += this.ext;
+      }
+      
+      if (!opts.engines[this.ext]) {
+        // load engine
+        var mod = this.ext.slice(1)
+        debug('require "%s"', mod)
+      
+        // default engine export
+        var fn = require(mod).__express
+      
+        if (typeof fn !== 'function') {
+          throw new Error('Module "' + mod + '" does not provide a view engine.')
+        }
+      
+        opts.engines[this.ext] = fn
+      }
+      
+      // store loaded engine
+      this.engine = opts.engines[this.ext];
+      
+      // lookup path
+      this.path = this.lookup(fileName);
+    },
+    views: "./views",
+    "jsonp callback name": "callback",
+    "view engine": "eta",
+  },
+  favorite: "Eta",
+  _locals: {
+  },
+  cache: false,
+}

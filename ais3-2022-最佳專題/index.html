@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Ching367436,臺中一中電腦資訊研習社 38th 副社長,Bamboofox 社長,書卷獎,資安,AIS3 最佳專題">
+    
+    <meta name="author" content="Ching367436">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://blog.ching367436.me/ais3-2022-最佳專題/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="今年在 AIS3 2022 研究了 Express JS 與 template engine 一起使用會有的資安問題。最後找到了 EJS ZeroDay RCE、Eta ZeroDay RCE&amp;XSS 以及一個已經有 CVE 的 Squirrelly ZeroDay RCE。我把我負責的 Eta ZeroDay RCE 回報給作者後，兩天內完成修補，取得 CVE-2023-23630 。隨後 CV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AIS3 2022 最佳專題">
+<meta property="og:url" content="https://blog.ching367436.me/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/">
+<meta property="og:site_name" content="Ching367436">
+<meta property="og:description" content="今年在 AIS3 2022 研究了 Express JS 與 template engine 一起使用會有的資安問題。最後找到了 EJS ZeroDay RCE、Eta ZeroDay RCE&amp;XSS 以及一個已經有 CVE 的 Squirrelly ZeroDay RCE。我把我負責的 Eta ZeroDay RCE 回報給作者後，兩天內完成修補，取得 CVE-2023-23630 。隨後 CV">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.ching367436.me/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/ais3-flag.webp">
+<meta property="article:published_time" content="2023-04-08T07:40:39.000Z">
+<meta property="article:author" content="Ching367436">
+<meta property="article:tag" content="ais3">
+<meta property="article:tag" content="express">
+<meta property="article:tag" content="template-engine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ching367436.me/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/ais3-flag.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-PRRP5V9HFQ"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PRRP5V9HFQ');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/favicon.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            AIS3 2022 最佳專題 -
+        
+        Ching367436&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com https://cloudflareinsights.com ; 
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://static.cloudflareinsights.com ; 
+  style-src 'unsafe-inline' 'self' https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com; 
+  img-src 'self' data: https://*.clarity.ms https://c.bing.com https://cdn.jsdelivr.net/ https://www.googletagmanager.com ;
+" />
+
+                
+    
+            
+                
+                    <script data-swup-reload-script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gh62bmw6cl"); </script>
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap" rel="stylesheet">
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"blog.ching367436.me","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["竹狐隊長"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"recommendation":{"enable":true,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans TC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap"},"english":{"enable":true,"family":"Lexend","url":"https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap"},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":true,"id":"G-PRRP5V9HFQ"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Ching367436's blog","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ching367436","instagram":null,"zhihu":null,"twitter":"https://twitter.com/Ching367436","email":"admin@ching367436.me","telegram":"https://t.me/Ching367436"},"qrs":[]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.1","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"none","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","path":"/about"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/3/20 21:33:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Ching367436" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ching367436&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    CATEGORIES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                CATEGORIES
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/ais3-flag.webp" alt="AIS3 2022 最佳專題" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">AIS3 2022 最佳專題</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/Ching367436.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ching367436</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">竹狐隊長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-04-08 15:40:39</span>
+        <span class="mobile">2023-04-08 15:40:39</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/AIS3/">AIS3</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/AIS3/%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/">最佳專題</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/ais3/">ais3</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/express/">express</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/template-engine/">template-engine</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>4.1k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>19 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p>今年在 <a class="link" target="_blank" rel="noopener" href="https://ais3.org/2022">AIS3 2022 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 研究了 <a class="link" target="_blank" rel="noopener" href="https://expressjs.com/">Express JS <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 與 <a class="link" target="_blank" rel="noopener" href="https://expressjs.com/en/guide/using-template-engines.html">template engine <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 一起使用會有的資安問題。最後找到了 EJS ZeroDay RCE、Eta ZeroDay RCE&amp;XSS 以及一個已經有 CVE 的 Squirrelly ZeroDay RCE。我把我負責的 Eta ZeroDay RCE 回報給作者後，兩天內完成修補，取得 <a class="link" target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2023-23630">CVE-2023-23630 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。隨後 <a class="link" target="_blank" rel="noopener" href="https://www.cve.org/CVERecord?id=CVE-2022-25967">CVE-2022-25967 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 的 <a class="link" target="_blank" rel="noopener" href="https://github.com/advisories/GHSA-mf6x-hrgr-658f">security advisory <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 被發布，那其實是同個洞 / 類似的洞。我的漏洞報告在<a class="link" target="_blank" rel="noopener" href="https://hackmd.io/@Ching367436/SkkvuMAoi">這裡 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>感謝當時的隊友 Entroy、Lillian 以及 hurosu 的幫忙。</p>
+<!-- https://entroychang.github.io/2023/03/06/NodeJS-template-CVEs#eta-template -->
+
+<h2 id="專題"><a href="#專題" class="headerlink" title="專題"></a>專題</h2><h3 id="發現"><a href="#發現" class="headerlink" title="發現"></a>發現</h3><p>在 AIS3 課程期間，隊友 Entroy 發現了 <a class="link" target="_blank" rel="noopener" href="https://entroychang.github.io/2023/03/06/NodeJS-template-CVEs#ejs-template">EJS ZeroDay RCE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 的洞。 那是與 Cyku 大大在 AIS3 EOF 2020 Final 出的 <a class="link" target="_blank" rel="noopener" href="https://twitter.com/cyku_tw/status/1362409802404610048">echo2 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 相關的洞。Entroy 把他那題的 write-up 給我，我了解了那個洞的原理後，也開始來挖洞了！</p>
+<!-- https://hackmd.io/@entroy/Skcv5DlK5 -->
+
+<h3 id="原理及目標挑選"><a href="#原理及目標挑選" class="headerlink" title="原理及目標挑選"></a>原理及目標挑選</h3><p>那個洞只要能跟 Express JS 配在一起的 template engine 都可能會有的，問題的根源就在於 Express JS 的 <a class="link" target="_blank" rel="noopener" href="https://expressjs.com/en/advanced/developing-template-engines.html">template engine API <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 的設計。</p>
+<h4 id="Express-JS-Template-engine-API"><a href="#Express-JS-Template-engine-API" class="headerlink" title="Express JS Template engine API"></a>Express JS Template engine API</h4><p>下方是 Express JS 的官方文件範例，第一個是 app.js：主程式，第二個是 views/index.ntl：template file。這個程式做的就是當使用者去訪問 <code>/</code> 的時候，會把 views/index.ntl render 起來傳回去。</p>
+<p>我們要關注的是 <code>:3</code> <code>app.engine</code> 的第 2 個參數，那就是要接上 Express JS 的 template engine 本體。可以知道 template engine 可以取得的資訊有 <code>(filePath, options, callback)</code>。接著我們來看一下真實世界的 template engine 是怎麼實作的。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>) <span class="comment">// this engine requires the fs module</span></span><br><span class="line">app.<span class="title function_">engine</span>(<span class="string">'ntl'</span>, <span class="function">(<span class="params">filePath, options, callback</span>) =&gt;</span> { <span class="comment">// define the template engine</span></span><br><span class="line">  fs.<span class="title function_">readFile</span>(filePath, <span class="function">(<span class="params">err, content</span>) =&gt;</span> {</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">callback</span>(err)</span><br><span class="line">    <span class="comment">// this is an extremely simple template engine</span></span><br><span class="line">    <span class="keyword">const</span> rendered = content.<span class="title function_">toString</span>()</span><br><span class="line">      .<span class="title function_">replace</span>(<span class="string">'#title#'</span>, <span class="string">`&lt;title&gt;<span class="subst">${options.title}</span>&lt;/title&gt;`</span>)</span><br><span class="line">      .<span class="title function_">replace</span>(<span class="string">'#message#'</span>, <span class="string">`&lt;h1&gt;<span class="subst">${options.message}</span>&lt;/h1&gt;`</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, rendered)</span><br><span class="line">  })</span><br><span class="line">})</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">'views'</span>, <span class="string">'./views'</span>) <span class="comment">// specify the views directory</span></span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">'view engine'</span>, <span class="string">'ntl'</span>) <span class="comment">// register the template engine</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">'/'</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">  res.<span class="title function_">render</span>(<span class="string">'index'</span>, { <span class="attr">title</span>: <span class="string">'Hey'</span>, <span class="attr">message</span>: <span class="string">'Hello there!'</span> })</span><br><span class="line">})</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- views/index.ntl --&gt;</span></span><br><span class="line">#title#</span><br><span class="line">#message#</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="真實世界的-template-engine"><a href="#真實世界的-template-engine" class="headerlink" title="真實世界的 template engine"></a>真實世界的 template engine</h5><p>來看看 Eta 及 EJS 跟 Express 接合處的 code。</p>
+<h6 id="Eta"><a href="#Eta" class="headerlink" title="Eta"></a>Eta</h6><p>看到 <code>renderFile</code> <code>:8</code> 的註解，Eta 的 <code>renderFile</code> 有 overload 成 <code>(filename, dataAndOptions, cb)</code> 及 <code>(filename, data, options, cb)</code> 。而前者是特別做給 Express 用的（<code>:10</code>），吃的是 <code>dataAndOptions</code>，<strong>所以 <code>data</code> 跟 <code>options</code> 是被混在一起的</strong>。那是 Express 預設的行為，Express 會把對他的設定一起跟 <code>data</code> 放到 <code>dataAndOptions</code> 裡面。 <code>data</code> 很多情況下會是使用者可控的，而  <code>options</code> 則否，把他混在一起不就讓這兩個東西都很容易被一起控制嗎？</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/blob/v1.14.2/src/file-handlers.ts#L186-L239">https://github.com/eta-dev/eta/blob/v1.14.2/src/file-handlers.ts#L186-L239 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">renderFile</span>(<span class="params"></span></span><br><span class="line"><span class="params">  filename: string,</span></span><br><span class="line"><span class="params">  data: DataObj,</span></span><br><span class="line"><span class="params">  config?: PartialConfig,</span></span><br><span class="line"><span class="params">  cb?: CallbackFn</span></span><br><span class="line"><span class="params"></span>): <span class="title class_">Promise</span>&lt;string&gt; | <span class="keyword">void</span> {</span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">  Here we have some function overloading.</span></span><br><span class="line"><span class="comment">  Essentially, the first 2 arguments to renderFile should always be the filename and data</span></span><br><span class="line"><span class="comment">  However, with Express, configuration options will be passed along with the data.</span></span><br><span class="line"><span class="comment">  Thus, Express will call renderFile with (filename, dataAndOptions, cb)</span></span><br><span class="line"><span class="comment">  And we want to also make (filename, data, options, cb) available</span></span><br><span class="line"><span class="comment">  */</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="EJS"><a href="#EJS" class="headerlink" title="EJS"></a>EJS</h6><p>看到 <code>:22</code>，又是一個把 <code>data</code> 跟 <code>options</code> 混在一起的，而那都是為了 Express 。</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/mde/ejs/blob/v3.1.9/lib/ejs.js#L441-L489">https://github.com/mde/ejs/blob/v3.1.9/lib/ejs.js#L441-L489 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exports</span>.<span class="property">renderFile</span> = <span class="keyword">function</span> (<span class="params"></span>) {</span><br><span class="line">  <span class="keyword">var</span> args = <span class="title class_">Array</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">slice</span>.<span class="title function_">call</span>(<span class="variable language_">arguments</span>);</span><br><span class="line">  <span class="keyword">var</span> filename = args.<span class="title function_">shift</span>();</span><br><span class="line">  <span class="keyword">var</span> cb;</span><br><span class="line">  <span class="keyword">var</span> opts = {<span class="attr">filename</span>: filename};</span><br><span class="line">  <span class="keyword">var</span> data;</span><br><span class="line">  <span class="keyword">var</span> viewOpts;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Do we have a callback?</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">arguments</span>[<span class="variable language_">arguments</span>.<span class="property">length</span> - <span class="number">1</span>] == <span class="string">'function'</span>) {</span><br><span class="line">    cb = args.<span class="title function_">pop</span>();</span><br><span class="line">  }</span><br><span class="line">  <span class="comment">// Do we have data/opts?</span></span><br><span class="line">  <span class="keyword">if</span> (args.<span class="property">length</span>) {</span><br><span class="line">    <span class="comment">// Should always have data obj</span></span><br><span class="line">    data = args.<span class="title function_">shift</span>();</span><br><span class="line">    <span class="comment">// Normal passed opts (data obj + opts obj)</span></span><br><span class="line">    <span class="keyword">if</span> (args.<span class="property">length</span>) {</span><br><span class="line">      <span class="comment">// Use shallowCopy so we don't pollute passed in opts obj with new vals</span></span><br><span class="line">      utils.<span class="title function_">shallowCopy</span>(opts, args.<span class="title function_">pop</span>());</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// Special casing for Express (settings + opts-in-data)</span></span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">      <span class="comment">// Express 3 and 4</span></span><br><span class="line">      <span class="keyword">if</span> (data.<span class="property">settings</span>) {</span><br><span class="line">        <span class="comment">// Pull a few things from known locations</span></span><br><span class="line"><span class="comment">// 略...</span></span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">tryHandleCache</span>(opts, data, cb);</span><br><span class="line">};</span><br></pre></td></tr></table></figure></div>
+
+<p>所以我們知道，很多 template engine 為了配合 Express，都會有同一種不安全的行為：讓 <code>config</code> 可能有機會被使用者控制。而 <code>config</code> 若被控制，就很有可能達到 REC，因為通常都會認為 <code>config</code> 是不應該被控制的，不會有太多防護機制。</p>
+<p>所以我就直接到 <a class="link" target="_blank" rel="noopener" href="https://expressjs.com/en/resources/template-engines.html">Express template engines <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 這個官方的頁面去選目標，選到的就是 Eta 。</p>
+<h3 id="Eta-code-review"><a href="#Eta-code-review" class="headerlink" title="Eta code review"></a>Eta code review</h3><p>這邊我使用了 Github Security Lab 所說的<a class="link" target="_blank" rel="noopener" href="https://securitylab.github.com/advisories/GHSL-2021-023-squirrelly/#technical-summary">常見的場景 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>這個程式只要使用者去訪問 <code>/?favorite=Eta</code>，就會傳回 <code>&lt;h1&gt;My favorite template engine is Eta &lt;br&gt;&lt;/h1&gt;</code>。</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"dependencies"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"eta"</span><span class="punctuation">:</span> <span class="string">"^1.12.3"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"express"</span><span class="punctuation">:</span> <span class="string">"^4.18.1"</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> eta = <span class="built_in">require</span>(<span class="string">'eta'</span>)</span><br><span class="line"></span><br><span class="line">app = <span class="title function_">express</span>()</span><br><span class="line">app.<span class="title function_">engine</span>(<span class="string">"eta"</span>, eta.<span class="property">renderFile</span>)</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"view engine"</span>, <span class="string">"eta"</span>)</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"views"</span>, <span class="string">"./views"</span>)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">all</span>(<span class="string">'/'</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">    res.<span class="title function_">render</span>(<span class="string">"index"</span>, req.<span class="property">query</span>)</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">all</span>(<span class="string">'/app.js'</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">    res.<span class="title function_">setHeader</span>(<span class="string">'content-type'</span>, <span class="string">'application/js'</span>);</span><br><span class="line">    res.<span class="title function_">sendFile</span>(__filename)</span><br><span class="line">})</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- views/index.eta --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>My favorite template engine is &lt;%= it.favorite %&gt; <span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'app.js'</span>&gt;</span>source<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="renderFile"><a href="#renderFile" class="headerlink" title="renderFile"></a><code>renderFile</code></h4><p>我們已經從上面知道 <code>renderFile</code> 是跟 Express 接在一起的接口，所以我們要從這裡開始看。這邊要知道 Express 會放下來這裡的參數是 <code>(filePath, options, callback)</code>，會對應到 <code>renderFile</code> 的 <code>(filename, data, config)</code>，所以 Eta 會先做一些 overload 的處理。</p>
+<p>看到 :29,47 是處理跟 Express 接合的部分，其中 :32 <code>getConfig(data)</code> 回傳的是一些設定值加上 <code>data</code> 的 deep clone，因為 <code>data</code> 可控（從 app.js:11 <code>res.render("index", req.query)</code> 過來的），所以 <code>renderConfig</code> 也可控。</p>
+<p>然後看到 :52 <code>tryHandleCache(data, renderConfig, callback)</code>。記住使用者可控的東西有 <code>data</code> <code>renderConfig</code>，進入 <code>tryHandleCache</code>。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node_modules/eta/dist/eta.cjs:869</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">renderFile</span>(<span class="params">filename, data, config, cb</span>) {</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    Here we have some function overloading.</span></span><br><span class="line"><span class="comment">    Essentially, the first 2 arguments to renderFile should always be the filename and data</span></span><br><span class="line"><span class="comment">    However, with Express, configuration options will be passed along with the data.</span></span><br><span class="line"><span class="comment">    Thus, Express will call renderFile with (filename, dataAndOptions, cb)</span></span><br><span class="line"><span class="comment">    And we want to also make (filename, data, options, cb) available</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">var</span> renderConfig;</span><br><span class="line">    <span class="keyword">var</span> callback;</span><br><span class="line">    data = data || {}; <span class="comment">// If data is undefined, we don't want accessing data.settings to error</span></span><br><span class="line">    <span class="comment">// First, assign our callback function to `callback`</span></span><br><span class="line">    <span class="comment">// We can leave it undefined if neither parameter is a function;</span></span><br><span class="line">    <span class="comment">// Callbacks are optional</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> cb === <span class="string">'function'</span>) {</span><br><span class="line">        <span class="comment">// The 4th argument is the callback</span></span><br><span class="line">        callback = cb;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> config === <span class="string">'function'</span>) {</span><br><span class="line">        <span class="comment">// The 3rd arg is the callback</span></span><br><span class="line">        callback = config;</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// If there is a config object passed in explicitly, use it</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> config === <span class="string">'object'</span>) {</span><br><span class="line">        renderConfig = <span class="title function_">getConfig</span>(config || {});</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">        <span class="comment">// Otherwise, get the config from the data object</span></span><br><span class="line">        <span class="comment">// And then grab some config options from data.settings</span></span><br><span class="line">        <span class="comment">// Which is where Express sometimes stores them</span></span><br><span class="line">        renderConfig = <span class="title function_">getConfig</span>(data);</span><br><span class="line">        <span class="keyword">if</span> (data.<span class="property">settings</span>) {</span><br><span class="line">            <span class="comment">// Pull a few things from known locations</span></span><br><span class="line">            <span class="keyword">if</span> (data.<span class="property">settings</span>.<span class="property">views</span>) {</span><br><span class="line">                renderConfig.<span class="property">views</span> = data.<span class="property">settings</span>.<span class="property">views</span>;</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">if</span> (data.<span class="property">settings</span>[<span class="string">'view cache'</span>]) {</span><br><span class="line">                renderConfig.<span class="property">cache</span> = <span class="literal">true</span>;</span><br><span class="line">            }</span><br><span class="line">            <span class="comment">// Undocumented after Express 2, but still usable, esp. for</span></span><br><span class="line">            <span class="comment">// items that are unsafe to be passed along with data, like `root`</span></span><br><span class="line">            <span class="keyword">var</span> viewOpts = data.<span class="property">settings</span>[<span class="string">'view options'</span>];</span><br><span class="line">            <span class="keyword">if</span> (viewOpts) {</span><br><span class="line">                <span class="title function_">copyProps</span>(renderConfig, viewOpts);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// Set the filename option on the template</span></span><br><span class="line">    <span class="comment">// This will first try to resolve the file path (see getPath for details)</span></span><br><span class="line">    renderConfig.<span class="property">filename</span> = <span class="title function_">getPath</span>(filename, renderConfig);</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">tryHandleCache</span>(data, renderConfig, callback);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="tryHandleCache"><a href="#tryHandleCache" class="headerlink" title="tryHandleCache"></a><code>tryHandleCache</code></h4><p>看到 :6 會回傳 <code>templateFn</code>，然後 :7 在去執行他。所以 <code>handleCache</code> 會回傳的是一個 function，如果可以把 <code>templateFn</code> 控制成我們想要的形狀，:7 就會去執行到。所以我們跟進 <code>handleCache(options)</code>。記住 <code>options</code> 使用者可控。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node_modules/eta/dist/eta.cjs:816</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">tryHandleCache</span>(<span class="params">data, options, cb</span>) {</span><br><span class="line">    <span class="keyword">if</span> (cb) {</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            <span class="comment">// Note: if there is an error while rendering the template,</span></span><br><span class="line">            <span class="comment">// It will bubble up and be caught here</span></span><br><span class="line">            <span class="keyword">var</span> templateFn = <span class="title function_">handleCache</span>(options);</span><br><span class="line">            <span class="title function_">templateFn</span>(data, options, cb);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">catch</span> (err) {</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">cb</span>(err);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">        <span class="comment">// No callback, try returning a promise</span></span><br><span class="line"><span class="comment">// 略...</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="handleCache"><a href="#handleCache" class="headerlink" title="handleCache"></a><code>handleCache</code></h4><p>這邊注意 :3 他從 <code>options</code> 裡拿出了 <code>filename</code>，那是 template file 的位置，可能會覺得 filename 可控，但其實不行，因為 Express 會把他蓋掉。</p>
+<p>繼續跟進 <code>loadFile(filename, options)</code>。記住 <code>options</code> 可控。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node_modules/eta/dist/eta.cjs:795</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">handleCache</span>(<span class="params">options</span>) {</span><br><span class="line">    <span class="keyword">var</span> filename = options.<span class="property">filename</span>;</span><br><span class="line">    <span class="keyword">if</span> (options.<span class="property">cache</span>) {</span><br><span class="line">        <span class="keyword">var</span> func = options.<span class="property">templates</span>.<span class="title function_">get</span>(filename);</span><br><span class="line">        <span class="keyword">if</span> (func) {</span><br><span class="line">            <span class="keyword">return</span> func;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">loadFile</span>(filename, options);</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// Caching is disabled, so pass noCache = true</span></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">loadFile</span>(filename, options, <span class="literal">true</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="loadFile"><a href="#loadFile" class="headerlink" title="loadFile"></a><code>loadFile</code></h4><p>看到 :10 的 <code>return compiledTemplate</code>，那就是上面 <code>tryHandleCache</code> 看到會被執行的 <code>templateFn</code>。</p>
+<p>跟進 :6 的 <code>compile</code> 看看我們可以怎麼控制他。記住使用者可控的有 <code>config</code>。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node_modules/eta/dist/eta.cjs:771</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">loadFile</span>(<span class="params">filePath, options, noCache</span>) {</span><br><span class="line">    <span class="keyword">var</span> config = <span class="title function_">getConfig</span>(options);</span><br><span class="line">    <span class="keyword">var</span> template = <span class="title function_">readFile</span>(filePath);</span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">        <span class="keyword">var</span> compiledTemplate = <span class="title function_">compile</span>(template, config);</span><br><span class="line">        <span class="keyword">if</span> (!noCache) {</span><br><span class="line">            config.<span class="property">templates</span>.<span class="title function_">define</span>(config.<span class="property">filename</span>, compiledTemplate);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> compiledTemplate;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">catch</span> (e) {</span><br><span class="line">        <span class="keyword">throw</span> <span class="title class_">EtaErr</span>(<span class="string">'Loading file: '</span> + filePath + <span class="string">' failed:\n\n'</span> + e.<span class="property">message</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="compile"><a href="#compile" class="headerlink" title="compile"></a><code>compile</code></h4><p>我們知道這個 <code>compile</code> 會回傳的是一個 function，看看他是怎麼造出 function 的。:9 他透過 <code>ctor</code> 來造出 function，<code>ctor</code> 可從 :9 知道他是 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a> 或 <code>getAsyncFunctionConstructor()</code>。 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a> 的用途是把字串變成 function，聽到就覺得危險。</p>
+<p>跟進 :11 <code>compileToString(str, options)</code> 來看看我們可以怎麼去控制這個 function。記住使用者可控的有 <code>options</code>。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node_modules/eta/dist/eta.cjs:588</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">compile</span>(<span class="params">str, config</span>) {</span><br><span class="line">    <span class="keyword">var</span> options = <span class="title function_">getConfig</span>(config || {});</span><br><span class="line">    <span class="comment">/* ASYNC HANDLING */</span></span><br><span class="line">    <span class="comment">// The below code is modified from mde/ejs. All credit should go to them.</span></span><br><span class="line">    <span class="keyword">var</span> ctor = options.<span class="property">async</span> ? <span class="title function_">getAsyncFunctionConstructor</span>() : <span class="title class_">Function</span>;</span><br><span class="line">    <span class="comment">/* END ASYNC HANDLING */</span></span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">ctor</span>(options.<span class="property">varName</span>, <span class="string">'E'</span>, <span class="comment">// EtaConfig</span></span><br><span class="line">        <span class="string">'cb'</span>, <span class="comment">// optional callback</span></span><br><span class="line">        <span class="title function_">compileToString</span>(str, options)); <span class="comment">// eslint-disable-line no-new-func</span></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">catch</span> (e) {</span><br><span class="line">        <span class="keyword">if</span> (e <span class="keyword">instanceof</span> <span class="title class_">SyntaxError</span>) {</span><br><span class="line">            <span class="keyword">throw</span> <span class="title class_">EtaErr</span>(<span class="string">'Bad template syntax\n\n'</span> +</span><br><span class="line">                e.<span class="property">message</span> +</span><br><span class="line">                <span class="string">'\n'</span> +</span><br><span class="line">                <span class="title class_">Array</span>(e.<span class="property">message</span>.<span class="property">length</span> + <span class="number">1</span>).<span class="title function_">join</span>(<span class="string">'='</span>) +</span><br><span class="line">                <span class="string">'\n'</span> +</span><br><span class="line">                <span class="title function_">compileToString</span>(str, options) +</span><br><span class="line">                <span class="string">'\n'</span> <span class="comment">// This will put an extra newline before the callstack for extra readability</span></span><br><span class="line">            );</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span> {</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="compileToString"><a href="#compileToString" class="headerlink" title="compileToString"></a><code>compileToString</code></h4><p>看到這裡，我覺得 <code>compileToString</code> 太危險了。那個會被轉成 function 執行的字串竟然是用字串加法去處理的，那我就隨便找一段可控的字串去植入不就好了？</p>
+<p>來看 :8，<code>config.varName</code> 是我們可控的字串，他只要 <code>config.useWith</code> 為真就會被接上去。來實際操作一次。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node_modules/eta/dist/eta.cjs:389</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">compileToString</span>(<span class="params">str, config</span>) {</span><br><span class="line">    <span class="keyword">var</span> buffer = <span class="title function_">parse</span>(str, config);</span><br><span class="line">    <span class="keyword">var</span> res = <span class="string">"var tR='',__l,__lP"</span> +</span><br><span class="line">        (config.<span class="property">include</span> ? <span class="string">',include=E.include.bind(E)'</span> : <span class="string">''</span>) +</span><br><span class="line">        (config.<span class="property">includeFile</span> ? <span class="string">',includeFile=E.includeFile.bind(E)'</span> : <span class="string">''</span>) +</span><br><span class="line">        <span class="string">'\nfunction layout(p,d){__l=p;__lP=d}\n'</span> +</span><br><span class="line">        (config.<span class="property">useWith</span> ? <span class="string">'with('</span> + config.<span class="property">varName</span> + <span class="string">'||{}){'</span> : <span class="string">''</span>) +</span><br><span class="line">        <span class="title function_">compileScope</span>(buffer, config) +</span><br><span class="line">        (config.<span class="property">includeFile</span></span><br><span class="line">            ? <span class="string">'if(__l)tR='</span> +</span><br><span class="line">                (config.<span class="property">async</span> ? <span class="string">'await '</span> : <span class="string">''</span>) +</span><br><span class="line">                (<span class="string">"includeFile(__l,Object.assign("</span> + config.<span class="property">varName</span> + <span class="string">",{body:tR},__lP))\n"</span>)</span><br><span class="line">            : config.<span class="property">include</span></span><br><span class="line">                ? <span class="string">'if(__l)tR='</span> +</span><br><span class="line">                    (config.<span class="property">async</span> ? <span class="string">'await '</span> : <span class="string">''</span>) +</span><br><span class="line">                    (<span class="string">"include(__l,Object.assign("</span> + config.<span class="property">varName</span> + <span class="string">",{body:tR},__lP))\n"</span>)</span><br><span class="line">                : <span class="string">''</span>) +</span><br><span class="line">        <span class="string">'if(cb){cb(null,tR)} return tR'</span> +</span><br><span class="line">        (config.<span class="property">useWith</span> ? <span class="string">'}'</span> : <span class="string">''</span>);</span><br><span class="line">    <span class="keyword">if</span> (config.<span class="property">plugins</span>) {</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; config.<span class="property">plugins</span>.<span class="property">length</span>; i++) {</span><br><span class="line">            <span class="keyword">var</span> plugin = config.<span class="property">plugins</span>[i];</span><br><span class="line">            <span class="keyword">if</span> (plugin.<span class="property">processFnString</span>) {</span><br><span class="line">                res = plugin.<span class="title function_">processFnString</span>(res, config);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Payload1"><a href="#Payload1" class="headerlink" title="Payload1"></a>Payload1</h4><p>把上面所說的東西實作，看看 <code>compileToString</code> 編譯出的 <code>res</code> 會長怎麼樣。</p>
+<p>看到實際用字串加法做出來的字串 <code>res</code> 有我們的 <code>console.log("Ching367436")</code>，而且確定是在會被執行的地方，所以只要等他回傳到 <a href="#tryHandleCache"><code>tryHandleCache:8</code></a> 就會被執行。結果在跑到那之前竟然就噴錯了。</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># payload1</span></span><br><span class="line">curl <span class="string">'http://localhost/?useWith=1&amp;varName=console.log("Ching367436")'</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// res</span></span><br><span class="line"><span class="keyword">var</span> tR = <span class="string">''</span>, __l, __lP, include = E.<span class="property">include</span>.<span class="title function_">bind</span>(E), includeFile = E.<span class="property">includeFile</span>.<span class="title function_">bind</span>(E)</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">layout</span>(<span class="params">p, d</span>) { __l = p; __lP = d }</span><br><span class="line"><span class="title function_">with</span> (<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Ching367436"</span>) || {}) {</span><br><span class="line">    tR += <span class="string">'&lt;h1&gt;My favorite template engine is '</span></span><br><span class="line">    tR += E.<span class="title function_">e</span>(it.<span class="property">favorite</span>)</span><br><span class="line">    tR += <span class="string">' &lt;br&gt;&lt;/h1&gt;\n&lt;a href=\'app.js\'&gt;source&lt;/a&gt;\n'</span></span><br><span class="line">    <span class="keyword">if</span> (__l) tR = <span class="title function_">includeFile</span>(__l, <span class="title class_">Object</span>.<span class="title function_">assign</span>(<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Ching367436"</span>), { <span class="attr">body</span>: tR }, __lP))</span><br><span class="line">    <span class="keyword">if</span> (cb) { <span class="title function_">cb</span>(<span class="literal">null</span>, tR) } <span class="keyword">return</span> tR</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="Payload1-Error"><a href="#Payload1-Error" class="headerlink" title="Payload1 Error"></a>Payload1 Error</h5><p>看到了錯誤訊息有有三行，:1及 :3 的很明顯的是 Eta 原生的錯誤，:5 感覺不是，上網查了一下發現是 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a> 丟的錯，回想一下剛剛追到的一個地方有 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a>，那就是 <code>compile</code>，所以過去看看。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Eta</span> <span class="title class_">Error</span>: <span class="title class_">Loading</span> <span class="attr">file</span>: views/index.<span class="property">eta</span> <span class="attr">failed</span>:</span><br><span class="line"></span><br><span class="line"><span class="title class_">Bad</span> template syntax</span><br><span class="line"></span><br><span class="line"><span class="title class_">Arg</span> string terminates parameters early</span><br><span class="line">======================================</span><br><span class="line"><span class="keyword">var</span> tR=<span class="string">''</span>,__l,__lP,include=E.<span class="property">include</span>.<span class="title function_">bind</span>(E),includeFile=E.<span class="property">includeFile</span>.<span class="title function_">bind</span>(E)</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">layout</span>(<span class="params">p,d</span>){__l=p;__lP=d}</span><br><span class="line"><span class="title function_">with</span>(<span class="params"><span class="variable language_">console</span>.log(<span class="string">"Ching367436"</span>)||{}</span>){tR+=<span class="string">'&lt;h1&gt;My favorite template engine is '</span></span><br><span class="line">tR+=E.<span class="title function_">e</span>(it.<span class="property">favorite</span>)</span><br><span class="line">tR+=<span class="string">' &lt;br&gt;&lt;/h1&gt;\n&lt;a href=\'app.js\'&gt;source&lt;/a&gt;\n'</span></span><br><span class="line"><span class="keyword">if</span>(__l)tR=<span class="title function_">includeFile</span>(__l,<span class="title class_">Object</span>.<span class="title function_">assign</span>(<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Ching367436"</span>),{<span class="attr">body</span>:tR},__lP))</span><br><span class="line"><span class="keyword">if</span>(cb){<span class="title function_">cb</span>(<span class="literal">null</span>,tR)} <span class="keyword">return</span> tR}</span><br><span class="line"></span><br><span class="line">    at <span class="title class_">EtaErr</span> (node_modules/eta/dist/eta.<span class="property">cjs</span>:<span class="number">57</span>:<span class="number">15</span>)</span><br><span class="line">    at <span class="title function_">loadFile</span> (node_modules/eta/dist/eta.<span class="property">cjs</span>:<span class="number">782</span>:<span class="number">15</span>)</span><br><span class="line">    at <span class="title function_">handleCache</span> (node_modules/eta/dist/eta.<span class="property">cjs</span>:<span class="number">805</span>:<span class="number">12</span>)</span><br><span class="line">    at <span class="title function_">tryHandleCache</span> (node_modules/eta/dist/eta.<span class="property">cjs</span>:<span class="number">821</span>:<span class="number">30</span>)</span><br><span class="line">    at <span class="title class_">View</span>.<span class="property">renderFile</span> [<span class="keyword">as</span> engine] (node_modules/eta/dist/eta.<span class="property">cjs</span>:<span class="number">919</span>:<span class="number">12</span>)</span><br><span class="line">    at <span class="title class_">View</span>.<span class="property">render</span> (node_modules/express/lib/view.<span class="property">js</span>:<span class="number">135</span>:<span class="number">8</span>)</span><br><span class="line">    at <span class="title function_">tryRender</span> (node_modules/express/lib/application.<span class="property">js</span>:<span class="number">657</span>:<span class="number">10</span>)</span><br><span class="line">    at <span class="title class_">Function</span>.<span class="property">render</span> (node_modules/express/lib/application.<span class="property">js</span>:<span class="number">609</span>:<span class="number">3</span>)</span><br><span class="line">    at <span class="title class_">ServerResponse</span>.<span class="property">render</span> (node_modules/express/lib/response.<span class="property">js</span>:<span class="number">1039</span>:<span class="number">7</span>)</span><br><span class="line">    at app.<span class="property">js</span>:<span class="number">12</span>:<span class="number">9</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="compile-revisit"><a href="#compile-revisit" class="headerlink" title="compile revisit"></a><code>compile</code> revisit</h4><p>看到 :9 的 <code>ctor</code> 的地方，第一個參數是 <code>options.varName</code>，然後那在我的 <code>payload1</code> 裡面被改成了 <code>console.log("Ching367436")</code>。來看看這樣為何會有錯。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node_modules/eta/dist/eta.cjs:588</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">compile</span>(<span class="params">str, config</span>) {</span><br><span class="line">    <span class="keyword">var</span> options = <span class="title function_">getConfig</span>(config || {});</span><br><span class="line">    <span class="comment">/* ASYNC HANDLING */</span></span><br><span class="line">    <span class="comment">// The below code is modified from mde/ejs. All credit should go to them.</span></span><br><span class="line">    <span class="keyword">var</span> ctor = options.<span class="property">async</span> ? <span class="title function_">getAsyncFunctionConstructor</span>() : <span class="title class_">Function</span>;</span><br><span class="line">    <span class="comment">/* END ASYNC HANDLING */</span></span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">ctor</span>(options.<span class="property">varName</span>, <span class="string">'E'</span>, <span class="comment">// EtaConfig</span></span><br><span class="line">        <span class="string">'cb'</span>, <span class="comment">// optional callback</span></span><br><span class="line">        <span class="title function_">compileToString</span>(str, options)); <span class="comment">// eslint-disable-line no-new-func</span></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">catch</span> (e) {</span><br><span class="line">        <span class="keyword">if</span> (e <span class="keyword">instanceof</span> <span class="title class_">SyntaxError</span>) {</span><br><span class="line">            <span class="keyword">throw</span> <span class="title class_">EtaErr</span>(<span class="string">'Bad template syntax\n\n'</span> +</span><br><span class="line">                e.<span class="property">message</span> +</span><br><span class="line">                <span class="string">'\n'</span> +</span><br><span class="line">                <span class="title class_">Array</span>(e.<span class="property">message</span>.<span class="property">length</span> + <span class="number">1</span>).<span class="title function_">join</span>(<span class="string">'='</span>) +</span><br><span class="line">                <span class="string">'\n'</span> +</span><br><span class="line">                <span class="title function_">compileToString</span>(str, options) +</span><br><span class="line">                <span class="string">'\n'</span> <span class="comment">// This will put an extra newline before the callstack for extra readability</span></span><br><span class="line">            );</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span> {</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="ctor"><a href="#ctor" class="headerlink" title="ctor"></a><code>ctor</code></h5><p>上面的 <code>ctor</code> 相當於 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a>，把我們的東西放進 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a> 看看會發生什麼事。可以看到噴的錯誤訊息跟前面噴的 <code>Arg string terminates parameters early</code> 是一樣的。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Function</span>(<span class="string">'console.log("Ching367436")'</span>, <span class="string">'cb'</span>, res)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Error message</span></span><br><span class="line"><span class="title class_">Uncaught</span> <span class="title class_">SyntaxError</span>: <span class="title class_">Arg</span> string terminates parameters early</span><br></pre></td></tr></table></figure></div>
+
+<h6 id="Function"><a href="#Function" class="headerlink" title="Function"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a></h6><p>來看看 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a> 的各種用法。 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a> 的最後一個參數放的是 function body，前面幾個參數是要給那個 function body 的參數，可以看到最後出來的結果會回傳一個從字串變成的 function。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Function</span>(<span class="string">'a, b'</span>, <span class="string">'c'</span>, <span class="string">'console.log(a, b, c)'</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// output</span></span><br><span class="line">ƒ <span class="title function_">anonymous</span>(<span class="params">a, b,c</span></span><br><span class="line"><span class="params"></span>) {</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a, b, c)</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>如果今天參數的部分被換成了不合理的值，像是下面這樣，就會噴出前面看到的錯。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Function</span>(<span class="string">'console.log(a, b, c)'</span>, <span class="string">'c'</span>, <span class="string">'console.log(a, b, c)'</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// output</span></span><br><span class="line"><span class="title class_">Uncaught</span> <span class="title class_">SyntaxError</span>: <span class="title class_">Arg</span> string terminates parameters early</span><br></pre></td></tr></table></figure></div>
+
+<p>所以看到這邊，覺得控 <code>options.varName</code> 的路應該是沒辦法了，所以去找了其他可控的東西，可是也沒看到其他會被放進去的字串。所以在發表專題前就在這個裡面找了一個 ZeroDay XSS 跟已經有 CVE 的 <a class="link" target="_blank" rel="noopener" href="https://securitylab.github.com/advisories/GHSL-2021-023-squirrelly/#technical-summary">Squirrelly ZeroDay RCE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，配上 Entroy 的 <a class="link" target="_blank" rel="noopener" href="https://entroychang.github.io/2023/03/06/NodeJS-template-CVEs#ejs-template">EJS ZeroDay RCE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。還是成功的拿下了最佳專題。</p>
+<h4 id="轉機"><a href="#轉機" class="headerlink" title="轉機"></a>轉機</h4><p>然後我的 <code>payload1</code> 其實只要 <code>varName</code> 的值前面加上 <code>a=</code>，<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function"><code>Function</code></a> 那裡就不會噴錯了，因為 <code>a=console.log(123)</code> 是合理的參數。</p>
+<p>這樣就可以執行到前面的 <a href="#tryHandleCache"><code>tryHandleCache:8</code></a> 的 <code>templateFn(data, options, cb)</code>，<code>templateFn</code> 就是 <a href="#ctor"><code>ctor</code></a> 所產出的 function，所以這樣就 RCE 了。</p>
+<p><img src="/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/splitline-yyds.webp" alt="splitline"></p>
+<h2 id="後續"><a href="#後續" class="headerlink" title="後續"></a>後續</h2><p>事後要把 Eta ZeroDay RCE 回報給作者，所以查了一下作者，結果看到他跟 <a class="link" target="_blank" rel="noopener" href="https://squirrelly.js.org/">SquirrellyJS <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 是同個作者，然後兩個都有類似，甚至一模一樣的 RCE 的洞。</p>
+<h3 id="回報"><a href="#回報" class="headerlink" title="回報"></a>回報</h3><p>回報的是 Github 上的洞，所以我先去看了 <a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/security/policy">Eta 的 security policy <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，然後是空的。感覺這個也不太適合直接發 issue，最後在作者網站的 <a class="link" target="_blank" rel="noopener" href="https://bengubler.com/#contact">Contact <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 那邊看到了聯絡管道，決定用寫信的來回報。</p>
+<p>接著就要來寫漏洞報告了，想了一下要怎麼寫，想起之前 Cyku 大大回報的同個類型的<a class="link" target="_blank" rel="noopener" href="https://github.com/pugjs/pug/issues/3312">洞 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。所以就照著把 proof of concept、detail、mitigation 三個部分寫了起來，最後寫出了<a class="link" target="_blank" rel="noopener" href="https://hackmd.io/@Ching367436/SkkvuMAoi">這篇漏洞報告 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。然後就寄給作者了。</p>
+<p>隔了一天後 Eta 推出了 <a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/releases/tag/v2.0.0">v2.0.0 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，Eta 發佈了 <a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/security/advisories/GHSA-xrh7-m5pp-39r6">security advisory <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>然後收到了作者的回信。</p>
+<img src="/ais3-2022-最佳專題/eta-reply.webp" alt="Eta reply" style="width: 22em;">
+
+
+
+<p>又隔了兩天 Github 發給了這個洞 <a class="link" target="_blank" rel="noopener" href="https://www.cve.org/CVERecord?id=CVE-2023-23630">CVE-2023-23630 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<img src="/ais3-2022-最佳專題/github-issued-cve.webp" alt="Github issued CVE" style="width: 22em;">
+
+<p>同一天出現了 <a class="link" target="_blank" rel="noopener" href="https://www.cve.org/CVERecord?id=CVE-2022-25967">CVE-2022-25967 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 的 <a class="link" target="_blank" rel="noopener" href="https://github.com/advisories/GHSA-mf6x-hrgr-658f">security advisory <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。所以可能有人已經回報過這個洞了。在回報這個洞之前，我已先查過了作者，他因為有事，兩年無法維護開源專案，而 <a class="link" target="_blank" rel="noopener" href="https://www.cve.org/CVERecord?id=CVE-2022-25967">CVE-2022-25967 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 正是那個期間的事情，所以可能才會被作者略過。我是挑在作者回來的時候回報的，所以作者馬上就修好這個洞了。</p>
+<p>來看看他修補的 <a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/commit/5651392462ee0ff19d77c8481081a99e5b9138dd">commit <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，做的修改就是不再把 <a href="#renderFile"><code>renderFile</code></a> 的 <code>data</code> merge 進 <code>renderConfig</code> 裡面，所以 <code>renderConfig</code> 就變成了使用者不可控的東西，所以漏洞就確實被從根源修補好了。</p>
+<h4 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h4><p>2023/01/26: 回報漏洞給作者。</p>
+<p>2023/01/28: Eta 釋出 v2.0.0 修補了漏洞，發布 <a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/security/advisories/GHSA-xrh7-m5pp-39r6">security advisory <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>2023/01/30: Github 發給了這個漏洞 <a class="link" target="_blank" rel="noopener" href="https://www.cve.org/CVERecord?id=CVE-2023-23630">CVE-2023-23630 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>2023/01/30: <a class="link" target="_blank" rel="noopener" href="https://www.cve.org/CVERecord?id=CVE-2022-25967">CVE-2022-25967 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 的 <a class="link" target="_blank" rel="noopener" href="https://github.com/advisories/GHSA-mf6x-hrgr-658f">security advisory <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 被發布了。</p>
+<p>2023/04/08: 我把<a class="link" target="_blank" rel="noopener" href="https://hackmd.io/@Ching367436/SkkvuMAoi">漏洞報告 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>公開。</p>
+<h3 id="修補後的問題"><a href="#修補後的問題" class="headerlink" title="修補後的問題"></a>修補後的問題</h3><p>作者把洞修補好之後，就有東西開始壞掉了。</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/issues/215">2.0.0 breaks Express.js res.render views configuration <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 發生的原因在於 Eta 不會再從 Express 放下來的 <code>data</code> 去找 <code>config</code> 了。所以作者在文檔中把設定 template file 資料夾的的地方做了改動，也就是我畫起來的地方。來看看發生了什麼事。</p>
+<p><img src="/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/eta-2.0.0-release-note.webp" alt="Eta v2.0.0 release note"></p>
+<h4 id="views"><a href="#views" class="headerlink" title="views"></a><code>views</code></h4><p>看到原本的 <code>app.set("views", "./views")</code> 被改成 <code>eta.configure({ views: "./views", cache: true })</code>。前者是設定了 Express 的 template file 的資料夾，不過到了 v2.0.0，Eta 不會再吃 Express 傳下來的這項資訊，所以作者要大家改成直接設定在 Eta 上面，Eta 才吃得到設定。可是這樣會變成 Express 那邊壞掉，因為 Express 也需要這項資訊。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Change THIS:</span></span><br><span class="line"><span class="keyword">var</span> eta = <span class="built_in">require</span>(<span class="string">"eta"</span>)</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"view engine"</span>, <span class="string">"eta"</span>)</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"views"</span>, <span class="string">"./views"</span>)</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"view cache"</span>, <span class="literal">true</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// To THIS:</span></span><br><span class="line"><span class="keyword">var</span> eta = <span class="built_in">require</span>(<span class="string">"eta"</span>)</span><br><span class="line">eta.<span class="title function_">configure</span>({ <span class="attr">views</span>: <span class="string">"./views"</span>, <span class="attr">cache</span>: <span class="literal">true</span> })</span><br><span class="line">app.<span class="title function_">engine</span>(<span class="string">"eta"</span>, eta.<span class="property">renderFile</span>)</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"view engine"</span>, <span class="string">"eta"</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="解決修補後的問題"><a href="#解決修補後的問題" class="headerlink" title="解決修補後的問題"></a>解決修補後的問題</h4><p>作者提出了兩個<a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/issues/215#issuecomment-1409553251">解決方案 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>第一個方案是 Eta 再去從 Express 傳下來的東西去拿這項資訊，不過這被我否決了，因為這樣做在<a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/issues/215#issuecomment-1409697871">某些情況下會可以 RCE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>第二個方案是叫使用者 Express 及 Eta 兩邊都設定一次同樣的東西，變成下面這樣。雖然比較麻煩，但這樣比較安全。我們最後決定採用這個，所以後來 v2.0.0 的 <a class="link" target="_blank" rel="noopener" href="https://github.com/eta-dev/eta/releases/tag/v2.0.0">release note <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 更新成了現在的樣子。</p>
+<p>我認為 Express 一開始在做 template engine 的接口時就該讓 <code>data</code>  <code>config</code> 分開，才不會造成現在那麼麻煩，以及引發這一類型問題。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// To THIS:</span></span><br><span class="line"><span class="keyword">var</span> eta = <span class="built_in">require</span>(<span class="string">"eta"</span>)</span><br><span class="line">app.<span class="title function_">engine</span>(<span class="string">"eta"</span>, eta.<span class="property">renderFile</span>)</span><br><span class="line">eta.<span class="title function_">configure</span>({  <span class="attr">views</span>: <span class="string">"./views"</span>, <span class="attr">cache</span>: <span class="literal">true</span> }) <span class="comment">// configure eta</span></span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"views"</span>, <span class="string">"./views"</span>) <span class="comment">// configure Express</span></span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"view cache"</span>, <span class="literal">true</span>) <span class="comment">// configure Express</span></span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">"view engine"</span>, <span class="string">"eta"</span>)</span><br></pre></td></tr></table></figure></div>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> AIS3 2022 最佳專題</li>
+        <li><strong>Author:</strong> Ching367436</li>
+        <li><strong>Created at
+                :</strong> 2023-04-08 15:40:39</li>
+        
+        <li>
+            <strong>Link:</strong> https://blog.ching367436.me/ais3-2022-最佳專題/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/ais3/">#ais3</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/express/">#express</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/template-engine/">#template-engine</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-2023-最佳專題/" title="AIS3 2023 最佳專題" rel="bookmark">
+  <img src="/ais3-2023-最佳專題/cover.webp" alt="AIS3 2023 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2023 最佳專題</span>
+</a><a class="recommended-article-item" href="/ais3-2021-最佳專題/" title="AIS3 2021 最佳專題" rel="bookmark">
+  <img src="/ais3-2021-最佳專題/Leukocyte-Lab.png" alt="AIS3 2021 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2021 最佳專題</span>
+</a><a class="recommended-article-item" href="/ais3-pre-exam-2023-write-up/" title="AIS3 Pre-exam 2023 Write-up" rel="bookmark">
+  <img src="/ais3-pre-exam-2023-write-up/myfirstctf-staff.webp" alt="AIS3 Pre-exam 2023 Write-up" class="!max-w-none">
+  <span class="title">AIS3 Pre-exam 2023 Write-up</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-2023-最佳專題/" title="AIS3 2023 最佳專題" rel="bookmark">
+  <img src="/ais3-2023-最佳專題/cover.webp" alt="AIS3 2023 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2023 最佳專題</span>
+</a><a class="recommended-article-item" href="/ais3-2021-最佳專題/" title="AIS3 2021 最佳專題" rel="bookmark">
+  <img src="/ais3-2021-最佳專題/Leukocyte-Lab.png" alt="AIS3 2021 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2021 最佳專題</span>
+</a></div>
+   </div>
+  </div>
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/ais3-pre-exam-2023-write-up/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">AIS3 Pre-exam 2023 Write-up</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/ais3-2021-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">AIS3 2021 最佳專題</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Ching367436/blog',
+                'data-repo-id': 'R_kgDOJNMXOw',
+                'data-category': 'Giscus',
+                'data-category-id': 'DIC_kwDOJNMXO84CVeVB',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'en',
+                'data-input-position': 'bottom',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">AIS3 2022 最佳專題</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%88%E9%A1%8C"><span class="nav-text">專題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BC%E7%8F%BE"><span class="nav-text">發現</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E5%8F%8A%E7%9B%AE%E6%A8%99%E6%8C%91%E9%81%B8"><span class="nav-text">原理及目標挑選</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eta-code-review"><span class="nav-text">Eta code review</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C"><span class="nav-text">後續</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E5%A0%B1"><span class="nav-text">回報</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E8%A3%9C%E5%BE%8C%E7%9A%84%E5%95%8F%E9%A1%8C"><span class="nav-text">修補後的問題</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart" style="color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ching367436</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        9 posts in total
+                    </span>
+                    
+                        <span>
+                            20.5k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="fa-regular fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog"></i>
+        </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>

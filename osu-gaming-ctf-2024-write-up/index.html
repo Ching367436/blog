@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Ching367436,臺中一中電腦資訊研習社 38th 副社長,Bamboofox 社長,書卷獎,資安,AIS3 最佳專題">
+    
+    <meta name="author" content="Ching367436">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://blog.ching367436.me/osu-gaming-ctf-2024-write-up/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="I participated in [osu!gaming CTF](https:&#x2F;&#x2F;ctf.osugaming.lol&#x2F;)  with [TakeKitsune](https:&#x2F;&#x2F;ctftime.org&#x2F;team&#x2F;280959), and here is my write-up of the part I solved.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="osu!gaming CTF 2024 Write-up">
+<meta property="og:url" content="https://blog.ching367436.me/osu-gaming-ctf-2024-write-up/">
+<meta property="og:site_name" content="Ching367436">
+<meta property="og:description" content="I participated in [osu!gaming CTF](https:&#x2F;&#x2F;ctf.osugaming.lol&#x2F;)  with [TakeKitsune](https:&#x2F;&#x2F;ctftime.org&#x2F;team&#x2F;280959), and here is my write-up of the part I solved.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.ching367436.me/osu-gaming-ctf-2024-write-up/thailand-beach.webp">
+<meta property="article:published_time" content="2024-03-04T02:22:16.000Z">
+<meta property="article:author" content="Ching367436">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ching367436.me/osu-gaming-ctf-2024-write-up/thailand-beach.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-PRRP5V9HFQ"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PRRP5V9HFQ');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/favicon.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            osu!gaming CTF 2024 Write-up -
+        
+        Ching367436&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com https://cloudflareinsights.com ; 
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://static.cloudflareinsights.com ; 
+  style-src 'unsafe-inline' 'self' https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com; 
+  img-src 'self' data: https://*.clarity.ms https://c.bing.com https://cdn.jsdelivr.net/ https://www.googletagmanager.com ;
+" />
+
+                
+    
+            
+                
+                    <script data-swup-reload-script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gh62bmw6cl"); </script>
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap" rel="stylesheet">
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"blog.ching367436.me","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["竹狐隊長"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"recommendation":{"enable":true,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans TC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap"},"english":{"enable":true,"family":"Lexend","url":"https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap"},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":true,"id":"G-PRRP5V9HFQ"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Ching367436's blog","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ching367436","instagram":null,"zhihu":null,"twitter":"https://twitter.com/Ching367436","email":"admin@ching367436.me","telegram":"https://t.me/Ching367436"},"qrs":[]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.1","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"none","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","path":"/about"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/3/20 21:33:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Ching367436" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ching367436&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    CATEGORIES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                CATEGORIES
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/osu-gaming-ctf-2024-write-up/thailand-beach.webp" alt="osu!gaming CTF 2024 Write-up" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">osu!gaming CTF 2024 Write-up</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/Ching367436.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ching367436</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">竹狐隊長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-03-04 10:22:16</span>
+        <span class="mobile">2024-03-04 10:22:16</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/ctf/">ctf</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.4k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>14 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p>I participated in <a class="link" target="_blank" rel="noopener" href="https://ctf.osugaming.lol/">osu!gaming CTF <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>  with <a class="link" target="_blank" rel="noopener" href="https://ctftime.org/team/280959">TakeKitsune <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, and here is my write-up of the part I solved.</p>
+<h2 id="OSU"><a href="#OSU" class="headerlink" title="OSU"></a>OSU</h2><h3 id="sanity-check-2"><a href="#sanity-check-2" class="headerlink" title="sanity-check-2"></a>sanity-check-2</h3><blockquote>
+<p><a class="link" target="_blank" rel="noopener" href="https://osu.ppy.sh/beatmapsets/2143550">Gawr Gura - Kyoufuu All Back <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>Your task is to play <a class="link" target="_blank" rel="noopener" href="https://osu.ppy.sh/beatmapsets/2143550#osu/4512653">A <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> difficulty and get at least 70% accuracy in std mode. Submit your replay osr file to server in base64 format.</p>
+</blockquote>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h4><p>As a beginner in <code>osu!</code>, I use the <a class="link" target="_blank" rel="noopener" href="https://osu.ppy.sh/wiki/en/Gameplay/Game_modifier/No_Fail">No Fail (mod) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> to play first and obtain the osr file. Then, I edit the replay using <a class="link" target="_blank" rel="noopener" href="https://github.com/thebetioplane/OsuReplayEditor">OsuReplayEditor <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> to remove any misses or mods.</p>
+<img src="/osu-gaming-ctf-2024-write-up/replay-editor.webp" style="width: min(22em, 100%);">
+
+<h3 id="sanity-check-3"><a href="#sanity-check-3" class="headerlink" title="sanity-check-3"></a>sanity-check-3</h3><blockquote>
+<p><a class="link" target="_blank" rel="noopener" href="https://osu.ppy.sh/beatmapsets/2143550">Gawr Gura - Kyoufuu All Back <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>Alright, it’s gaming time. SS the top diff and submit your replay to the server in base64 format. (Play nomod, please don’t use mods like DT or HR)</p>
+<p><code>nc chal.osugaming.lol 7278</code></p>
+</blockquote>
+<h4 id="Solution-1"><a href="#Solution-1" class="headerlink" title="Solution"></a>Solution</h4><p>First, use <a class="link" target="_blank" rel="noopener" href="https://osu.ppy.sh/wiki/en/Gameplay/Game_modifier/Auto">Auto (mod) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> to play it to obtain a perfect <code>osr</code> file (<code>osu!(lazer)</code> does not support exporting auto played osr files, so we need to use <code>osu!</code> Instead). However, even autoplay cannot achieve SS (check the video below).</p>
+<video muted="" controls="" style="width: 100%;">
+  <source src="/osu-gaming-ctf-2024-write-up/almost-ss.mp4" type="video/mp4">
+</video>
+
+
+<p>So I used <a class="link" target="_blank" rel="noopener" href="https://github.com/kszlim/osu-replay-parser">osu-replay-parser <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> to add a <code>20ms</code> delay to the auto-played <code>osr</code>, and it worked.</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> osrparse <span class="keyword">import</span> Replay</span><br><span class="line"></span><br><span class="line"><span class="comment"># parse from a path</span></span><br><span class="line">replay = Replay.from_path(<span class="string">"at.osr"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># anti AT detection</span></span><br><span class="line">replay.username = <span class="string">'ch'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># remove the auto play mods</span></span><br><span class="line">replay.mod_combination = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add some time</span></span><br><span class="line">replay.replay_data[<span class="number">1</span>].time_delta += <span class="number">20</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># write to a new file</span></span><br><span class="line">replay.write_path(<span class="string">"at-modified.osr"</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Malware"><a href="#Malware" class="headerlink" title="Malware"></a>Malware</h4><p>I stumbled upon <a class="link" target="_blank" rel="noopener" href="https://malpedia.caad.fkie.fraunhofer.de/details/win.redline_stealer">RedLine Stealer <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> malware while searching for an osu! cheat tool. Interestingly, I had recently reversed it at <a class="link" target="_blank" rel="noopener" href="https://gcc.ac/">GCC 2024 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p><img src="/osu-gaming-ctf-2024-write-up/osu-cheat.webp" alt="osu-cheat"></p>
+<h2 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h2><h3 id="secret-map"><a href="#secret-map" class="headerlink" title="secret-map"></a>secret-map</h3><blockquote>
+<p>Here’s an <a class="link" target="_blank" rel="noopener" href="https://osu.ppy.sh/beatmapsets/1680153#osu/3432455">old, unfinished map <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> of mine (any collabers?). I tried adding an new diff but it seems to have gotten corrupted - can you help me recover it?</p>
+<p>Downloads: [Alfakyun. - KING.osz](<a class="link" target="_blank" rel="noopener" href="https://ctf.osugaming.lol/uploads/2cdc85778a40b176f4541bc782650cf933dd9997083d69e928cd9b4b85e0c189/Alfakyun">https://ctf.osugaming.lol/uploads/2cdc85778a40b176f4541bc782650cf933dd9997083d69e928cd9b4b85e0c189/Alfakyun <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>. - KING.osz)</p>
+</blockquote>
+<h4 id="Solution-2"><a href="#Solution-2" class="headerlink" title="Solution"></a>Solution</h4><p>We first decompress the <code>osz</code> file using <code>7z x file.osz</code>.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">└── extracted</span><br><span class="line">    ├── Alfakyun. - KING (QuintecX) [ryuk eyeka's easy].osu</span><br><span class="line">    ├── audio.mp3</span><br><span class="line">    ├── bg.webp</span><br><span class="line">    ├── enc.py</span><br><span class="line">    ├── flag.osu.enc</span><br></pre></td></tr></table></figure></div>
+
+<p>In <code>enc.py</code>, the osu file is encrypted using XOR with a random 16-byte key. However, since the <code>osu</code> file starts with <code>osu file format v14</code>, the key can be obtained using it.</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># enc.py</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">xor_key = os.urandom(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">"flag.osu"</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    plaintext = f.read()</span><br><span class="line"></span><br><span class="line">encrypted_data = <span class="built_in">bytes</span>([plaintext[i] ^ xor_key[i % <span class="built_in">len</span>(xor_key)] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(plaintext))])</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">"flag.osu.enc"</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(encrypted_data)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sol.py</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">'flag.osu.enc'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    encrypted_data = f.read()</span><br><span class="line"></span><br><span class="line">known_pt = <span class="string">b'osu file format v14'</span>[:<span class="number">16</span>]</span><br><span class="line">key = <span class="built_in">bytes</span>([encrypted_data[i] ^ known_pt[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">16</span>)])</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">bytes</span>([data[i] ^ key[i % <span class="built_in">len</span>(key)] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data))])</span><br><span class="line"></span><br><span class="line">decrypted_data = decrypt(encrypted_data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">'sol.osu'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(decrypted_data)</span><br></pre></td></tr></table></figure></div>
+
+<p>After obtaining the <code>osu</code> file, I repackaged it into <code>osz</code> using <code>7z a -tzip -mm=Deflate -mx=9 example.osz extracted</code> and imported it into osu!. Here are the results:</p>
+<video muted="" controls="" style="width: 100%;">
+  <source src="/osu-gaming-ctf-2024-write-up/xor.mp4" type="video/mp4">
+</video>
+
+<h3 id="korean-offline-mafia"><a href="#korean-offline-mafia" class="headerlink" title="korean-offline-mafia"></a>korean-offline-mafia</h3><blockquote>
+<p>I’ve been hardstuck for years, simply not able to rank up… so I decided to try and infiltrate the Korean offline mafia for some help. I’ve gotten so close, getting in contact, but now, to prove I’m part of the group, I need to prove I know every group member’s ID (without giving it away over this insecure communication). The only trouble is… I don’t! Can you help?</p>
+<p><code>nc chal.osugaming.lol 7275</code></p>
+<p>Downloads: <a class="link" target="_blank" rel="noopener" href="https://ctf.osugaming.lol/uploads/657a7eedb024c2869f7cd063844cff7337f96dbc516198a86f53b1d995515364/server.py">server.py <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</blockquote>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> topsecret <span class="keyword">import</span> n, secret_ids, flag</span><br><span class="line"><span class="keyword">import</span> math, random</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> <span class="built_in">all</span>([math.gcd(num, n) == <span class="number">1</span> <span class="keyword">for</span> num <span class="keyword">in</span> secret_ids])</span><br><span class="line"><span class="keyword">assert</span> <span class="built_in">len</span>(secret_ids) == <span class="number">32</span></span><br><span class="line"></span><br><span class="line">vs = [<span class="built_in">pow</span>(num, <span class="number">2</span>, n) <span class="keyword">for</span> num <span class="keyword">in</span> secret_ids]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'n ='</span>, n)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'vs ='</span>, vs)</span><br><span class="line"></span><br><span class="line">correct = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">	x = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">'Pick a random r, give me x = r^2 (mod n): '</span>))</span><br><span class="line">	<span class="keyword">assert</span> x &gt; <span class="number">0</span></span><br><span class="line">	mask = <span class="string">'{:032b}'</span>.<span class="built_in">format</span>(random.getrandbits(<span class="number">32</span>))</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"Here's a random mask: "</span>, mask)</span><br><span class="line">	y = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">'Now give me r*product of IDs with mask applied: '</span>))</span><br><span class="line">	<span class="keyword">assert</span> y &gt; <span class="number">0</span></span><br><span class="line">	<span class="comment"># i.e: if bit i is 1, include id i in the product--otherwise, don't</span></span><br><span class="line"></span><br><span class="line">	val = x</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>):</span><br><span class="line">		<span class="keyword">if</span> mask[i] == <span class="string">'1'</span>:</span><br><span class="line">			val = (val * vs[i]) % n</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">pow</span>(y, <span class="number">2</span>, n) == val:</span><br><span class="line">		correct += <span class="number">1</span></span><br><span class="line">		<span class="built_in">print</span>(<span class="string">'Phase'</span>, correct, <span class="string">'of verification complete.'</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		correct = <span class="number">0</span></span><br><span class="line">		<span class="built_in">print</span>(<span class="string">'Verification failed. Try again.'</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> correct &gt;= <span class="number">10</span>:</span><br><span class="line">		<span class="built_in">print</span>(<span class="string">'Verification succeeded. Welcome.'</span>)</span><br><span class="line">		<span class="built_in">print</span>(flag)</span><br><span class="line">		<span class="keyword">break</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Solution-3"><a href="#Solution-3" class="headerlink" title="Solution"></a>Solution</h4><p>To solve the challenge, simply send <code>n</code> for every verification.</p>
+<h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><h3 id="pp-ranking"><a href="#pp-ranking" class="headerlink" title="pp-ranking"></a>pp-ranking</h3><blockquote>
+<p>can you get to the top of the leaderboard? good luck getting past my anticheat…</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://pp-ranking.web.osugaming.lol/">https://pp-ranking.web.osugaming.lol <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>Downloads: <a class="link" target="_blank" rel="noopener" href="https://ctf.osugaming.lol/uploads/f1fb87bae1746b60ea2ab113a354108882f65dc61758522cc2f372b0d5074892/pp-ranking.zip">pp-ranking.zip <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</blockquote>
+<p>In order to retrieve the flag, we must reach the top of the leaderboard.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">get</span>(<span class="string">"/rankings"</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">  <span class="keyword">let</span> ranking = [...baseRankings];</span><br><span class="line">  <span class="keyword">if</span> (req.<span class="property">user</span>) ranking.<span class="title function_">push</span>(req.<span class="property">user</span>);</span><br><span class="line"></span><br><span class="line">  ranking = ranking</span><br><span class="line">    .<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> b.<span class="property">performance</span> - a.<span class="property">performance</span>)</span><br><span class="line">    .<span class="title function_">map</span>(<span class="function">(<span class="params">u, i</span>) =&gt;</span> ({ ...u, <span class="attr">rank</span>: <span class="string">`#<span class="subst">${i + <span class="number">1</span>}</span>`</span> }));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> flag;</span><br><span class="line">  <span class="keyword">if</span> (req.<span class="property">user</span>) {</span><br><span class="line">    <span class="keyword">if</span> (ranking[ranking.<span class="property">length</span> - <span class="number">1</span>].<span class="property">username</span> === req.<span class="property">user</span>.<span class="property">username</span>) {</span><br><span class="line">      ranking[ranking.<span class="property">length</span> - <span class="number">1</span>].<span class="property">rank</span> = <span class="string">"Last"</span>;</span><br><span class="line">    } <span class="keyword">else</span> <span class="keyword">if</span> (ranking[<span class="number">0</span>].<span class="property">username</span> === req.<span class="property">user</span>.<span class="property">username</span>) {</span><br><span class="line">      flag = process.<span class="property">env</span>.<span class="property">FLAG</span> || <span class="string">"osu{test_flag}"</span>;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  res.<span class="title function_">render</span>(<span class="string">"rankings"</span>, { ranking, flag });</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<p>We can submit <code>osr</code> files to be ranked.</p>
+<p><img src="/osu-gaming-ctf-2024-write-up/submit-rank.webp" alt="submit-rank"></p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">post</span>(<span class="string">"/api/submit"</span>, requiresLogin, <span class="title function_">async</span> (req, res) =&gt; {</span><br><span class="line">  <span class="keyword">const</span> { osu, osr } = req.<span class="property">body</span>;</span><br><span class="line">  <span class="keyword">try</span> {</span><br><span class="line">    <span class="keyword">const</span> [pp, md5] = <span class="keyword">await</span> <span class="title function_">calculate</span>(osu, <span class="title class_">Buffer</span>.<span class="title function_">from</span>(osr, <span class="string">"base64"</span>));</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">user</span>.<span class="property">playedMaps</span>.<span class="title function_">includes</span>(md5)) {</span><br><span class="line">      <span class="keyword">return</span> res.<span class="title function_">send</span>(<span class="string">"You can only submit a map once."</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">anticheat</span>(req.<span class="property">user</span>, pp)) {</span><br><span class="line">      <span class="comment">// ban!</span></span><br><span class="line">      users.<span class="title function_">delete</span>(req.<span class="property">user</span>.<span class="property">username</span>);</span><br><span class="line">      <span class="keyword">return</span> res.<span class="title function_">send</span>(<span class="string">"You have triggered the anticheat! Nice try..."</span>);</span><br><span class="line">    }</span><br><span class="line">    req.<span class="property">user</span>.<span class="property">playCount</span>++;</span><br><span class="line">    req.<span class="property">user</span>.<span class="property">performance</span> += pp;</span><br><span class="line">    req.<span class="property">user</span>.<span class="property">playedMaps</span>.<span class="title function_">push</span>(md5);</span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">"/rankings"</span>);</span><br><span class="line">  } <span class="keyword">catch</span> (err) {</span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">send</span>(err.<span class="property">message</span>);</span><br><span class="line">  }</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<p>Below are the steps involved in the scoring process.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> { <span class="title class_">StandardRuleset</span> } <span class="keyword">from</span> <span class="string">"osu-standard-stable"</span>;</span><br><span class="line"><span class="keyword">import</span> { <span class="title class_">BeatmapDecoder</span>, <span class="title class_">ScoreDecoder</span> } <span class="keyword">from</span> <span class="string">"osu-parsers"</span>;</span><br><span class="line"><span class="keyword">import</span> crypto <span class="keyword">from</span> <span class="string">"crypto"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">calculate</span> = <span class="keyword">async</span> (<span class="params">osu, osr</span>) =&gt; {</span><br><span class="line">  <span class="keyword">const</span> md5 = crypto.<span class="title function_">createHash</span>(<span class="string">"md5"</span>).<span class="title function_">update</span>(osu).<span class="title function_">digest</span>(<span class="string">"hex"</span>);</span><br><span class="line">  <span class="keyword">const</span> scoreDecoder = <span class="keyword">new</span> <span class="title class_">ScoreDecoder</span>();</span><br><span class="line">  <span class="keyword">const</span> score = <span class="keyword">await</span> scoreDecoder.<span class="title function_">decodeFromBuffer</span>(osr);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (md5 !== score.<span class="property">info</span>.<span class="property">beatmapHashMD5</span>) {</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(</span><br><span class="line">      <span class="string">"The beatmap and replay do not match! Did you submit the wrong beatmap?"</span>,</span><br><span class="line">    );</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">if</span> (score.<span class="property">info</span>.<span class="property">_rulesetId</span> !== <span class="number">0</span>) {</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">"Sorry, only standard is supported :("</span>);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> beatmapDecoder = <span class="keyword">new</span> <span class="title class_">BeatmapDecoder</span>();</span><br><span class="line">  <span class="keyword">const</span> beatmap = <span class="keyword">await</span> beatmapDecoder.<span class="title function_">decodeFromBuffer</span>(osu);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> ruleset = <span class="keyword">new</span> <span class="title class_">StandardRuleset</span>();</span><br><span class="line">  <span class="keyword">const</span> mods = ruleset.<span class="title function_">createModCombination</span>(score.<span class="property">info</span>.<span class="property">rawMods</span>);</span><br><span class="line">  <span class="keyword">const</span> standardBeatmap = ruleset.<span class="title function_">applyToBeatmapWithMods</span>(beatmap, mods);</span><br><span class="line">  <span class="keyword">const</span> difficultyCalculator =</span><br><span class="line">    ruleset.<span class="title function_">createDifficultyCalculator</span>(standardBeatmap);</span><br><span class="line">  <span class="keyword">const</span> difficultyAttributes = difficultyCalculator.<span class="title function_">calculate</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> performanceCalculator = ruleset.<span class="title function_">createPerformanceCalculator</span>(</span><br><span class="line">    difficultyAttributes,</span><br><span class="line">    score.<span class="property">info</span>,</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">const</span> totalPerformance = performanceCalculator.<span class="title function_">calculate</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> [totalPerformance, md5];</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> calculate;</span><br></pre></td></tr></table></figure></div>
+
+<p>And it has an anti-cheat mechanism.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// anticheat.js</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">THREE_MONTHS_IN_MS</span> = <span class="number">3</span> * <span class="number">30</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">anticheat</span> = (<span class="params">user, newPP</span>) =&gt; {</span><br><span class="line">  <span class="keyword">const</span> pp = <span class="built_in">parseInt</span>(newPP);</span><br><span class="line">  <span class="keyword">if</span> (user.<span class="property">playCount</span> &lt; <span class="number">5000</span> &amp;&amp; pp &gt; <span class="number">300</span>) {</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (+<span class="keyword">new</span> <span class="title class_">Date</span>() - user.<span class="property">registerDate</span> &lt; <span class="variable constant_">THREE_MONTHS_IN_MS</span> &amp;&amp; pp &gt; <span class="number">300</span>) {</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (</span><br><span class="line">    +<span class="keyword">new</span> <span class="title class_">Date</span>() - user.<span class="property">registerDate</span> &lt; <span class="variable constant_">THREE_MONTHS_IN_MS</span> &amp;&amp;</span><br><span class="line">    pp + user.<span class="property">performance</span> &gt; <span class="number">5_000</span></span><br><span class="line">  ) {</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (user.<span class="property">performance</span> &lt; <span class="number">1000</span> &amp;&amp; pp &gt; <span class="number">300</span>) {</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> anticheat;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Solution-4"><a href="#Solution-4" class="headerlink" title="Solution"></a>Solution</h4><p>To bypass the anti-cheat mechanism, we can make our score <code>Infinity</code>. This will cause <code>pp = parseInt(newPP)</code> in anticheat.js to become <code>NaN</code>. <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/26982881/why-nan-is-greater-than-any-number-in-javascript#:~:text=All%20comparisons%20involving%20NaN%20will,nor%20greater%20than%20any%20number.">All comparisons involving <code>NaN</code> will always return false</a>, so we can bypass the anti-cheat mechanism.</p>
+<p>I randomly selected a song from <a class="link" target="_blank" rel="noopener" href="https://osu.ppy.sh/beatmapsets/2116763#osu/4446816">here <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and downloaded the <code>osz</code> and <code>osr</code> (from rank). I then unzipped the <code>osz</code> file to obtain the <code>osu</code> file, modified <code>OverallDifficulty</code> of the <code>osu</code> file to <code>1000000000</code>, and updated the beatmap hash in the <code>osr</code> to match the new one of the <code>osu</code> file. Finally, I uploaded the modified files to the server and achieved a rank of 1.</p>
+<p><img src="/osu-gaming-ctf-2024-write-up/pp-ranking.webp" alt="pp-ranking"></p>
+<p><img src="/osu-gaming-ctf-2024-write-up/pp-ranking-rank.webp" alt="pp-ranking-rank"></p>
+<p>By the way, the variable <code>pp</code> can easily become infinity due to the presence of multiple <code>Math.pow</code> functions in the formula.</p>
+<p><img src="/osu-gaming-ctf-2024-write-up/powers.webp" alt="powers"></p>
+<h3 id="stream-vs"><a href="#stream-vs" class="headerlink" title="stream-vs"></a>stream-vs</h3><blockquote>
+<p>how good are you at streaming? i made a site to find out! you can even play with friends, and challenge the goat himself<br><a class="link" target="_blank" rel="noopener" href="https://stream-vs.web.osugaming.lol/">https://stream-vs.web.osugaming.lol/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</blockquote>
+<p>This challenge requires us to beat <code>cookiezi</code> in the game, but <code>cookiezi</code> will always get the exact <code>bpm</code> (see the scoring algorithm below).</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stream-vs.js (frontend)</span></span><br><span class="line"><span class="keyword">const</span> $ = <span class="variable language_">document</span>.<span class="property">querySelector</span>.<span class="title function_">bind</span>(<span class="variable language_">document</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ws = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(</span><br><span class="line">  location.<span class="property">origin</span>.<span class="title function_">replace</span>(<span class="string">"https://"</span>, <span class="string">"wss://"</span>).<span class="title function_">replace</span>(<span class="string">"http://"</span>, <span class="string">"ws://"</span>),</span><br><span class="line">);</span><br><span class="line"><span class="keyword">let</span> username;</span><br><span class="line">$(<span class="string">"form"</span>).<span class="property">onsubmit</span> = <span class="function">(<span class="params">e</span>) =&gt;</span> {</span><br><span class="line">  e.<span class="title function_">preventDefault</span>();</span><br><span class="line">  username = $(<span class="string">"[name='username']"</span>).<span class="property">value</span>;</span><br><span class="line">  ws.<span class="title function_">send</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>({ <span class="attr">type</span>: <span class="string">"login"</span>, <span class="attr">data</span>: username }));</span><br><span class="line">  <span class="variable language_">localStorage</span>.<span class="property">key1</span> = $(<span class="string">"#key1"</span>).<span class="property">value</span>;</span><br><span class="line">  <span class="variable language_">localStorage</span>.<span class="property">key2</span> = $(<span class="string">"#key2"</span>).<span class="property">value</span>;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="function">() =&gt;</span> {</span><br><span class="line">  $(<span class="string">"#key1"</span>).<span class="property">value</span> = <span class="variable language_">localStorage</span>.<span class="property">key1</span> || <span class="string">"z"</span>;</span><br><span class="line">  $(<span class="string">"#key2"</span>).<span class="property">value</span> = <span class="variable language_">localStorage</span>.<span class="property">key2</span> || <span class="string">"x"</span>;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">$(<span class="string">"#host-btn"</span>).<span class="property">onclick</span> = <span class="function">() =&gt;</span> {</span><br><span class="line">  ws.<span class="title function_">send</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>({ <span class="attr">type</span>: <span class="string">"host"</span> }));</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">$(<span class="string">"#challenge-btn"</span>).<span class="property">onclick</span> = <span class="function">() =&gt;</span> {</span><br><span class="line">  ws.<span class="title function_">send</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>({ <span class="attr">type</span>: <span class="string">"challenge"</span> }));</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">$(<span class="string">"#join-btn"</span>).<span class="property">onclick</span> = <span class="function">() =&gt;</span> {</span><br><span class="line">  ws.<span class="title function_">send</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>({ <span class="attr">type</span>: <span class="string">"join"</span>, <span class="attr">data</span>: <span class="title function_">prompt</span>(<span class="string">"Game ID:"</span>) }));</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">$(<span class="string">"#start-btn"</span>).<span class="property">onclick</span> = <span class="function">() =&gt;</span> {</span><br><span class="line">  $(<span class="string">"#start-btn"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"none"</span>;</span><br><span class="line">  ws.<span class="title function_">send</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>({ <span class="attr">type</span>: <span class="string">"start"</span> }));</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">ws.<span class="property">onopen</span> = <span class="function">() =&gt;</span> {</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"connected to ws!"</span>);</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> session;</span><br><span class="line">ws.<span class="property">onmessage</span> = <span class="function">(<span class="params">e</span>) =&gt;</span> {</span><br><span class="line">  <span class="keyword">const</span> { type, data } = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(e.<span class="property">data</span>);</span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">"login"</span>) {</span><br><span class="line">    $(<span class="string">"form"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"none"</span>;</span><br><span class="line">    $(<span class="string">"#menu"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"block"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> params = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(location.<span class="property">search</span>);</span><br><span class="line">    <span class="keyword">if</span> (params.<span class="title function_">has</span>(<span class="string">"id"</span>)) {</span><br><span class="line">      ws.<span class="title function_">send</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>({ <span class="attr">type</span>: <span class="string">"join"</span>, <span class="attr">data</span>: params.<span class="title function_">get</span>(<span class="string">"id"</span>) }));</span><br><span class="line">    }</span><br><span class="line">  } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">"join"</span>) {</span><br><span class="line">    session = data;</span><br><span class="line">    $(<span class="string">"#menu"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"none"</span>;</span><br><span class="line">    $(<span class="string">"#lobby"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"block"</span>;</span><br><span class="line">    $(<span class="string">"#gameId"</span>).<span class="property">innerText</span> = <span class="string">`Game ID: <span class="subst">${session.gameId}</span>`</span>;</span><br><span class="line">    $(<span class="string">"#gameURL"</span>).<span class="property">innerText</span> = location.<span class="property">origin</span> + <span class="string">"/?id="</span> + session.<span class="property">gameId</span>;</span><br><span class="line">    $(<span class="string">"#gameURL"</span>).<span class="property">href</span> = <span class="string">"/?id="</span> + session.<span class="property">gameId</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (session.<span class="property">host</span> === username) {</span><br><span class="line">      $(<span class="string">"#start-btn"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"block"</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    $(<span class="string">"#users"</span>).<span class="property">innerHTML</span> = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> user <span class="keyword">of</span> session.<span class="property">users</span>) {</span><br><span class="line">      <span class="keyword">const</span> li = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">"li"</span>);</span><br><span class="line">      li.<span class="property">innerText</span> = user;</span><br><span class="line">      $(<span class="string">"#users"</span>).<span class="title function_">appendChild</span>(li);</span><br><span class="line">    }</span><br><span class="line">  } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">"game"</span>) {</span><br><span class="line">    session = data;</span><br><span class="line">    <span class="title function_">run</span>(session);</span><br><span class="line">  } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">"results"</span>) {</span><br><span class="line">    session = data;</span><br><span class="line">    $(<span class="string">"#results"</span>).<span class="property">innerHTML</span> = <span class="string">""</span>;</span><br><span class="line">    $(<span class="string">"#message"</span>).<span class="property">innerHTML</span> =</span><br><span class="line">      session.<span class="property">round</span> &lt; session.<span class="property">songs</span>.<span class="property">length</span> - <span class="number">1</span></span><br><span class="line">        ? <span class="string">"The next round will start soon..."</span></span><br><span class="line">        : <span class="string">""</span>;</span><br><span class="line">    $(<span class="string">"#gameURL"</span>).<span class="property">parentElement</span>.<span class="property">style</span>.<span class="property">display</span> = <span class="string">"none"</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; session.<span class="property">results</span>.<span class="property">length</span>; i++) {</span><br><span class="line">      <span class="keyword">const</span> h5 = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">"h5"</span>);</span><br><span class="line">      h5.<span class="property">innerText</span> = <span class="string">`Song #<span class="subst">${i + <span class="number">1</span>}</span> / <span class="subst">${session.songs.length}</span>: <span class="subst">${session.songs[i].name}</span> (<span class="subst">${session.songs[i].bpm}</span> BPM)`</span>;</span><br><span class="line">      $(<span class="string">"#results"</span>).<span class="title function_">appendChild</span>(h5);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> ol = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">"ol"</span>);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; session.<span class="property">results</span>[i].<span class="property">length</span>; j++) {</span><br><span class="line">        <span class="keyword">const</span> li = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">"li"</span>);</span><br><span class="line">        li.<span class="property">innerText</span> = <span class="string">`<span class="subst">${session.results[i][j].username}</span> - <span class="subst">${session.results[i][j].bpm.toFixed(<span class="number">2</span>)}</span> BPM | <span class="subst">${session.results[i][j].ur.toFixed(<span class="number">2</span>)}</span> UR`</span>;</span><br><span class="line">        <span class="keyword">if</span> (j === <span class="number">0</span>) li.<span class="property">innerText</span> += <span class="string">" 🏆"</span>;</span><br><span class="line">        ol.<span class="title function_">appendChild</span>(li);</span><br><span class="line">      }</span><br><span class="line">      $(<span class="string">"#results"</span>).<span class="title function_">appendChild</span>(ol);</span><br><span class="line">    }</span><br><span class="line">  } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">"message"</span>) {</span><br><span class="line">    $(<span class="string">"#message"</span>).<span class="property">innerText</span> = data;</span><br><span class="line">  } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">"error"</span>) {</span><br><span class="line">    <span class="title function_">alert</span>(data);</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> clicks = <span class="keyword">new</span> <span class="title class_">Set</span>(),</span><br><span class="line">  pressed = [],</span><br><span class="line">  recording = <span class="literal">false</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">onkeydown</span> = <span class="function">(<span class="params">e</span>) =&gt;</span> {</span><br><span class="line">  <span class="keyword">if</span> (</span><br><span class="line">    (e.<span class="property">key</span> === $(<span class="string">"#key1"</span>).<span class="property">value</span> || e.<span class="property">key</span> == $(<span class="string">"#key2"</span>).<span class="property">value</span>) &amp;&amp;</span><br><span class="line">    recording &amp;&amp;</span><br><span class="line">    !pressed.<span class="title function_">includes</span>(e.<span class="property">key</span>)</span><br><span class="line">  ) {</span><br><span class="line">    pressed.<span class="title function_">push</span>(e.<span class="property">key</span>);</span><br><span class="line">    clicks.<span class="title function_">add</span>(performance.<span class="title function_">now</span>());</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">onkeyup</span> = <span class="function">(<span class="params">e</span>) =&gt;</span> {</span><br><span class="line">  pressed = pressed.<span class="title function_">filter</span>(<span class="function">(<span class="params">p</span>) =&gt;</span> p !== e.<span class="property">key</span>);</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">fadeOut</span> = (<span class="params">audio</span>) =&gt; {</span><br><span class="line">  <span class="keyword">if</span> (audio.<span class="property">volume</span> &gt; <span class="number">0</span>) {</span><br><span class="line">    audio.<span class="property">volume</span> -= <span class="number">0.01</span>;</span><br><span class="line">    timer = <span class="built_in">setTimeout</span>(fadeOut, <span class="number">100</span>, audio);</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">// algorithm from https://ckrisirkc.github.io/osuStreamSpeed.js/newmain.js</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">calculate</span> = (<span class="params">start, end, clicks</span>) =&gt; {</span><br><span class="line">  <span class="keyword">const</span> clickArr = [...clicks];</span><br><span class="line">  <span class="keyword">const</span> bpm =</span><br><span class="line">    <span class="title class_">Math</span>.<span class="title function_">round</span>((((clickArr.<span class="property">length</span> / (end - start)) * <span class="number">60000</span>) / <span class="number">4</span>) * <span class="number">100</span>) / <span class="number">100</span>;</span><br><span class="line">  <span class="keyword">const</span> deltas = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; clickArr.<span class="property">length</span> - <span class="number">1</span>; i++) {</span><br><span class="line">    deltas.<span class="title function_">push</span>(clickArr[i + <span class="number">1</span>] - clickArr[i]);</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">const</span> deltaAvg = deltas.<span class="title function_">reduce</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b, <span class="number">0</span>) / deltas.<span class="property">length</span>;</span><br><span class="line">  <span class="keyword">const</span> variance = deltas</span><br><span class="line">    .<span class="title function_">map</span>(<span class="function">(<span class="params">v</span>) =&gt;</span> (v - deltaAvg) * (v - deltaAvg))</span><br><span class="line">    .<span class="title function_">reduce</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">const</span> stdev = <span class="title class_">Math</span>.<span class="title function_">sqrt</span>(variance / deltas.<span class="property">length</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> { <span class="attr">bpm</span>: bpm || <span class="number">0</span>, <span class="attr">ur</span>: stdev * <span class="number">10</span> || <span class="number">0</span> };</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">// scoring algorithm</span></span><br><span class="line"><span class="comment">// first judge by whoever has round(bpm) closest to target bpm, if there is a tie, judge by lower UR</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">session.results[session.round] = session.results[session.round].sort((a, b) =&gt; {</span></span><br><span class="line"><span class="comment">    const bpmDeltaA = Math.abs(Math.round(a.bpm) - session.songs[session.round].bpm);</span></span><br><span class="line"><span class="comment">    const bpmDeltaB = Math.abs(Math.round(b.bpm) - session.songs[session.round].bpm);</span></span><br><span class="line"><span class="comment">    if (bpmDeltaA !== bpmDeltaB) return bpmDeltaA - bpmDeltaB;</span></span><br><span class="line"><span class="comment">    return a.ur - b.ur</span></span><br><span class="line"><span class="comment">});</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">sleep</span> = (<span class="params">ms</span>) =&gt; <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> <span class="built_in">setTimeout</span>(r, ms));</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">run</span> = <span class="keyword">async</span> (<span class="params">session</span>) =&gt; {</span><br><span class="line">  clicks.<span class="title function_">clear</span>();</span><br><span class="line">  $(<span class="string">"#lobby"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"none"</span>;</span><br><span class="line">  $(<span class="string">"#game"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"block"</span>;</span><br><span class="line">  $(<span class="string">"#bpm"</span>).<span class="property">innerText</span> = <span class="string">`BPM: 0`</span>;</span><br><span class="line">  $(<span class="string">"#ur"</span>).<span class="property">innerText</span> = <span class="string">`UR: 0`</span>;</span><br><span class="line"></span><br><span class="line">  $(<span class="string">"#song"</span>).<span class="property">innerText</span> =</span><br><span class="line">    <span class="string">`Song #<span class="subst">${session.round + <span class="number">1</span>}</span> / <span class="subst">${session.songs.length}</span>: <span class="subst">${session.songs[session.round].name}</span> (<span class="subst">${session.songs[session.round].bpm}</span> BPM)`</span>;</span><br><span class="line">  <span class="keyword">const</span> audio = <span class="keyword">new</span> <span class="title class_">Audio</span>(<span class="string">`songs/<span class="subst">${session.songs[session.round].file}</span>`</span>);</span><br><span class="line">  audio.<span class="property">volume</span> = <span class="number">0.1</span>;</span><br><span class="line">  audio.<span class="property">currentTime</span> = session.<span class="property">songs</span>[session.<span class="property">round</span>].<span class="property">startOffset</span>;</span><br><span class="line">  <span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> (audio.<span class="property">oncanplaythrough</span> = r));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">5</span>; i &gt;= <span class="number">1</span>; i--) {</span><br><span class="line">    $(<span class="string">"#timer"</span>).<span class="property">innerText</span> = <span class="string">`Song starting in <span class="subst">${i}</span>...`</span>;</span><br><span class="line">    <span class="keyword">await</span> <span class="title function_">sleep</span>(<span class="number">1000</span>);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> timer = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> {</span><br><span class="line">    $(<span class="string">"#timer"</span>).<span class="property">innerText</span> =</span><br><span class="line">      <span class="string">`Time remaining: <span class="subst">${(session.songs[session.round].duration - (audio.currentTime - session.songs[session.round].startOffset)).toFixed(<span class="number">2</span>)}</span>s`</span>;</span><br><span class="line">  }, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">  audio.<span class="title function_">play</span>();</span><br><span class="line">  <span class="comment">// delay to start tapping</span></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">sleep</span>(<span class="number">1000</span>);</span><br><span class="line">  <span class="keyword">let</span> start = +<span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">  recording = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// delay to collect initial samples</span></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">sleep</span>(<span class="number">500</span>);</span><br><span class="line">  <span class="keyword">while</span> (</span><br><span class="line">    audio.<span class="property">currentTime</span> - session.<span class="property">songs</span>[session.<span class="property">round</span>].<span class="property">startOffset</span> &lt;</span><br><span class="line">    session.<span class="property">songs</span>[session.<span class="property">round</span>].<span class="property">duration</span></span><br><span class="line">  ) {</span><br><span class="line">    <span class="keyword">const</span> { bpm, ur } = <span class="title function_">calculate</span>(start, +<span class="keyword">new</span> <span class="title class_">Date</span>(), clicks);</span><br><span class="line">    $(<span class="string">"#bpm"</span>).<span class="property">innerText</span> = <span class="string">`BPM: <span class="subst">${bpm.toFixed(<span class="number">2</span>)}</span>`</span>;</span><br><span class="line">    $(<span class="string">"#ur"</span>).<span class="property">innerText</span> = <span class="string">`UR: <span class="subst">${ur.toFixed(<span class="number">2</span>)}</span>`</span>;</span><br><span class="line">    <span class="keyword">await</span> <span class="title function_">sleep</span>(<span class="number">50</span>);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> end = +<span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">  recording = <span class="literal">false</span>;</span><br><span class="line">  $(<span class="string">"#timer"</span>).<span class="property">innerText</span> = <span class="string">`Time remaining: 0s`</span>;</span><br><span class="line">  <span class="title function_">fadeOut</span>(audio);</span><br><span class="line">  <span class="built_in">clearInterval</span>(timer);</span><br><span class="line"></span><br><span class="line">  ws.<span class="title function_">send</span>(</span><br><span class="line">    <span class="title class_">JSON</span>.<span class="title function_">stringify</span>({</span><br><span class="line">      <span class="attr">type</span>: <span class="string">"results"</span>,</span><br><span class="line">      <span class="attr">data</span>: { <span class="attr">clicks</span>: [...clicks], start, end },</span><br><span class="line">    }),</span><br><span class="line">  );</span><br><span class="line">  $(<span class="string">"#message"</span>).<span class="property">innerText</span> = <span class="string">"Waiting for others to finish..."</span>;</span><br><span class="line">  $(<span class="string">"#game"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"none"</span>;</span><br><span class="line">  $(<span class="string">"#lobby"</span>).<span class="property">style</span>.<span class="property">display</span> = <span class="string">"block"</span>;</span><br><span class="line">};</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Solution-5"><a href="#Solution-5" class="headerlink" title="Solution"></a>Solution</h4><p>I replaced the <code>stream-vs.js</code> with my own version using Burp Suite.</p>
+<p><img src="/osu-gaming-ctf-2024-write-up/burp-replace.webp" alt="burp-replace"></p>
+<p>In my <code>stream-vs.js</code>, I use JavaScript to play the game for me.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">click</span>(<span class="params"></span>) {</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">dispatchEvent</span>(<span class="keyword">new</span> <span class="title class_">KeyboardEvent</span>(<span class="string">"keydown"</span>, { <span class="attr">key</span>: <span class="string">"x"</span> }));</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">dispatchEvent</span>(<span class="keyword">new</span> <span class="title class_">KeyboardEvent</span>(<span class="string">"keyup"</span>, { <span class="attr">key</span>: <span class="string">"x"</span> }));</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getClickInterval</span>(<span class="params">bpm, duration</span>) {</span><br><span class="line">  <span class="comment">// bpm = Math.round(((clickArr.length / (end - start) * 60000)/4) * 100) / 100;</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">60</span> / bpm / <span class="number">4</span> + <span class="number">0.0003</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">startClicking</span>(<span class="params">bpm, duration</span>) {</span><br><span class="line">  <span class="keyword">let</span> interval = <span class="title function_">getClickInterval</span>(bpm, duration * <span class="number">1000</span>);</span><br><span class="line">  <span class="keyword">let</span> timer = <span class="built_in">setInterval</span>(click, interval * <span class="number">1000</span>);</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="built_in">clearInterval</span>(timer), duration * <span class="number">1000</span> + <span class="number">10000</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>startClicking</code> function will be called at the beginning of each round. At the end of each round, <code>end</code> will be adjusted so the <code>bpm</code> will become exact.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">run</span> = <span class="keyword">async</span> (<span class="params">session</span>) =&gt; {</span><br><span class="line">  <span class="comment">// [...]</span></span><br><span class="line">  <span class="keyword">const</span> timer = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> {</span><br><span class="line">    $(<span class="string">"#timer"</span>).<span class="property">innerText</span> =</span><br><span class="line">      <span class="string">`Time remaining: <span class="subst">${(session.songs[session.round].duration - (audio.currentTime - session.songs[session.round].startOffset)).toFixed(<span class="number">2</span>)}</span>s`</span>;</span><br><span class="line">  }, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">startClicking</span>(round_bmp, round_duration + <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">  audio.<span class="title function_">play</span>();</span><br><span class="line">  <span class="comment">// [...]</span></span><br><span class="line">  <span class="keyword">while</span> (</span><br><span class="line">    audio.<span class="property">currentTime</span> - session.<span class="property">songs</span>[session.<span class="property">round</span>].<span class="property">startOffset</span> &lt;</span><br><span class="line">    session.<span class="property">songs</span>[session.<span class="property">round</span>].<span class="property">duration</span></span><br><span class="line">  ) {</span><br><span class="line">    <span class="comment">// [...]</span></span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// make end so that the bpm becomes the same as the target bpm</span></span><br><span class="line">  <span class="keyword">let</span> end = start + ((clicks.<span class="property">size</span> / round_bmp) * <span class="number">60</span> * <span class="number">1000</span>) / <span class="number">4</span>;</span><br><span class="line">  recording = <span class="literal">false</span>;</span><br><span class="line">  $(<span class="string">"#timer"</span>).<span class="property">innerText</span> = <span class="string">`Time remaining: 0s`</span>;</span><br><span class="line">  <span class="comment">// [...]</span></span><br><span class="line">};</span><br></pre></td></tr></table></figure></div>
+
+<img src="/osu-gaming-ctf-2024-write-up/stream-vs-res.webp" style="width: min(28em, 100%);">
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> osu!gaming CTF 2024 Write-up</li>
+        <li><strong>Author:</strong> Ching367436</li>
+        <li><strong>Created at
+                :</strong> 2024-03-04 10:22:16</li>
+        
+        <li>
+            <strong>Link:</strong> https://blog.ching367436.me/osu-gaming-ctf-2024-write-up/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/ctf/">#ctf</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
+  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Write-up</span>
+</a><a class="recommended-article-item" href="/ais3-pre-exam-2023-write-up/" title="AIS3 Pre-exam 2023 Write-up" rel="bookmark">
+  <img src="/ais3-pre-exam-2023-write-up/myfirstctf-staff.webp" alt="AIS3 Pre-exam 2023 Write-up" class="!max-w-none">
+  <span class="title">AIS3 Pre-exam 2023 Write-up</span>
+</a><a class="recommended-article-item" href="/ais3-eof-2024-final/" title="AIS3 EOF 2024 Final" rel="bookmark">
+  <img src="/ais3-eof-2024-final/TakeKitsune.webp" alt="AIS3 EOF 2024 Final" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Final</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
+  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Write-up</span>
+</a><a class="recommended-article-item" href="/ais3-pre-exam-2023-write-up/" title="AIS3 Pre-exam 2023 Write-up" rel="bookmark">
+  <img src="/ais3-pre-exam-2023-write-up/myfirstctf-staff.webp" alt="AIS3 Pre-exam 2023 Write-up" class="!max-w-none">
+  <span class="title">AIS3 Pre-exam 2023 Write-up</span>
+</a></div>
+   </div>
+  </div>
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/edu-ctf-2022-write-up/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">EDU CTF 2022 Write-up</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Ching367436/blog',
+                'data-repo-id': 'R_kgDOJNMXOw',
+                'data-category': 'Giscus',
+                'data-category-id': 'DIC_kwDOJNMXO84CVeVB',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'en',
+                'data-input-position': 'bottom',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">osu!gaming CTF 2024 Write-up</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#OSU"><span class="nav-text">OSU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sanity-check-2"><span class="nav-text">sanity-check-2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sanity-check-3"><span class="nav-text">sanity-check-3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Crypto"><span class="nav-text">Crypto</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#secret-map"><span class="nav-text">secret-map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#korean-offline-mafia"><span class="nav-text">korean-offline-mafia</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web"><span class="nav-text">Web</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pp-ranking"><span class="nav-text">pp-ranking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stream-vs"><span class="nav-text">stream-vs</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart" style="color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ching367436</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        9 posts in total
+                    </span>
+                    
+                        <span>
+                            20.5k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="fa-regular fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog"></i>
+        </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
