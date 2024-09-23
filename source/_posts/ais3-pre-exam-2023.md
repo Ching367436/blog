@@ -2,8 +2,8 @@
 title: AIS3 Pre-exam 2023 Write-up
 date: 2023-06-06 15:44:47
 tags: 
-  - AIS3
-  - CTF
+  - ais3
+  - ctf
 categories:
   - [AIS3, Pre-exam]
 typora-root-url: .

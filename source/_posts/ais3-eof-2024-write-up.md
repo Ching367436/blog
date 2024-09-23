@@ -2,8 +2,8 @@
 title: AIS3 EOF 2024 Write-up
 date: 2024-01-18 09:58:01
 tags: 
-  - AIS3
-  - CTF
+  - ais3
+  - ctf
 categories:
   - [AIS3, EOF]
 typora-root-url: .

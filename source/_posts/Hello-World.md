@@ -4,7 +4,7 @@ date: 2023-03-20 21:35:19
 categories:
   - [hello, world]
 tags: 
-  - hello world
+  - hello-world
 excerpt: Hello World!
 mathjax: true
 ---
