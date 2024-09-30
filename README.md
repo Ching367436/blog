@@ -8,7 +8,11 @@
 
 ### [2024](https://blog.ching367436.me/archives/2024/)
 
+`2024-08-31` [Reversing a Web3 Scam via Dynamic Analysis and Deobfuscation](https://blog.ching367436.me/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/)
+
 `2024-09-23` [BlazCTF 2024](https://blog.ching367436.me/blazctf-2024/)
+
+`2024-09-14` [神盾盃初賽 2024](https://blog.ching367436.me/%E7%A5%9E%E7%9B%BE%E7%9B%83%E5%88%9D%E8%B3%BD-2024/)
 
 `2024-03-04` [osu!gaming CTF 2024 Write-up](https://blog.ching367436.me/osu-gaming-ctf-2024-write-up/)
 
