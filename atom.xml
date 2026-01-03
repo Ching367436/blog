@@ -6,7 +6,7 @@
   <link href="https://blog.ching367436.me/atom.xml" rel="self"/>
   
   <link href="https://blog.ching367436.me/"/>
-  <updated>2026-01-02T13:18:34.000Z</updated>
+  <updated>2025-10-20T03:45:50.000Z</updated>
   <id>https://blog.ching367436.me/</id>
   
   <author>
@@ -15,28 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>一天拿下 KLCP、兩天拿下 OSWP：我的極速準備法</title>
-    <link href="https://blog.ching367436.me/%E4%B8%80%E5%A4%A9%E6%8B%BF%E4%B8%8B-klcp%E3%80%81%E5%85%A9%E5%A4%A9%E6%8B%BF%E4%B8%8B-oswp%EF%BC%9A%E6%88%91%E7%9A%84%E6%A5%B5%E9%80%9F%E6%BA%96%E5%82%99%E6%B3%95/"/>
-    <id>https://blog.ching367436.me/%E4%B8%80%E5%A4%A9%E6%8B%BF%E4%B8%8B-klcp%E3%80%81%E5%85%A9%E5%A4%A9%E6%8B%BF%E4%B8%8B-oswp%EF%BC%9A%E6%88%91%E7%9A%84%E6%A5%B5%E9%80%9F%E6%BA%96%E5%82%99%E6%B3%95/</id>
-    <published>2026-01-02T13:18:34.000Z</published>
-    <updated>2026-01-02T13:18:34.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>去年在 <a class="link" href="https://www.facebook.com/share/p/1ZT2igMnHH/">TSC X Offsec X DEVCORE<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 買了 OffSec Learn One 的優惠方案 (62,500 TWD)，裡面包含了 OSCP+, OSWP, KLCP 的證照考試機會</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;去年在 &lt;a class=&quot;link&quot; href=&quot;https://www.facebook.com/share/p/1ZT2igMnHH/&quot;&gt;TSC X Offsec X DEVCORE&lt;i class=&quot;fa-solid fa-arrow-up-right ml-[0.</summary>
-      
-    
-    
-    
-    
-    <category term="OffSec" scheme="https://blog.ching367436.me/tags/OffSec/"/>
-    
-  </entry>
   
   <entry>
     <title>HITCON CTF 2025</title>
