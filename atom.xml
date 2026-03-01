@@ -6,7 +6,7 @@
   <link href="https://blog.ching367436.me/atom.xml" rel="self"/>
   
   <link href="https://blog.ching367436.me/"/>
-  <updated>2025-10-20T03:45:50.000Z</updated>
+  <updated>2026-01-02T13:18:34.000Z</updated>
   <id>https://blog.ching367436.me/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一天拿下 KLCP、兩天拿下 OSWP：我的極速準備法</title>
+    <link href="https://blog.ching367436.me/klcp/"/>
+    <id>https://blog.ching367436.me/klcp/</id>
+    <published>2026-01-02T13:18:34.000Z</published>
+    <updated>2026-01-02T13:18:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>跟 <a class="link" href="https://www.facebook.com/share/p/1ZT2igMnHH/">TSC X Offsec X DEVCORE<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 買了 OffSec Learn One 的優惠方案 (62,500 TWD)，內含 OSCP+、OSWP、KLCP 的證照考試機會。</p><p>這篇文章的目標讀者，是已經考過 OSCP，並希望把 Learn One 方案中的另外兩張證照 OSWP、KLCP 也一併拿下的人。</p><p>市面上關於 OSCP 的心得文已經很多，但相較之下，KLCP、OSWP 的相關文章卻少之又少。跟一些已取得 OSCP 的前輩聊天時，也常聽他們提到：KLCP 在 OffSec 證照裡屬於通過人數數一數二少、相當稀有的證照。在跟有 OSCP 的前輩們，分享通過 OSCP 時，大家多半會說「恭喜」；但提到拿到 KLCP，得到的回應往往是「你好強喔」。從這些反應就能看出 KLCP 的稀有與難度。也因此，KLCP 並不是「拿到 OSCP 之後就一定能順利取得」的證照。</p><h2 id="KLCP-準備"><a href="#KLCP-準備" class="headerlink" title="KLCP 準備"></a>KLCP 準備</h2><h3 id="考試規則"><a href="#考試規則" class="headerlink" title="考試規則"></a>考試規則</h3><ul><li>80 題選擇題，需拿到 80% 的分數才會通過</li><li>考試時間 90 分鐘</li><li>關書考；不能看任何教材、網路資源</li><li>全程監考，需分享螢幕、鏡頭，並檢查電腦（跟 OSCP 監考流程一致，建議考前 15 分鐘進入監考環境，進行 pre-exam check-in；check-in 後會拿到 CLASSMAKER 的連結）</li><li>使用 CLASSMAKER 平台進行考試；考完通過就馬上發證照，無需繳交報告</li><li>其他詳細規則可參考 <a class="link" href="https://help.offsec.com/hc/en-us/articles/360059125211-KLCP-Exam-Guide">KLCP Exam Guide<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li></ul><h3 id="考試結果"><a href="#考試結果" class="headerlink" title="考試結果"></a>考試結果</h3><p>拿到了 95% 的分數。開場 20 分鐘就把 80 題寫完，並花了 20 分鐘再檢查一次後交卷。</p><h3 id="考試準備"><a href="#考試準備" class="headerlink" title="考試準備"></a>考試準備</h3><p>我的考試時間排定在晚上 8 點，當天早上跟下午準備考試。</p><p>教材有以下範圍</p><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1 Introduction</span><br><span class="line">2 Linux Fundamentals</span><br><span class="line">3 About Kali Linux</span><br><span class="line">4 Getting Started with Kali Linux</span><br><span class="line">5 Installing Kali Linux</span><br><span class="line">6 Configuring Kali Linux</span><br><span class="line">7 Helping Yourself and Getting Help</span><br><span class="line">8 Securing and Monitoring Kali Linux</span><br><span class="line">9 Debian Package Management</span><br><span class="line">10 Advanced Usage</span><br><span class="line">11 Kali Linux in the Enterprise</span><br><span class="line">12 Introduction to Security Assessments</span><br><span class="line">13 Conclusion: The Road Ahead</span><br></pre></td></tr></table></figure></div>]]></content>
+    
+    
+    <summary type="html">KLCP</summary>
+    
+    
+    
+    
+    <category term="OffSec" scheme="https://blog.ching367436.me/tags/OffSec/"/>
+    
+    <category term="KLCP" scheme="https://blog.ching367436.me/tags/KLCP/"/>
+    
+    <category term="OSWP" scheme="https://blog.ching367436.me/tags/OSWP/"/>
+    
+    <category term="OSCP" scheme="https://blog.ching367436.me/tags/OSCP/"/>
+    
+  </entry>
   
   <entry>
     <title>HITCON CTF 2025</title>
